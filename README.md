@@ -1,6 +1,6 @@
 Freya Web Application.
 
-## Museum Management based on App Engine Java.
+## Museum Management App based on Google App Engine Java.
 
 Requires [Apache Maven](http://maven.apache.org) 3.1 or greater, and JDK 7+ in order to run.
 
