@@ -1,6 +1,22 @@
+*~
 *.class
 
 # Package Files #
 *.jar
 *.war
 *.ear
+
+eclipse-launch-profiles/
+bin/
+gen/
+target/
+
+# App Engine generated
+*.api
+*.discovery
+*.settings
+appengine-generated/
+endpoint-libs/
+classes/
+deploy/
+war/freya-app/
