@@ -25,3 +25,6 @@ classes/
 target/
 deploy/
 war/freya-app/
+
+#Datanucleus logs
+datanucleus.log

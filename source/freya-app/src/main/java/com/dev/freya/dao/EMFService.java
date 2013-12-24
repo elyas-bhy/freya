@@ -6,7 +6,7 @@ import javax.persistence.Persistence;
 
 public class EMFService {
 
-	private static final EntityManagerFactory mFactory = Persistence.createEntityManagerFactory("transactions");
+	private static final EntityManagerFactory mFactory = Persistence.createEntityManagerFactory("freya");
 
 	private EMFService() {
 
