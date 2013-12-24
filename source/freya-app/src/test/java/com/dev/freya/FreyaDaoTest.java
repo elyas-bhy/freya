@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.dev.freya.dao.FreyaDao;
 import com.dev.freya.model.Artwork;
+import com.dev.freya.model.Dimension;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
@@ -32,6 +33,7 @@ public class FreyaDaoTest {
 		a.setArtist("dali");
 		a.setTitle("title");
 		a.setDate(new Date());
+		a.setDimension(new Dimension(2, 3, 4));
 		dao.persist(a);
 		dao.close();
 	}

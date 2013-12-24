@@ -9,6 +9,7 @@
 		<provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
 		<class>com.dev.freya.model.Artwork</class>
 		<class>com.dev.freya.model.ArtCollection</class>
+		<class>com.dev.freya.model.Dimension</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="datanucleus.NontransactionalRead" value="true" />

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,7 +32,7 @@ public class Artwork {
 	@Lob
 	private String summary;
 	
-	//@OneToMany
+	@ElementCollection(fetch = FetchType.LAZY)
 	private List<String> comments;
 	
 	//@OneToMany
