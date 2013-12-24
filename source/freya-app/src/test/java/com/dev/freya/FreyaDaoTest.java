@@ -3,7 +3,6 @@ package com.dev.freya;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,9 +28,7 @@ public class FreyaDaoTest {
 		helper.setUp();
 		FreyaDao dao = new FreyaDao();
 		Artwork a = new Artwork();
-		a.setComments(new ArrayList<String>());
 		a.setSummary("summary");
-		a.setTags(new ArrayList<String>());
 		a.setArtist("dali");
 		a.setTitle("title");
 		a.setDate(new Date());

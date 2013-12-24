@@ -1,14 +1,15 @@
 package com.dev.freya.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -37,12 +38,12 @@ public class Artwork {
 
 	// Photos
 	
-	private float x;
-	private float y;
-	private float z;
+	@Embedded
+	private Dimension dimension;
 	
 	public Artwork() {
-		
+		comments = new ArrayList<>();
+		tags = new ArrayList<>();
 	}
 	
 	public Long getId() {
@@ -97,39 +98,24 @@ public class Artwork {
 		return comments;
 	}
 	
-	public void setComments(List<String> comments) {
-		this.comments = comments;
+	public void addComment(String comment) {
+		comments.add(comment);
 	}
 	
 	public List<String> getTags() {
 		return tags;
 	}
 	
-	public void setTags(List<String> tags) {
-		this.tags = tags;
+	public void addTag(String tag) {
+		tags.add(tag);
 	}
 	
-	public float getX() {
-		return x;
+	public Dimension getDimension() {
+		return dimension;
 	}
 	
-	public void setX(float x) {
-		this.x = x;
-	}
-	
-	public float getY() {
-		return y;
-	}
-	
-	public void setY(float y) {
-		this.y = y;
-	}
-	
-	public float getZ() {
-		return z;
-	}
-	public void setZ(float z) {
-		this.z = z;
+	public void setDimension(Dimension dimension) {
+		this.dimension = dimension;
 	}
 	
 }
