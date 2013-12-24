@@ -11,6 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.dev.freya.dao.FreyaDao;
+import com.dev.freya.model.ArtSupport;
+import com.dev.freya.model.ArtTechnique;
 import com.dev.freya.model.Artwork;
 import com.dev.freya.model.Dimension;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
@@ -22,8 +24,6 @@ public class FreyaDaoTest {
             new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig()
             .setApplyAllHighRepJobPolicy());
 	
-	
-
 	@Before
 	public void setUp() {
 		helper.setUp();
@@ -34,6 +34,8 @@ public class FreyaDaoTest {
 		a.setTitle("title");
 		a.setDate(new Date());
 		a.setDimension(new Dimension(2, 3, 4));
+		a.setSupport(ArtSupport.PAINTING_LINEN_CANVAS);
+		a.setTechnique(ArtTechnique.PAINTING_OIL);
 		dao.persist(a);
 		dao.close();
 	}

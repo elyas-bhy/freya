@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,14 +19,22 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Artwork {
+public class Artwork implements IArtwork {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	//private ArtworkType type;
+	@Enumerated(EnumType.STRING)
+	private ArtSupport support;
+	
+	@Enumerated(EnumType.STRING)
+	private ArtTechnique technique;
+	
+	@Basic
 	private String artist;
+	
+	@Basic
 	private String title;
 	
 	@Temporal(value = TemporalType.DATE)
@@ -48,74 +59,97 @@ public class Artwork {
 		tags = new ArrayList<>();
 	}
 	
+	@Override
 	public Long getId() {
 		return id;
 	}
-	
-	public void setId(Long id) {
-		this.id = id;
+
+	@Override
+	public ArtSupport getSupport() {
+		return support;
 	}
-	
-	/*public ArtworkType getType() {
-		return type;
+
+	@Override
+	public void setSupport(ArtSupport support) {
+		this.support = support;
 	}
-	
-	public void setType(ArtworkType type) {
-		this.type = type;
-	}*/
-	
+
+	@Override
+	public ArtTechnique getTechnique() {
+		return technique;
+	}
+
+	@Override
+	public void setTechnique(ArtTechnique technique) {
+		this.technique = technique;
+	}
+
+	@Override
 	public String getArtist() {
 		return artist;
 	}
-	
+
+	@Override
 	public void setArtist(String artist) {
 		this.artist = artist;
 	}
-	
+
+	@Override
 	public String getTitle() {
 		return title;
 	}
-	
+
+	@Override
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
+	@Override
 	public Date getDate() {
 		return date;
 	}
-	
+
+	@Override
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
+
+	@Override
 	public String getSummary() {
 		return summary;
 	}
-	
+
+	@Override
 	public void setSummary(String summary) {
 		this.summary = summary;
 	}
-	
+
+	@Override
 	public List<String> getComments() {
 		return comments;
 	}
-	
+
+	@Override
 	public void addComment(String comment) {
 		comments.add(comment);
 	}
-	
+
+	@Override
 	public List<String> getTags() {
 		return tags;
 	}
-	
+
+	@Override
 	public void addTag(String tag) {
 		tags.add(tag);
 	}
-	
+
+	@Override
 	public Dimension getDimension() {
 		return dimension;
 	}
-	
+
+	@Override
 	public void setDimension(Dimension dimension) {
 		this.dimension = dimension;
 	}
