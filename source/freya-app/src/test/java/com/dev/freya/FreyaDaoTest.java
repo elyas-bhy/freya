@@ -1,6 +1,6 @@
 package com.dev.freya;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.Date;
@@ -15,6 +15,7 @@ import com.dev.freya.model.ArtSupport;
 import com.dev.freya.model.ArtTechnique;
 import com.dev.freya.model.Artwork;
 import com.dev.freya.model.Dimension;
+import com.dev.freya.model.IArtwork;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
@@ -28,7 +29,7 @@ public class FreyaDaoTest {
 	public void setUp() {
 		helper.setUp();
 		FreyaDao dao = new FreyaDao();
-		Artwork a = new Artwork();
+		IArtwork a = new Artwork();
 		a.setSummary("summary");
 		a.setArtist("dali");
 		a.setTitle("title");
@@ -48,7 +49,7 @@ public class FreyaDaoTest {
 	@Test
 	public void testDoGet() throws IOException {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.getArtworksByArtist("dali");
+		List<IArtwork> artworks = dao.getArtworksByArtist("dali");
 		assertEquals(artworks.size(), 1);
 	}
 

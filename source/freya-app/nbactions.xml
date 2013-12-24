@@ -15,6 +15,13 @@
         </goals>
     </action>
     <action>
+        <actionName>CUSTOM-appengine:endpoints_get_client_lib</actionName>
+        <displayName>appengine:endpoints_get_client_lib</displayName>
+        <goals>
+            <goal>appengine:endpoints_get_client_lib</goal>
+        </goals>
+    </action>
+    <action>
         <actionName>CUSTOM-appengine:rollback</actionName>
         <displayName>appengine:rollback</displayName>
         <goals>

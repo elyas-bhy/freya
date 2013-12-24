@@ -22,7 +22,7 @@
 		<servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
 		<init-param>
 			<param-name>services</param-name>
-			<param-value></param-value> <!-- Endpoints -->
+			<param-value>com.dev.freya.spi.v1.ArtworkEndpoints</param-value>
 		</init-param>
 	</servlet>
 
