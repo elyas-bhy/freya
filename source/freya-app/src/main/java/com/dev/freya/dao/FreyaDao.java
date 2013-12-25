@@ -28,9 +28,10 @@ public class FreyaDao {
 		return artists;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Artwork> listArtworksByArtist(String artistId) {
-		TypedQuery<Artwork> query = mEntityManager.createQuery(
-				"select a from Artwork a join a.artist t where t.id = :artistId", Artwork.class);
+		Query query = mEntityManager.createQuery(
+				"select a from Artwork a join a.artist t where t.id = :artistId");
 		query.setParameter("artistId", artistId);
 		List<Artwork> artworks = query.getResultList();
 		return artworks;

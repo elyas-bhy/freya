@@ -20,7 +20,7 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 public class FreyaDaoTest {
-	
+
 	private String daliArtistId;
     
     private final LocalServiceTestHelper helper =
@@ -69,7 +69,7 @@ public class FreyaDaoTest {
 	public void teardown() {
 		helper.tearDown();
 	}
-
+	
 	@Test
 	public void testGetArtworksByArtist() throws IOException {
 		FreyaDao dao = new FreyaDao();
