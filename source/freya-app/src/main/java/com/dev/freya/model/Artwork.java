@@ -36,7 +36,7 @@ public class Artwork implements IArtwork {
 	private ArtTechnique technique;
 	
 	@Unowned
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Artist artist;
 	
 	@Basic
@@ -96,7 +96,6 @@ public class Artwork implements IArtwork {
 
 	@Override
 	public void setArtist(Artist artist) {
-		artist.addArtwork(this);
 		this.artist = artist;
 	}
 

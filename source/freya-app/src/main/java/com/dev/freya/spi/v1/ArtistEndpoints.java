@@ -1,6 +1,5 @@
 package com.dev.freya.spi.v1;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +43,7 @@ public class ArtistEndpoints {
 	)
 	public List<Artwork> listArtworksByArtist(@Named("artist_name") String artistName) {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = new ArrayList<>(dao.listArtworksByArtist(artistName));
+		List<Artwork> artworks = dao.listArtworksByArtist(artistName);
 		dao.close();
 		return artworks;
 	}
@@ -59,22 +58,34 @@ public class ArtistEndpoints {
 		artwork1.setArtist(new Artist("Dali"));
 		artwork1.setDate(new Date());
 		artwork1.setDimension(new Dimension(4, 5, 6));
-		artwork1.setSummary("summary");
+		artwork1.setTitle("Title 1");
+		artwork1.setSummary("Summary 1");
 		artwork1.setTechnique(ArtTechnique.PAINTING_ACRYLIC);
 		artwork1.setSupport(ArtSupport.PAINTING_CARDBOARD);
-		
+
 		IArtwork artwork2 = new Artwork();
-		artwork2.setArtist(new Artist("Picasso"));
+		artwork2.setArtist(new Artist("Pablo Picasso"));
 		artwork2.setDate(new Date());
 		artwork2.setDimension(new Dimension(12, 10, 15));
-		artwork2.setSummary("summary2");
+		artwork2.setTitle("Title 2");
+		artwork2.setSummary("Summary 2");
 		artwork2.setTechnique(ArtTechnique.PAINTING_GOUACHE);
 		artwork2.setSupport(ArtSupport.PAINTING_LINEN_CANVAS);
+		
+		IArtwork artwork3 = new Artwork();
+		artwork3.setArtist(new Artist("Dali"));
+		artwork3.setDate(new Date());
+		artwork3.setDimension(new Dimension(20, 5, 35));
+		artwork3.setTitle("Title 3");
+		artwork3.setSummary("Summary 3");
+		artwork3.setTechnique(ArtTechnique.PAINTING_WATERCOLOR);
+		artwork3.setSupport(ArtSupport.PAINTING_PAPER);
 		
 		FreyaDao dao = new FreyaDao();
 		dao.beginTransaction();
 		dao.persist(artwork1);
 		dao.persist(artwork2);
+		dao.persist(artwork3);
 		dao.commitTransaction();
 		dao.close();
 	}

@@ -17,21 +17,13 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 
 @Entity
 public class Artist {
-
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
-	private String key;
 	
+	@Id
 	@Basic(fetch = FetchType.EAGER)
 	private String name;
 	
-	@Unowned
-	@OneToMany(fetch = FetchType.EAGER)
-	private Set<Artwork> artworks;
-	
 	public Artist() {
-		artworks = new HashSet<>();
+		
 	}
 	
 	public Artist(String name) {
@@ -46,14 +38,5 @@ public class Artist {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public Set<Artwork> getArtworks() {
-		return artworks;
-	}
-
-	public void addArtwork(Artwork artwork) {
-		artworks.add(artwork);
-	}
-	
 	
 }

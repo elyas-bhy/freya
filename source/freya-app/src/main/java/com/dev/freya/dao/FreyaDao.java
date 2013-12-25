@@ -1,8 +1,6 @@
 package com.dev.freya.dao;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -30,18 +28,11 @@ public class FreyaDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Set<Artwork> listArtworksByArtist(String artist) {
-		Query query = mEntityManager.createQuery("select a.artworks from Artist a where a.name = :artist");
+	public List<Artwork> listArtworksByArtist(String artist) {
+		Query query = mEntityManager.createQuery("select a from Artwork a join a.artist t where t.name = :artist");
 		query.setParameter("artist", artist);
-		List<Set<Artwork>> result = query.getResultList();
-		if (!result.isEmpty()) {
-			Set<Artwork> artworks = result.get(0);
-			for (Artwork artwork : artworks) {
-				artwork.getArtist(); // Force eager-load
-			}
-			return artworks;
-		}
-		return new HashSet<>();
+		List<Artwork> artworks = query.getResultList();
+		return artworks;
 	}
 	
 	@SuppressWarnings("unchecked")

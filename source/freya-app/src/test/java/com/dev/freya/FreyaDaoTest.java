@@ -54,4 +54,17 @@ public class FreyaDaoTest {
 		assertEquals(artworks.size(), 1);*/
 	}
 
+	@Test
+	public void testUniqueArtists() throws IOException {
+		FreyaDao dao = new FreyaDao();
+		dao.persist(new Artist("Dali"));
+		dao.persist(new Artist("Pablo Picasso"));
+		dao.persist(new Artist("Dali"));
+		dao.close();
+		
+		dao = new FreyaDao();
+		List<Artist> artists = dao.listArtists();
+		assertEquals(artists.size(), 2);
+	}
+
 }
