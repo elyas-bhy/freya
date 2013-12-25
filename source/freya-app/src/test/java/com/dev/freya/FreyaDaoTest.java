@@ -20,6 +20,8 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 public class FreyaDaoTest {
+	
+	private String daliArtistId;
     
     private final LocalServiceTestHelper helper =
             new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig()
@@ -37,6 +39,7 @@ public class FreyaDaoTest {
 		artwork1.setSummary("Summary 1");
 		artwork1.setTechnique(ArtTechnique.PAINTING_ACRYLIC);
 		artwork1.setSupport(ArtSupport.PAINTING_CARDBOARD);
+		dao.persist(artwork1);
 
 		Artwork artwork2 = new Artwork();
 		artwork2.setArtist(new Artist("Pablo Picasso"));
@@ -46,6 +49,7 @@ public class FreyaDaoTest {
 		artwork2.setSummary("Summary 2");
 		artwork2.setTechnique(ArtTechnique.PAINTING_GOUACHE);
 		artwork2.setSupport(ArtSupport.PAINTING_LINEN_CANVAS);
+		dao.persist(artwork2);
 		
 		Artwork artwork3 = new Artwork();
 		artwork3.setArtist(new Artist("Dali"));
@@ -55,10 +59,9 @@ public class FreyaDaoTest {
 		artwork3.setSummary("Summary 3");
 		artwork3.setTechnique(ArtTechnique.PAINTING_WATERCOLOR);
 		artwork3.setSupport(ArtSupport.PAINTING_PAPER);
-
-		dao.persist(artwork1);
-		dao.persist(artwork2);
 		dao.persist(artwork3);
+
+		daliArtistId = artwork1.getArtist().getId();
 		dao.close();
 	}
 
@@ -70,7 +73,7 @@ public class FreyaDaoTest {
 	@Test
 	public void testGetArtworksByArtist() throws IOException {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.listArtworksByArtist("Dali");
+		List<Artwork> artworks = dao.listArtworksByArtist(daliArtistId);
 		assertEquals(artworks.size(), 2);
 		dao.close();
 	}

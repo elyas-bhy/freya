@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import com.dev.freya.model.Artist;
 import com.dev.freya.model.Artwork;
@@ -27,10 +28,10 @@ public class FreyaDao {
 		return artists;
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Artwork> listArtworksByArtist(String artist) {
-		Query query = mEntityManager.createQuery("select a from Artwork a join a.artist t where t.name = :artist");
-		query.setParameter("artist", artist);
+	public List<Artwork> listArtworksByArtist(String artistId) {
+		TypedQuery<Artwork> query = mEntityManager.createQuery(
+				"select a from Artwork a join a.artist t where t.id = :artistId", Artwork.class);
+		query.setParameter("artistId", artistId);
 		List<Artwork> artworks = query.getResultList();
 		return artworks;
 	}

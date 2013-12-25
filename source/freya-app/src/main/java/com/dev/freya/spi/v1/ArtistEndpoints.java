@@ -36,13 +36,13 @@ public class ArtistEndpoints {
 	
 	@ApiMethod(
 			name = "artists.artworks",
-			path = "artists/{artist_name}/artworks",
+			path = "artists/{artist_id}/artworks",
 			httpMethod = HttpMethod.GET
 			
 	)
-	public List<Artwork> listArtworksByArtist(@Named("artist_name") String artistName) {
+	public List<Artwork> listArtworksByArtist(@Named("artist_id") String artistId) {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.listArtworksByArtist(artistName);
+		List<Artwork> artworks = dao.listArtworksByArtist(artistId);
 		dao.close();
 		return artworks;
 	}
