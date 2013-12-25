@@ -16,7 +16,6 @@ import com.dev.freya.model.ArtTechnique;
 import com.dev.freya.model.Artist;
 import com.dev.freya.model.Artwork;
 import com.dev.freya.model.Dimension;
-import com.dev.freya.model.IArtwork;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
@@ -30,7 +29,7 @@ public class FreyaDaoTest {
 	public void setUp() {
 		helper.setUp();
 		FreyaDao dao = new FreyaDao();
-		IArtwork a = new Artwork();
+		Artwork a = new Artwork();
 		a.setSummary("summary");
 		a.setArtist(new Artist("Dali"));
 		a.setTitle("title");

@@ -11,7 +11,6 @@ import com.dev.freya.model.ArtTechnique;
 import com.dev.freya.model.Artist;
 import com.dev.freya.model.Artwork;
 import com.dev.freya.model.Dimension;
-import com.dev.freya.model.IArtwork;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
@@ -54,7 +53,7 @@ public class ArtistEndpoints {
 			httpMethod = HttpMethod.POST
 	)
 	public void test2() {
-		IArtwork artwork1 = new Artwork();
+		Artwork artwork1 = new Artwork();
 		artwork1.setArtist(new Artist("Dali"));
 		artwork1.setDate(new Date());
 		artwork1.setDimension(new Dimension(4, 5, 6));
@@ -63,7 +62,7 @@ public class ArtistEndpoints {
 		artwork1.setTechnique(ArtTechnique.PAINTING_ACRYLIC);
 		artwork1.setSupport(ArtSupport.PAINTING_CARDBOARD);
 
-		IArtwork artwork2 = new Artwork();
+		Artwork artwork2 = new Artwork();
 		artwork2.setArtist(new Artist("Pablo Picasso"));
 		artwork2.setDate(new Date());
 		artwork2.setDimension(new Dimension(12, 10, 15));
@@ -72,7 +71,7 @@ public class ArtistEndpoints {
 		artwork2.setTechnique(ArtTechnique.PAINTING_GOUACHE);
 		artwork2.setSupport(ArtSupport.PAINTING_LINEN_CANVAS);
 		
-		IArtwork artwork3 = new Artwork();
+		Artwork artwork3 = new Artwork();
 		artwork3.setArtist(new Artist("Dali"));
 		artwork3.setDate(new Date());
 		artwork3.setDimension(new Dimension(20, 5, 35));

@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 @Entity
-public class Artwork implements IArtwork {
+public class Artwork {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,97 +64,78 @@ public class Artwork implements IArtwork {
 		tags = new ArrayList<>();
 	}
 	
-	@Override
 	public Long getId() {
 		return id;
 	}
 
-	@Override
 	public ArtSupport getSupport() {
 		return support;
 	}
 
-	@Override
 	public void setSupport(ArtSupport support) {
 		this.support = support;
 	}
 
-	@Override
 	public ArtTechnique getTechnique() {
 		return technique;
 	}
 
-	@Override
 	public void setTechnique(ArtTechnique technique) {
 		this.technique = technique;
 	}
 
-	@Override
 	public Artist getArtist() {
 		return artist;
 	}
 
-	@Override
 	public void setArtist(Artist artist) {
 		this.artist = artist;
 	}
 
-	@Override
 	public String getTitle() {
 		return title;
 	}
 
-	@Override
 	public void setTitle(String title) {
 		this.title = title;
 	}
 
-	@Override
 	public Date getDate() {
 		return date;
 	}
 
-	@Override
 	public void setDate(Date date) {
 		this.date = date;
 	}
 
-	@Override
 	public String getSummary() {
 		return summary;
 	}
 
-	@Override
 	public void setSummary(String summary) {
 		this.summary = summary;
 	}
 
-	@Override
 	public List<String> getComments() {
 		return comments;
 	}
 
-	@Override
 	public void addComment(String comment) {
 		comments.add(comment);
 	}
 
-	@Override
 	public List<String> getTags() {
 		return tags;
 	}
 
-	@Override
 	public void addTag(String tag) {
 		tags.add(tag);
 	}
 
-	@Override
 	public Dimension getDimension() {
 		return dimension;
 	}
 
-	@Override
 	public void setDimension(Dimension dimension) {
 		this.dimension = dimension;
 	}

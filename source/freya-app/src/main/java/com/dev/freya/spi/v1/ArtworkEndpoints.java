@@ -9,7 +9,6 @@ import com.dev.freya.model.ArtTechnique;
 import com.dev.freya.model.Artist;
 import com.dev.freya.model.Artwork;
 import com.dev.freya.model.Dimension;
-import com.dev.freya.model.IArtwork;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
@@ -39,7 +38,7 @@ public class ArtworkEndpoints {
 			httpMethod = HttpMethod.POST
 	)
 	public void test() {
-		IArtwork artwork = new Artwork();
+		Artwork artwork = new Artwork();
 		artwork.setArtist(new Artist("Dali"));
 		artwork.setDate(new Date());
 		artwork.setDimension(new Dimension(4, 5, 6));
