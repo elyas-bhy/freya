@@ -41,6 +41,10 @@ public class FreyaDao {
 		List<Artwork> artworks = query.getResultList();
 		return artworks;
 	}
+	
+	public void flush() {
+		mEntityManager.flush();
+	}
 
 	public void close() {
 		mEntityManager.close();
