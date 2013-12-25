@@ -10,8 +10,8 @@ public interface IArtwork {
 	public void setSupport(ArtSupport support);
 	public ArtTechnique getTechnique();
 	public void setTechnique(ArtTechnique technique);
-	public String getArtist();
-	public void setArtist(String artist);
+	public Artist getArtist();
+	public void setArtist(Artist artist);
 	public String getTitle();
 	public void setTitle(String title);
 	public Date getDate();

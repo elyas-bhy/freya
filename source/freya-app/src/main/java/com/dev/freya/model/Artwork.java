@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -15,8 +16,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.google.appengine.datanucleus.annotations.Unowned;
 
 @Entity
 public class Artwork implements IArtwork {
@@ -31,8 +35,9 @@ public class Artwork implements IArtwork {
 	@Enumerated(EnumType.STRING)
 	private ArtTechnique technique;
 	
-	@Basic
-	private String artist;
+	@Unowned
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Artist artist;
 	
 	@Basic
 	private String title;
@@ -85,12 +90,13 @@ public class Artwork implements IArtwork {
 	}
 
 	@Override
-	public String getArtist() {
+	public Artist getArtist() {
 		return artist;
 	}
 
 	@Override
-	public void setArtist(String artist) {
+	public void setArtist(Artist artist) {
+		artist.addArtwork(this);
 		this.artist = artist;
 	}
 

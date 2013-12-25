@@ -6,6 +6,7 @@ import java.util.List;
 import com.dev.freya.dao.FreyaDao;
 import com.dev.freya.model.ArtSupport;
 import com.dev.freya.model.ArtTechnique;
+import com.dev.freya.model.Artist;
 import com.dev.freya.model.Artwork;
 import com.dev.freya.model.Dimension;
 import com.dev.freya.model.IArtwork;
@@ -25,9 +26,9 @@ public class ArtworkEndpoints {
 			httpMethod = HttpMethod.GET
 			
 	)
-	public List<IArtwork> listArtworks() {
+	public List<Artwork> listArtworks() {
 		FreyaDao dao = new FreyaDao();
-		List<IArtwork> artworks = dao.listArtworks();
+		List<Artwork> artworks = dao.listArtworks();
 		dao.close();
 		return artworks;
 	}
@@ -39,7 +40,7 @@ public class ArtworkEndpoints {
 	)
 	public void test() {
 		IArtwork artwork = new Artwork();
-		artwork.setArtist("dali");
+		artwork.setArtist(new Artist("Dali"));
 		artwork.setDate(new Date());
 		artwork.setDimension(new Dimension(4, 5, 6));
 		artwork.setSummary("summary");

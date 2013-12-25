@@ -7,6 +7,7 @@
 
 	<persistence-unit name="freya">
 		<provider>org.datanucleus.api.jpa.PersistenceProviderImpl</provider>
+		<class>com.dev.freya.model.Artist</class>
 		<class>com.dev.freya.model.Artwork</class>
 		<class>com.dev.freya.model.ArtCollection</class>
 		<class>com.dev.freya.model.Dimension</class>

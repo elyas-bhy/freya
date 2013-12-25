@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 @Entity
 public class ArtCollection {
@@ -36,8 +35,8 @@ public class ArtCollection {
 		return artworks;
 	}
 
-	public void setArtworks(List<Artwork> artworks) {
-		this.artworks = artworks;
+	public void addArtwork(Artwork artwork) {
+		artworks.add(artwork);
 	}
 
 	public List<String> getComments() {
