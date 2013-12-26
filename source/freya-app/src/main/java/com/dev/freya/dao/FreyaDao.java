@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 
 import com.dev.freya.model.Artist;
 import com.dev.freya.model.Artwork;
@@ -38,8 +37,21 @@ public class FreyaDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Artwork> listArtworks() {
-		Query query = mEntityManager.createQuery("select a from Artwork a");
+	public List<Artwork> listArtworks(String support, String technique) {
+		String keyword = " where ";
+		StringBuffer sb = new StringBuffer("select a from Artwork a");
+		if (support != null) {
+			sb.append(keyword);
+			sb.append("a.support = ");
+			sb.append(support);
+			keyword = " and ";
+		}
+		if (technique != null) {
+			sb.append(keyword);
+			sb.append("a.technique = ");
+			sb.append(technique);
+		}
+		Query query = mEntityManager.createQuery(sb.toString());
 		List<Artwork> artworks = query.getResultList();
 		return artworks;
 	}

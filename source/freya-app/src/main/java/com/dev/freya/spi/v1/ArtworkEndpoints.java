@@ -3,6 +3,8 @@ package com.dev.freya.spi.v1;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Named;
+
 import com.dev.freya.dao.FreyaDao;
 import com.dev.freya.model.ArtSupport;
 import com.dev.freya.model.ArtTechnique;
@@ -25,9 +27,10 @@ public class ArtworkEndpoints {
 			httpMethod = HttpMethod.GET
 			
 	)
-	public List<Artwork> listArtworks() {
+	public List<Artwork> listArtworks(
+			@Named("support") String support, @Named("technique") String technique) {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.listArtworks();
+		List<Artwork> artworks = dao.listArtworks(support, technique);
 		dao.close();
 		return artworks;
 	}
