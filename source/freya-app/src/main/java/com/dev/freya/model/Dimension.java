@@ -1,12 +1,19 @@
 package com.dev.freya.model;
 
+import javax.persistence.Basic;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 
 @Embeddable
 public class Dimension {
 
+	@Basic(fetch = FetchType.EAGER)
 	private float x;
+
+	@Basic(fetch = FetchType.EAGER)	
 	private float y;
+
+	@Basic(fetch = FetchType.EAGER)
 	private float z;
 
 	public Dimension() {

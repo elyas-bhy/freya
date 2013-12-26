@@ -7,6 +7,7 @@ import javax.persistence.Query;
 
 import com.dev.freya.model.Artist;
 import com.dev.freya.model.Artwork;
+import com.dev.freya.model.Photo;
 
 public class FreyaDao {
 
@@ -54,6 +55,25 @@ public class FreyaDao {
 		Query query = mEntityManager.createQuery(sb.toString());
 		List<Artwork> artworks = query.getResultList();
 		return artworks;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Artwork getArtwork(Long artworkId) {
+		// The method: mEntityManager.find(Artwork.class, artworkId) fails to
+		// properly load Artwork.photos field, so use standard query instead
+		Query query = mEntityManager.createQuery("select a from Artwork a where a.id = :artworkId");
+		query.setParameter("artworkId", artworkId);
+		List<Artwork> artworks = query.getResultList();
+		if (artworks.size() > 0) return artworks.get(0);
+		return null;
+	}
+	
+	public List<Photo> getArtworkPhotos(Long artworkId) {
+		Artwork artwork = getArtwork(artworkId);
+		if (artwork != null) {
+			return artwork.getPhotos();
+		}
+		return null;
 	}
 	
 	public void flush() {

@@ -1,28 +1,33 @@
 package com.dev.freya.model;
 
+import javax.persistence.Basic;
 import javax.persistence.Embeddable;
+import javax.persistence.FetchType;
 
 @Embeddable
 public class Photo {
 	
-	private String title;
+	@Basic(fetch = FetchType.EAGER)
+	private String desc;
+	
+	@Basic(fetch = FetchType.EAGER)
 	private String url;
 
 	public Photo() {
 		
 	}
 	
-	public Photo(String title, String url) {
-		this.title = title;
+	public Photo(String desc, String url) {
+		this.desc = desc;
 		this.url = url;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getDesc() {
+		return desc;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setDesc(String desc) {
+		this.desc = desc;
 	}
 
 	public String getUrl() {

@@ -17,6 +17,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -48,16 +50,21 @@ public class Artwork {
 	@Lob
 	private String summary;
 	
-	@ElementCollection(fetch = FetchType.LAZY)
+	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> comments;
 	
 	//@OneToMany
 	private List<String> tags;
-
-	@ElementCollection(fetch = FetchType.LAZY)
+	
+	// Must use @Embedded instead of @ElementCollection as a workaround of issue 318
+	// Eclipse IDE might signal an error here, but this works just fine.
+	// See: https://code.google.com/p/datanucleus-appengine/issues/detail?id=318
+	@Embedded
+	@OneToMany(fetch = FetchType.EAGER)
 	private List<Photo> photos;
 	
 	@Embedded
+	@OneToOne(fetch = FetchType.EAGER)
 	private Dimension dimension;
 	
 	public Artwork() {
