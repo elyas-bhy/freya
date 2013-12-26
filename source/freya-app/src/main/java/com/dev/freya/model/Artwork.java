@@ -29,18 +29,18 @@ public class Artwork {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Enumerated(EnumType.STRING)
-	private ArtSupport support;
-	
-	@Enumerated(EnumType.STRING)
-	private ArtTechnique technique;
-	
 	@Unowned
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Artist artist;
 	
 	@Basic
 	private String title;
+	
+	@Enumerated(EnumType.STRING)
+	private ArtSupport support;
+	
+	@Enumerated(EnumType.STRING)
+	private ArtTechnique technique;
 	
 	@Temporal(value = TemporalType.DATE)
 	private Date date;
@@ -54,7 +54,8 @@ public class Artwork {
 	//@OneToMany
 	private List<String> tags;
 
-	// Photos
+	@ElementCollection(fetch = FetchType.LAZY)
+	private List<Photo> photos;
 	
 	@Embedded
 	private Dimension dimension;
@@ -62,10 +63,27 @@ public class Artwork {
 	public Artwork() {
 		comments = new ArrayList<>();
 		tags = new ArrayList<>();
+		photos = new ArrayList<>();
 	}
 	
 	public Long getId() {
 		return id;
+	}
+	
+	public Artist getArtist() {
+		return artist;
+	}
+	
+	public void setArtist(Artist artist) {
+		this.artist = artist;
+	}
+	
+	public String getTitle() {
+		return title;
+	}
+	
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public ArtSupport getSupport() {
@@ -82,22 +100,6 @@ public class Artwork {
 
 	public void setTechnique(ArtTechnique technique) {
 		this.technique = technique;
-	}
-
-	public Artist getArtist() {
-		return artist;
-	}
-
-	public void setArtist(Artist artist) {
-		this.artist = artist;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
 	}
 
 	public Date getDate() {
@@ -130,6 +132,14 @@ public class Artwork {
 
 	public void addTag(String tag) {
 		tags.add(tag);
+	}
+
+	public List<Photo> getPhotos() {
+		return photos;
+	}
+
+	public void addPhoto(Photo photo) {
+		photos.add(photo);
 	}
 
 	public Dimension getDimension() {
