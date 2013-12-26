@@ -38,6 +38,15 @@ public class FreyaDao {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Photo> listPhotosByArtist(String artistId) {
+		Query query = mEntityManager.createQuery(
+				"select a.photos from Artwork a join a.artist t where t.id = :artistId");
+		query.setParameter("artistId", artistId);
+		List<Photo> photos = query.getResultList();
+		return photos;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Artwork> listArtworks(String support, String technique) {
 		String keyword = " where ";
 		StringBuffer sb = new StringBuffer("select a from Artwork a");

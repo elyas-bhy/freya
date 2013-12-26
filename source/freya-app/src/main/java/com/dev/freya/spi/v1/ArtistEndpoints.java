@@ -49,6 +49,19 @@ public class ArtistEndpoints {
 	}
 	
 	@ApiMethod(
+			name = "artists.photos",
+			path = "artists/{artist_id}/photos",
+			httpMethod = HttpMethod.GET
+			
+	)
+	public List<Photo> listPhotosByArtist(@Named("artist_id") String artistId) {
+		FreyaDao dao = new FreyaDao();
+		List<Photo> photos = dao.listPhotosByArtist(artistId);
+		dao.close();
+		return photos;
+	}
+	
+	@ApiMethod(
 			name = "artists.test",
 			path = "artists",
 			httpMethod = HttpMethod.POST

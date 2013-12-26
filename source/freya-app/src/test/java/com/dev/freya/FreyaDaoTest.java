@@ -85,6 +85,14 @@ public class FreyaDaoTest {
 		assertEquals(artworks.size(), 2);
 		dao.close();
 	}
+	
+	@Test
+	public void testGetPhotosByArtist() {
+		FreyaDao dao = new FreyaDao();
+		List<Photo> photos = dao.listPhotosByArtist(daliArtistId);
+		assertEquals(photos.size(), 2);
+		dao.close();
+	}
 
 	@Test
 	public void testUniqueArtists() {
