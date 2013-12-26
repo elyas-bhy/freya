@@ -23,6 +23,7 @@ public class ArtworkEndpoints {
 			httpMethod = HttpMethod.GET
 			
 	)
+	// TODO add support for year, tag and reproduced_count query filters
 	public List<Artwork> listArtworks(
 			@Named("support") String support, @Named("technique") String technique) {
 		FreyaDao dao = new FreyaDao();
@@ -31,6 +32,20 @@ public class ArtworkEndpoints {
 		return artworks;
 	}
 
+	@ApiMethod(
+			name = "artworks.photos",
+			path = "artworks/photos",
+			httpMethod = HttpMethod.GET
+			
+	)
+	// TODO add support for query filters
+	public List<Photo> getArtworkPhotos() {
+		FreyaDao dao = new FreyaDao();
+		List<Photo> photos = dao.getArtworkPhotos();
+		dao.close();
+		return photos;
+	}
+	
 	@ApiMethod(
 			name = "artworks.get",
 			path = "artworks/{artwork_id}",
@@ -45,14 +60,14 @@ public class ArtworkEndpoints {
 	}
 	
 	@ApiMethod(
-			name = "artworks.getphotos",
+			name = "artworks.artwork.photos",
 			path = "artworks/{artwork_id}/photos",
 			httpMethod = HttpMethod.GET
 			
 	)
-	public List<Photo> getArtworkPhotos(@Named("artwork_id") Long artworkId) {
+	public List<Photo> getPhotosByArtwork(@Named("artwork_id") Long artworkId) {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.getArtworkPhotos(artworkId);
+		List<Photo> photos = dao.getPhotosByArtwork(artworkId);
 		dao.close();
 		return photos;
 	}

@@ -50,6 +50,7 @@ public class FreyaDaoTest {
 		artwork2.setTechnique(ArtTechnique.PAINTING_GOUACHE);
 		artwork2.setDate(new Date());
 		artwork2.setSummary("Summary 2");
+		artwork2.addPhoto(new Photo("Desc 3", "URL 3"));
 		artwork2.setDimension(new Dimension(12, 10, 15));
 		
 		Artwork artwork3 = new Artwork();
@@ -118,12 +119,20 @@ public class FreyaDaoTest {
 		assertEquals(artwork.getPhotos().size(), 2);
 		dao.close();
 	}
+
+	@Test
+	public void testGetPhotosByArtwork() {
+		FreyaDao dao = new FreyaDao();
+		List<Photo> photos = dao.getPhotosByArtwork(daliArtworkId);
+		assertEquals(photos.size(), 2);
+		dao.close();
+	}
 	
 	@Test
 	public void testGetArtworkPhotos() {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.getArtworkPhotos(daliArtworkId);
-		assertEquals(photos.size(), 2);
+		List<Photo> photos = dao.getArtworkPhotos();
+		assertEquals(photos.size(), 3);
 		dao.close();
 	}
 

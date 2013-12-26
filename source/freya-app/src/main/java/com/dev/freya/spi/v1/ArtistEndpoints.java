@@ -41,6 +41,7 @@ public class ArtistEndpoints {
 			httpMethod = HttpMethod.GET
 			
 	)
+	// TODO add support for query filters
 	public List<Artwork> listArtworksByArtist(@Named("artist_id") String artistId) {
 		FreyaDao dao = new FreyaDao();
 		List<Artwork> artworks = dao.listArtworksByArtist(artistId);
@@ -54,6 +55,7 @@ public class ArtistEndpoints {
 			httpMethod = HttpMethod.GET
 			
 	)
+	// TODO add support for query filters
 	public List<Photo> listPhotosByArtist(@Named("artist_id") String artistId) {
 		FreyaDao dao = new FreyaDao();
 		List<Photo> photos = dao.listPhotosByArtist(artistId);

@@ -77,12 +77,19 @@ public class FreyaDao {
 		return null;
 	}
 	
-	public List<Photo> getArtworkPhotos(Long artworkId) {
+	public List<Photo> getPhotosByArtwork(Long artworkId) {
 		Artwork artwork = getArtwork(artworkId);
 		if (artwork != null) {
 			return artwork.getPhotos();
 		}
 		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Photo> getArtworkPhotos() {
+		Query query = mEntityManager.createQuery("select a.photos from Artwork a");
+		List<Photo> photos = query.getResultList();
+		return photos;
 	}
 	
 	public void flush() {
