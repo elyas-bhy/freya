@@ -111,6 +111,10 @@ public class FreyaDao {
 		List<ArtCollection> artCollections = query.getResultList();
 		return artCollections;
 	}
+
+	public ArtCollection getArtCollection(Long artCollectionId) {
+		return mEntityManager.find(ArtCollection.class, artCollectionId);
+	}
 	
 	public void flush() {
 		mEntityManager.flush();

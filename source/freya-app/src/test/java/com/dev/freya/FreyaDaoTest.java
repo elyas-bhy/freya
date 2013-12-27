@@ -155,4 +155,19 @@ public class FreyaDaoTest {
 				artcollection2.getArtworks().get(0).getId());
 	}
 
+	@Test
+	public void testListArtCollections() {
+		FreyaDao dao = new FreyaDao();
+		List<ArtCollection> artcollections = dao.listArtCollections();
+		assertEquals(artcollections.size(), 2);
+	}
+	
+	@Test
+	public void testGetArtCollection() {
+		FreyaDao dao = new FreyaDao();
+		ArtCollection artcollection = dao.getArtCollection(artcollection1.getId());
+		assertEquals(artcollection.getArtworks().size(), 2);
+		assertEquals(artcollection.getArtworks().get(0).getId(), daliArtworkId);
+	}
+
 }

@@ -2,6 +2,8 @@ package com.dev.freya.spi.v1;
 
 import java.util.List;
 
+import javax.inject.Named;
+
 import com.dev.freya.dao.FreyaDao;
 import com.dev.freya.model.ArtCollection;
 import com.google.api.server.spi.config.Api;
@@ -25,5 +27,18 @@ public class ArtCollectionEndpoints {
 		List<ArtCollection> artCollections = dao.listArtCollections();
 		dao.close();
 		return artCollections;
+	}
+	
+	@ApiMethod(
+			name = "artcollections.get",
+			path = "artcollections/{artcollection_id}",
+			httpMethod = HttpMethod.GET
+			
+	)
+	public ArtCollection getArtCollection(@Named("artcollection_id") Long artCollectionId) {
+		FreyaDao dao = new FreyaDao();
+		ArtCollection artCollection = dao.getArtCollection(artCollectionId);
+		dao.close();
+		return artCollection;
 	}
 }

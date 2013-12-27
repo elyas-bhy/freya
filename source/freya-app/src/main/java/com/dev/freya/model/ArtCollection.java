@@ -54,8 +54,8 @@ public class ArtCollection {
 		return comments;
 	}
 
-	public void setComments(List<String> comments) {
-		this.comments = comments;
+	public void addComment(String comment) {
+		comments.add(comment);
 	}
 
 	public boolean isPublic() {
