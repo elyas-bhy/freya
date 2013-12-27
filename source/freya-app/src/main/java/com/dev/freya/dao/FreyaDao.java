@@ -98,11 +98,7 @@ public class FreyaDao {
 	public List<Photo> getArtworkPhotos() {
 		Query query = mEntityManager.createQuery("select a.photos from Artwork a");
 		List<List<Photo>> result = query.getResultList();
-		List<Photo> photos = new ArrayList<>();
-		for (List<Photo> list : result) {
-			photos.addAll(list);
-		}
-		return photos;
+		return flatten(result, Photo.class);
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -114,6 +110,15 @@ public class FreyaDao {
 
 	public ArtCollection getArtCollection(Long artCollectionId) {
 		return mEntityManager.find(ArtCollection.class, artCollectionId);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Artwork> getArtworksByArtCollection(Long artCollectionId) {
+		Query query = mEntityManager.createQuery(
+				"select c.artworks from ArtCollection c where c.id = :artCollectionId");
+		query.setParameter("artCollectionId", artCollectionId);
+		List<List<Artwork>> result = query.getResultList();
+		return flatten(result, Artwork.class);
 	}
 	
 	public void flush() {
@@ -130,6 +135,14 @@ public class FreyaDao {
 
 	public void commitTransaction() {
 		mEntityManager.getTransaction().commit();
+	}
+	
+	private <T> List<T> flatten(List<List<T>> collection, Class<T> clazz) {
+		List<T> result = new ArrayList<>();
+		for (List<T> list : collection) {
+			result.addAll(list);
+		}
+		return result;
 	}
 
 }

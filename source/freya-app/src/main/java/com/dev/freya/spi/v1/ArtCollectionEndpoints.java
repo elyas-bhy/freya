@@ -6,6 +6,7 @@ import javax.inject.Named;
 
 import com.dev.freya.dao.FreyaDao;
 import com.dev.freya.model.ArtCollection;
+import com.dev.freya.model.Artwork;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
@@ -28,7 +29,7 @@ public class ArtCollectionEndpoints {
 		dao.close();
 		return artCollections;
 	}
-	
+
 	@ApiMethod(
 			name = "artcollections.get",
 			path = "artcollections/{artcollection_id}",
@@ -40,5 +41,19 @@ public class ArtCollectionEndpoints {
 		ArtCollection artCollection = dao.getArtCollection(artCollectionId);
 		dao.close();
 		return artCollection;
+	}
+
+	@ApiMethod(
+			name = "artcollections.artcollection.artworks",
+			path = "artcollections/{artcollection_id}/artworks",
+			httpMethod = HttpMethod.GET
+			
+	)
+	// TODO add support for reproduced_count query filter
+	public List<Artwork> getArtworksByArtCollection(@Named("artcollection_id") Long artCollectionId) {
+		FreyaDao dao = new FreyaDao();
+		List<Artwork> artworks = dao.getArtworksByArtCollection(artCollectionId);
+		dao.close();
+		return artworks;
 	}
 }

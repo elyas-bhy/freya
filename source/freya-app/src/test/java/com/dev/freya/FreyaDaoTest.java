@@ -160,6 +160,7 @@ public class FreyaDaoTest {
 		FreyaDao dao = new FreyaDao();
 		List<ArtCollection> artcollections = dao.listArtCollections();
 		assertEquals(artcollections.size(), 2);
+		dao.close();
 	}
 	
 	@Test
@@ -168,6 +169,15 @@ public class FreyaDaoTest {
 		ArtCollection artcollection = dao.getArtCollection(artcollection1.getId());
 		assertEquals(artcollection.getArtworks().size(), 2);
 		assertEquals(artcollection.getArtworks().get(0).getId(), daliArtworkId);
+		dao.close();
+	}
+	
+	@Test
+	public void testGetArtworksByArtCollection() {
+		FreyaDao dao = new FreyaDao();
+		List<Artwork> artworks = dao.getArtworksByArtCollection(artcollection1.getId());
+		assertEquals(artworks.size(), 2);
+		dao.close();
 	}
 
 }
