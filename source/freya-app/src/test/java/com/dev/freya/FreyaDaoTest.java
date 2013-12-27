@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.dev.freya.dao.FreyaDao;
+import com.dev.freya.model.ArtCollection;
 import com.dev.freya.model.ArtSupport;
 import com.dev.freya.model.ArtTechnique;
 import com.dev.freya.model.Artist;
@@ -21,7 +22,10 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 public class FreyaDaoTest {
 
-	private Long daliArtworkId;
+	private ArtCollection artcollection1;
+	private ArtCollection artcollection2;
+
+	private String daliArtworkId;
 	private String daliArtistId;
     
     private final LocalServiceTestHelper helper =
@@ -63,12 +67,17 @@ public class FreyaDaoTest {
 		artwork3.setSummary("Summary 3");
 		artwork3.setDimension(new Dimension(20, 5, 35));
 
-		dao.beginTransaction();
-		dao.persist(artwork1);
-		dao.persist(artwork2);
-		dao.persist(artwork3);
-		dao.flush();
-		dao.commitTransaction();
+		artcollection1 = new ArtCollection();
+		artcollection1.addArtwork(artwork1);
+		artcollection1.addArtwork(artwork2);
+		
+		artcollection2 = new ArtCollection();
+		artcollection2.addArtwork(artwork1);
+		artcollection2.addArtwork(artwork3);
+		
+		dao.persistTransactional(artcollection1);
+		dao.persistTransactional(artwork3);
+		dao.persistTransactional(artcollection2);
 		dao.close();
 		
 		daliArtworkId = artwork1.getId();
@@ -128,13 +137,22 @@ public class FreyaDaoTest {
 		assertEquals(photos.size(), 2);
 		dao.close();
 	}
-	
+
 	@Test
 	public void testGetArtworkPhotos() {
 		FreyaDao dao = new FreyaDao();
 		List<Photo> photos = dao.getArtworkPhotos();
 		assertEquals(photos.size(), 4);
 		dao.close();
+	}
+
+	@Test
+	public void testConsistentIDs() {
+		assertEquals(artcollection1.getArtworks().size(), 2);
+		assertEquals(artcollection2.getArtworks().size(), 2);
+		
+		assertEquals(artcollection1.getArtworks().get(0).getId(), 
+				artcollection2.getArtworks().get(0).getId());
 	}
 
 }

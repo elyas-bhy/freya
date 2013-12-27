@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import com.dev.freya.model.ArtCollection;
 import com.dev.freya.model.Artist;
 import com.dev.freya.model.Artwork;
 import com.dev.freya.model.Photo;
@@ -20,6 +21,13 @@ public class FreyaDao {
 	
 	public void persist(Object o) {
 		mEntityManager.persist(o);
+	}
+	
+	public void persistTransactional(Object o) {
+		mEntityManager.getTransaction().begin();
+		mEntityManager.persist(o);
+		mEntityManager.flush();
+		mEntityManager.getTransaction().commit();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -68,7 +76,7 @@ public class FreyaDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Artwork getArtwork(Long artworkId) {
+	public Artwork getArtwork(String artworkId) {
 		// The method: mEntityManager.find(Artwork.class, artworkId) fails to
 		// properly load Artwork.photos field, so use standard query instead
 		Query query = mEntityManager.createQuery("select a from Artwork a where a.id = :artworkId");
@@ -78,7 +86,7 @@ public class FreyaDao {
 		return null;
 	}
 	
-	public List<Photo> getPhotosByArtwork(Long artworkId) {
+	public List<Photo> getPhotosByArtwork(String artworkId) {
 		Artwork artwork = getArtwork(artworkId);
 		if (artwork != null) {
 			return artwork.getPhotos();
@@ -95,6 +103,13 @@ public class FreyaDao {
 			photos.addAll(list);
 		}
 		return photos;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ArtCollection> listArtCollections() {
+		Query query = mEntityManager.createQuery("select c from ArtCollection c");
+		List<ArtCollection> artCollections = query.getResultList();
+		return artCollections;
 	}
 	
 	public void flush() {

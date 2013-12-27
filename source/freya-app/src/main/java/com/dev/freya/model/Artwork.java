@@ -22,17 +22,20 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.datanucleus.api.jpa.annotations.Extension;
+
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 @Entity
 public class Artwork {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
+	private String id;
 	
 	@Unowned
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Artist artist;
 	
 	@Basic
@@ -73,7 +76,7 @@ public class Artwork {
 		photos = new ArrayList<>();
 	}
 	
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 	

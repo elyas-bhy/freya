@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Named;
 
 import com.dev.freya.dao.FreyaDao;
+import com.dev.freya.model.ArtCollection;
 import com.dev.freya.model.ArtSupport;
 import com.dev.freya.model.ArtTechnique;
 import com.dev.freya.model.Artist;
@@ -64,11 +65,11 @@ public class ArtistEndpoints {
 	}
 	
 	@ApiMethod(
-			name = "artists.test",
-			path = "artists",
+			name = "test.populate",
+			path = "populate",
 			httpMethod = HttpMethod.POST
 	)
-	public void test2() {
+	public void populate() {
 		Artwork artwork1 = new Artwork();
 		artwork1.setArtist(new Artist("Dali"));
 		artwork1.setTitle("Title 1");
@@ -87,6 +88,8 @@ public class ArtistEndpoints {
 		artwork2.setTechnique(ArtTechnique.PAINTING_GOUACHE);
 		artwork2.setDate(new Date());
 		artwork2.setSummary("Summary 2");
+		artwork2.addPhoto(new Photo("Desc 3", "URL 3"));
+		artwork2.addPhoto(new Photo("Desc 4", "URL 4"));
 		artwork2.setDimension(new Dimension(12, 10, 15));
 		
 		Artwork artwork3 = new Artwork();
@@ -98,12 +101,17 @@ public class ArtistEndpoints {
 		artwork3.setSummary("Summary 3");
 		artwork3.setDimension(new Dimension(20, 5, 35));
 		
+		ArtCollection collection1 = new ArtCollection();
+		collection1.addArtwork(artwork1);
+		collection1.addArtwork(artwork2);
+		
+		ArtCollection collection2 = new ArtCollection();
+		collection2.addArtwork(artwork1);
+		collection2.addArtwork(artwork3);
 		FreyaDao dao = new FreyaDao();
-		dao.beginTransaction();
-		dao.persist(artwork1);
-		dao.persist(artwork2);
-		dao.persist(artwork3);
-		dao.commitTransaction();
+		dao.persistTransactional(collection1);
+		dao.persistTransactional(artwork3);
+		dao.persistTransactional(collection2);
 		dao.close();
 	}
 }

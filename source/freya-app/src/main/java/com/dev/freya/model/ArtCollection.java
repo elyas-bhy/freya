@@ -1,12 +1,18 @@
 package com.dev.freya.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+
+import com.google.appengine.datanucleus.annotations.Unowned;
 
 @Entity
 public class ArtCollection {
@@ -15,13 +21,18 @@ public class ArtCollection {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@ManyToMany
+	@Unowned
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Artwork> artworks;
 	
-	//@OneToMany
+	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> comments;
 	
 	private boolean isPublic;
+	
+	public ArtCollection() {
+		artworks = new ArrayList<>();
+	}
 
 	public Long getId() {
 		return id;

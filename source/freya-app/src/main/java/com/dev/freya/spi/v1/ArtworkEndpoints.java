@@ -52,7 +52,7 @@ public class ArtworkEndpoints {
 			httpMethod = HttpMethod.GET
 			
 	)
-	public Artwork getArtwork(@Named("artwork_id") Long artworkId) {
+	public Artwork getArtwork(@Named("artwork_id") String artworkId) {
 		FreyaDao dao = new FreyaDao();
 		Artwork artwork = dao.getArtwork(artworkId);
 		dao.close();
@@ -65,7 +65,7 @@ public class ArtworkEndpoints {
 			httpMethod = HttpMethod.GET
 			
 	)
-	public List<Photo> getPhotosByArtwork(@Named("artwork_id") Long artworkId) {
+	public List<Photo> getPhotosByArtwork(@Named("artwork_id") String artworkId) {
 		FreyaDao dao = new FreyaDao();
 		List<Photo> photos = dao.getPhotosByArtwork(artworkId);
 		dao.close();
