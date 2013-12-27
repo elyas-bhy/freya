@@ -51,6 +51,7 @@ public class FreyaDaoTest {
 		artwork2.setDate(new Date());
 		artwork2.setSummary("Summary 2");
 		artwork2.addPhoto(new Photo("Desc 3", "URL 3"));
+		artwork2.addPhoto(new Photo("Desc 4", "URL 4"));
 		artwork2.setDimension(new Dimension(12, 10, 15));
 		
 		Artwork artwork3 = new Artwork();
@@ -132,7 +133,7 @@ public class FreyaDaoTest {
 	public void testGetArtworkPhotos() {
 		FreyaDao dao = new FreyaDao();
 		List<Photo> photos = dao.getArtworkPhotos();
-		assertEquals(photos.size(), 3);
+		assertEquals(photos.size(), 4);
 		dao.close();
 	}
 

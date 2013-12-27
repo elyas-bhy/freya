@@ -1,5 +1,6 @@
 package com.dev.freya.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -88,7 +89,11 @@ public class FreyaDao {
 	@SuppressWarnings("unchecked")
 	public List<Photo> getArtworkPhotos() {
 		Query query = mEntityManager.createQuery("select a.photos from Artwork a");
-		List<Photo> photos = query.getResultList();
+		List<List<Photo>> result = query.getResultList();
+		List<Photo> photos = new ArrayList<>();
+		for (List<Photo> list : result) {
+			photos.addAll(list);
+		}
 		return photos;
 	}
 	
