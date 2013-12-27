@@ -56,4 +56,55 @@ public class ArtCollectionEndpoints {
 		dao.close();
 		return artworks;
 	}
+
+	@ApiMethod(
+			name = "artcollections.add",
+			path = "artcollections",
+			httpMethod = HttpMethod.POST
+	)
+	public void addArtCollection(List<Artwork> artworks) {
+		ArtCollection artcollection = new ArtCollection(artworks);
+		FreyaDao dao = new FreyaDao();
+		dao.persistTransactional(artcollection);
+		dao.close();
+	}
+
+	@ApiMethod(
+			name = "artcollections.addartwork",
+			path = "artcollections/{artcollection_id}",
+			httpMethod = HttpMethod.POST
+	)
+	public void addArtworkToArtCollection(Long artCollectionId, Artwork artwork) {
+		FreyaDao dao = new FreyaDao();
+		ArtCollection artcollection = dao.getArtCollection(artCollectionId);
+		if (artcollection != null)
+			artcollection.addArtwork(artwork);
+		dao.close();
+	}
+
+	@ApiMethod(
+			name = "artcollections.addcomment",
+			path = "artcollections/{artcollection_id}",
+			httpMethod = HttpMethod.POST
+	)
+	public void addCommentToArtCollection(Long artCollectionId, String comment) {
+		FreyaDao dao = new FreyaDao();
+		ArtCollection artcollection = dao.getArtCollection(artCollectionId);
+		if (artcollection != null)
+			artcollection.addComment(comment);
+		dao.close();
+	}
+	
+	@ApiMethod(
+			name = "artcollections.addtag",
+			path = "artcollections/{artcollection_id}",
+			httpMethod = HttpMethod.POST
+	)
+	public void addTagToArtCollection(Long artCollectionId, String tag) {
+		FreyaDao dao = new FreyaDao();
+		ArtCollection artcollection = dao.getArtCollection(artCollectionId);
+		if (artcollection != null)
+			artcollection.addTag(tag);
+		dao.close();
+	}
 }

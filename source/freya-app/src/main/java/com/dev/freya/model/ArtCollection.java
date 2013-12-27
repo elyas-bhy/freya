@@ -27,11 +27,20 @@ public class ArtCollection {
 	
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> comments;
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	private List<String> tags;
 	
 	private boolean isPublic;
-	
+
 	public ArtCollection() {
 		artworks = new ArrayList<>();
+		tags = new ArrayList<>();
+	}
+	
+	public ArtCollection(List<Artwork> artworks) {
+		this.artworks = artworks;
+		this.tags = new ArrayList<>();
 	}
 
 	public Long getId() {
@@ -56,6 +65,14 @@ public class ArtCollection {
 
 	public void addComment(String comment) {
 		comments.add(comment);
+	}
+
+	public List<String> getTags() {
+		return tags;
+	}
+
+	public void addTag(String tag) {
+		 tags.add(tag);
 	}
 
 	public boolean isPublic() {

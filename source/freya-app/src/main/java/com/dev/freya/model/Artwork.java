@@ -56,7 +56,7 @@ public class Artwork {
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> comments;
 	
-	//@OneToMany
+	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> tags;
 	
 	// Must use @Embedded instead of @ElementCollection as a workaround of issue 318
