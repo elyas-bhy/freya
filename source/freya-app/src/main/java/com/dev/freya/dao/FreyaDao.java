@@ -34,17 +34,10 @@ public class FreyaDao {
 	public FreyaDao() {
 		mEntityManager = EMFService.createEntityManager();
 	}
-	
-	public void persist(Object o) {
-		mEntityManager.persist(o);
-	}
-	
-	public void persistTransactional(Object o) {
-		mEntityManager.getTransaction().begin();
-		mEntityManager.persist(o);
-		mEntityManager.flush();
-		mEntityManager.getTransaction().commit();
-	}
+
+	/****************************
+	 * Artist Retrieval Methods *
+	 ****************************/
 	
 	@SuppressWarnings("unchecked")
 	public List<Artist> listArtists() {
@@ -52,25 +45,22 @@ public class FreyaDao {
 		List<Artist> artists = query.getResultList();
 		return artists;
 	}
+	
+	/*****************************
+	 * Artwork Retrieval Methods *
+	 *****************************/
 
 	@SuppressWarnings("unchecked")
-	public List<Artwork> listArtworksByArtist(String artistId) {
-		Query query = mEntityManager.createQuery(
-				"select a from Artwork a join a.artist t where t.id = :artistId");
-		query.setParameter("artistId", artistId);
+	public Artwork getArtwork(String artworkId) {
+		// The method: mEntityManager.find(Artwork.class, artworkId) fails to
+		// properly load Artwork.photos field, so use standard query instead
+		Query query = mEntityManager.createQuery("select a from Artwork a where a.id = :artworkId");
+		query.setParameter("artworkId", artworkId);
 		List<Artwork> artworks = query.getResultList();
-		return artworks;
+		if (artworks.size() > 0) return artworks.get(0);
+		return null;
 	}
-	
-	@SuppressWarnings("unchecked")
-	public List<Photo> listPhotosByArtist(String artistId) {
-		Query query = mEntityManager.createQuery(
-				"select a.photos from Artwork a join a.artist t where t.id = :artistId");
-		query.setParameter("artistId", artistId);
-		List<Photo> photos = query.getResultList();
-		return photos;
-	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Artwork> listArtworks(String support, String technique) {
 		String keyword = " where ";
@@ -90,25 +80,28 @@ public class FreyaDao {
 		List<Artwork> artworks = query.getResultList();
 		return artworks;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Artwork> getArtworksByArtist(String artistId) {
+		Query query = mEntityManager.createQuery(
+				"select a from Artwork a join a.artist t where t.id = :artistId");
+		query.setParameter("artistId", artistId);
+		List<Artwork> artworks = query.getResultList();
+		return artworks;
+	}
 
 	@SuppressWarnings("unchecked")
-	public Artwork getArtwork(String artworkId) {
-		// The method: mEntityManager.find(Artwork.class, artworkId) fails to
-		// properly load Artwork.photos field, so use standard query instead
-		Query query = mEntityManager.createQuery("select a from Artwork a where a.id = :artworkId");
-		query.setParameter("artworkId", artworkId);
-		List<Artwork> artworks = query.getResultList();
-		if (artworks.size() > 0) return artworks.get(0);
-		return null;
+	public List<Artwork> getArtworksByArtCollection(Long artCollectionId) {
+		Query query = mEntityManager.createQuery(
+				"select c.artworks from ArtCollection c where c.id = :artCollectionId");
+		query.setParameter("artCollectionId", artCollectionId);
+		List<List<Artwork>> result = query.getResultList();
+		return flatten(result, Artwork.class);
 	}
-	
-	public List<Photo> getPhotosByArtwork(String artworkId) {
-		Artwork artwork = getArtwork(artworkId);
-		if (artwork != null) {
-			return artwork.getPhotos();
-		}
-		return null;
-	}
+
+	/***************************
+	 * Photo Retrieval Methods *
+	 ***************************/
 	
 	@SuppressWarnings("unchecked")
 	public List<Photo> getArtworkPhotos() {
@@ -118,23 +111,50 @@ public class FreyaDao {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<ArtCollection> listArtCollections() {
-		Query query = mEntityManager.createQuery("select c from ArtCollection c");
-		List<ArtCollection> artCollections = query.getResultList();
-		return artCollections;
+	public List<Photo> getPhotosByArtist(String artistId) {
+		Query query = mEntityManager.createQuery(
+				"select a.photos from Artwork a join a.artist t where t.id = :artistId");
+		query.setParameter("artistId", artistId);
+		List<Photo> photos = query.getResultList();
+		return photos;
+	}
+	
+	public List<Photo> getPhotosByArtwork(String artworkId) {
+		Artwork artwork = getArtwork(artworkId);
+		if (artwork != null) {
+			return artwork.getPhotos();
+		}
+		return null;
 	}
 
+	/***********************************
+	 * ArtCollection Retrieval Methods *
+	 ***********************************/
+	
 	public ArtCollection getArtCollection(Long artCollectionId) {
 		return mEntityManager.find(ArtCollection.class, artCollectionId);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Artwork> getArtworksByArtCollection(Long artCollectionId) {
-		Query query = mEntityManager.createQuery(
-				"select c.artworks from ArtCollection c where c.id = :artCollectionId");
-		query.setParameter("artCollectionId", artCollectionId);
-		List<List<Artwork>> result = query.getResultList();
-		return flatten(result, Artwork.class);
+	public List<ArtCollection> listArtCollections() {
+		Query query = mEntityManager.createQuery("select c from ArtCollection c");
+		List<ArtCollection> artCollections = query.getResultList();
+		return artCollections;
+	}
+	
+	/*************
+	 * Utilities *
+	 *************/
+
+	public void persist(Object o) {
+		mEntityManager.persist(o);
+	}
+	
+	public void persistTransactional(Object o) {
+		mEntityManager.getTransaction().begin();
+		mEntityManager.persist(o);
+		mEntityManager.flush();
+		mEntityManager.getTransaction().commit();
 	}
 	
 	public void flush() {

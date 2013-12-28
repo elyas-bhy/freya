@@ -108,7 +108,7 @@ public class FreyaDaoTest {
 	@Test
 	public void testGetArtworksByArtist() {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.listArtworksByArtist(daliArtistId);
+		List<Artwork> artworks = dao.getArtworksByArtist(daliArtistId);
 		assertEquals(artworks.size(), 2);
 		dao.close();
 	}
@@ -116,7 +116,7 @@ public class FreyaDaoTest {
 	@Test
 	public void testGetPhotosByArtist() {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.listPhotosByArtist(daliArtistId);
+		List<Photo> photos = dao.getPhotosByArtist(daliArtistId);
 		assertEquals(photos.size(), 2);
 		dao.close();
 	}

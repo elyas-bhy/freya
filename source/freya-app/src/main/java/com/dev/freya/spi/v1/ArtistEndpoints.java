@@ -59,9 +59,9 @@ public class ArtistEndpoints {
 			
 	)
 	// TODO add support for query filters
-	public List<Artwork> listArtworksByArtist(@Named("artist_id") String artistId) {
+	public List<Artwork> getArtworksByArtist(@Named("artist_id") String artistId) {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.listArtworksByArtist(artistId);
+		List<Artwork> artworks = dao.getArtworksByArtist(artistId);
 		dao.close();
 		return artworks;
 	}
@@ -73,9 +73,9 @@ public class ArtistEndpoints {
 			
 	)
 	// TODO add support for query filters
-	public List<Photo> listPhotosByArtist(@Named("artist_id") String artistId) {
+	public List<Photo> getPhotosByArtist(@Named("artist_id") String artistId) {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.listPhotosByArtist(artistId);
+		List<Photo> photos = dao.getPhotosByArtist(artistId);
 		dao.close();
 		return photos;
 	}
