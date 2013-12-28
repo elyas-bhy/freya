@@ -57,24 +57,24 @@ public class ArtCollectionEndpoints {
 		return artworks;
 	}
 
-	@ApiMethod(
-			name = "artcollections.add",
-			path = "artcollections",
-			httpMethod = HttpMethod.POST
-	)
-	public void addArtCollection(List<Artwork> artworks) {
-		ArtCollection artcollection = new ArtCollection(artworks);
-		FreyaDao dao = new FreyaDao();
-		dao.persistTransactional(artcollection);
-		dao.close();
-	}
+//	@ApiMethod(
+//			name = "artcollections.add",
+//			path = "artcollections",
+//			httpMethod = HttpMethod.POST
+//	)
+//	public void addArtCollection(List<Artwork> artworks) {
+//		ArtCollection artcollection = new ArtCollection(artworks);
+//		FreyaDao dao = new FreyaDao();
+//		dao.persistTransactional(artcollection);
+//		dao.close();
+//	}
 
 	@ApiMethod(
 			name = "artcollections.addartwork",
-			path = "artcollections/{artcollection_id}",
+			path = "artcollections/{artcollection_id}/add",
 			httpMethod = HttpMethod.POST
 	)
-	public void addArtworkToArtCollection(Long artCollectionId, Artwork artwork) {
+	public void addArtworkToArtCollection(@Named("artcollection_id") Long artCollectionId, Artwork artwork) {
 		FreyaDao dao = new FreyaDao();
 		ArtCollection artcollection = dao.getArtCollection(artCollectionId);
 		if (artcollection != null)
@@ -84,10 +84,10 @@ public class ArtCollectionEndpoints {
 
 	@ApiMethod(
 			name = "artcollections.addcomment",
-			path = "artcollections/{artcollection_id}",
+			path = "artcollections/{artcollection_id}/comment",
 			httpMethod = HttpMethod.POST
 	)
-	public void addCommentToArtCollection(Long artCollectionId, String comment) {
+	public void addCommentToArtCollection(@Named("artcollection_id") Long artCollectionId, @Named("comment") String comment) {
 		FreyaDao dao = new FreyaDao();
 		ArtCollection artcollection = dao.getArtCollection(artCollectionId);
 		if (artcollection != null)
@@ -97,10 +97,10 @@ public class ArtCollectionEndpoints {
 	
 	@ApiMethod(
 			name = "artcollections.addtag",
-			path = "artcollections/{artcollection_id}",
+			path = "artcollections/{artcollection_id}/tag",
 			httpMethod = HttpMethod.POST
 	)
-	public void addTagToArtCollection(Long artCollectionId, String tag) {
+	public void addTagToArtCollection(@Named("artcollection_id") Long artCollectionId, @Named("tag") String tag) {
 		FreyaDao dao = new FreyaDao();
 		ArtCollection artcollection = dao.getArtCollection(artCollectionId);
 		if (artcollection != null)
