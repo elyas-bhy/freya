@@ -39,6 +39,11 @@ import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 )
 public class ArtistEndpoints {
 
+
+	/****************
+	 * GET Requests *
+	 ****************/
+	
 	@ApiMethod(
 			name = "artists.list",
 			path = "artists",
@@ -79,6 +84,10 @@ public class ArtistEndpoints {
 		dao.close();
 		return photos;
 	}
+	
+	/*****************
+	 * POST Requests *
+	 *****************/
 	
 	@ApiMethod(
 			name = "test.populate",

@@ -32,6 +32,11 @@ import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 		version = "v1"
 )
 public class ArtCollectionEndpoints {
+	
+
+	/****************
+	 * GET Requests *
+	 ****************/
 
 	@ApiMethod(
 			name = "artcollections.list",
@@ -72,6 +77,11 @@ public class ArtCollectionEndpoints {
 		dao.close();
 		return artworks;
 	}
+	
+
+	/*****************
+	 * POST Requests *
+	 *****************/
 
 //	@ApiMethod(
 //			name = "artcollections.add",
@@ -87,10 +97,11 @@ public class ArtCollectionEndpoints {
 
 	@ApiMethod(
 			name = "artcollections.addartwork",
-			path = "artcollections/{artcollection_id}/add",
+			path = "artcollections/{artcollection_id}",
 			httpMethod = HttpMethod.POST
 	)
-	public void addArtworkToArtCollection(@Named("artcollection_id") Long artCollectionId, Artwork artwork) {
+	public void addArtworkToArtCollection(
+			@Named("artcollection_id") Long artCollectionId, Artwork artwork) {
 		FreyaDao dao = new FreyaDao();
 		ArtCollection artcollection = dao.getArtCollection(artCollectionId);
 		if (artcollection != null)
@@ -103,7 +114,8 @@ public class ArtCollectionEndpoints {
 			path = "artcollections/{artcollection_id}/comment",
 			httpMethod = HttpMethod.POST
 	)
-	public void addCommentToArtCollection(@Named("artcollection_id") Long artCollectionId, @Named("comment") String comment) {
+	public void addCommentToArtCollection(
+			@Named("artcollection_id") Long artCollectionId, @Named("comment") String comment) {
 		FreyaDao dao = new FreyaDao();
 		ArtCollection artcollection = dao.getArtCollection(artCollectionId);
 		if (artcollection != null)
@@ -116,7 +128,8 @@ public class ArtCollectionEndpoints {
 			path = "artcollections/{artcollection_id}/tag",
 			httpMethod = HttpMethod.POST
 	)
-	public void addTagToArtCollection(@Named("artcollection_id") Long artCollectionId, @Named("tag") String tag) {
+	public void addTagToArtCollection(
+			@Named("artcollection_id") Long artCollectionId, @Named("tag") String tag) {
 		FreyaDao dao = new FreyaDao();
 		ArtCollection artcollection = dao.getArtCollection(artCollectionId);
 		if (artcollection != null)
