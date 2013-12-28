@@ -39,6 +39,10 @@ public class FreyaDao {
 	 * Artist Retrieval Methods *
 	 ****************************/
 	
+	/**
+	 * Returns a list of all stored artists
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Artist> listArtists() {
 		Query query = mEntityManager.createQuery("select a from Artist a");
@@ -50,6 +54,11 @@ public class FreyaDao {
 	 * Artwork Retrieval Methods *
 	 *****************************/
 
+	/**
+	 * Retrieves an artwork with the specified ID
+	 * @param artworkId the artwork's ID
+	 * @return the matching artwork if found, or null
+	 */
 	@SuppressWarnings("unchecked")
 	public Artwork getArtwork(String artworkId) {
 		// The method: mEntityManager.find(Artwork.class, artworkId) fails to
@@ -61,6 +70,12 @@ public class FreyaDao {
 		return null;
 	}
 
+	/**
+	 * Returns a list of all stored artworks matching the specified optional filters
+	 * @param support optional filter: the type of support used by the artworks
+	 * @param technique optional filter: the technique used by the artworks
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Artwork> listArtworks(String support, String technique) {
 		String keyword = " where ";
@@ -81,6 +96,11 @@ public class FreyaDao {
 		return artworks;
 	}
 	
+	/**
+	 * Returns a list of artworks made by the specified artist
+	 * @param artistId the artist's ID
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Artwork> getArtworksByArtist(String artistId) {
 		Query query = mEntityManager.createQuery(
@@ -90,6 +110,11 @@ public class FreyaDao {
 		return artworks;
 	}
 
+	/**
+	 * Returns a list of artworks contained in the specified artcollection
+	 * @param artCollectionId the artcollection's ID
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Artwork> getArtworksByArtCollection(Long artCollectionId) {
 		Query query = mEntityManager.createQuery(
@@ -103,6 +128,10 @@ public class FreyaDao {
 	 * Photo Retrieval Methods *
 	 ***************************/
 	
+	/**
+	 * Returns a list of all stored photos
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Photo> getArtworkPhotos() {
 		Query query = mEntityManager.createQuery("select a.photos from Artwork a");
@@ -110,6 +139,11 @@ public class FreyaDao {
 		return flatten(result, Photo.class);
 	}
 	
+	/**
+	 * Returns a list of photos of the specified artist's artworks 
+	 * @param artistId the artist's ID
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Photo> getPhotosByArtist(String artistId) {
 		Query query = mEntityManager.createQuery(
@@ -119,6 +153,11 @@ public class FreyaDao {
 		return photos;
 	}
 	
+	/**
+	 * Returns a list of photos of the specified artwork
+	 * @param artworkId the artwork's ID
+	 * @return
+	 */
 	public List<Photo> getPhotosByArtwork(String artworkId) {
 		Artwork artwork = getArtwork(artworkId);
 		if (artwork != null) {
@@ -131,10 +170,19 @@ public class FreyaDao {
 	 * ArtCollection Retrieval Methods *
 	 ***********************************/
 	
+	/**
+	 * Retrieves an artcollection with the specified ID
+	 * @param artCollectionId the artcollection's ID
+	 * @return
+	 */
 	public ArtCollection getArtCollection(Long artCollectionId) {
 		return mEntityManager.find(ArtCollection.class, artCollectionId);
 	}
 	
+	/**
+	 * Returns a list of all stored artcollections
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<ArtCollection> listArtCollections() {
 		Query query = mEntityManager.createQuery("select c from ArtCollection c");
@@ -173,6 +221,13 @@ public class FreyaDao {
 		mEntityManager.getTransaction().commit();
 	}
 	
+	/**
+	 * Returns a list containing all the data stored as sub-elements 
+	 * of the passed double-leveled list
+	 * @param collection the double-leveld list
+	 * @param clazz the class type of the sub-elements
+	 * @return
+	 */
 	private <T> List<T> flatten(List<List<T>> collection, Class<T> clazz) {
 		List<T> result = new ArrayList<>();
 		for (List<T> list : collection) {
