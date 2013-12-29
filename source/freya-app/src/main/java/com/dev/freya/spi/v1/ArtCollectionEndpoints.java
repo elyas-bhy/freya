@@ -105,13 +105,19 @@ public class ArtCollectionEndpoints {
 			path = "artcollections/{artcollection_id}",
 			httpMethod = HttpMethod.POST
 	)
-	public void addArtworkToArtCollection(
+	public Response addArtworkToArtCollection(
 			@Named("artcollection_id") Long artCollectionId, Artwork artwork) {
-		FreyaDao dao = new FreyaDao();
-		ArtCollection artcollection = dao.getArtCollection(artCollectionId);
-		if (artcollection != null)
-			artcollection.addArtwork(artwork);
-		dao.close();
+		Response response = new Response();
+		if (artwork != null) {
+			FreyaDao dao = new FreyaDao();
+			ArtCollection artcollection = dao.getArtCollection(artCollectionId);
+			if (artcollection != null) {
+				artcollection.addArtwork(artwork);
+				response.setKey(artCollectionId.toString());
+			}
+			dao.close();
+		}
+		return response;
 	}
 
 	@ApiMethod(
@@ -119,13 +125,19 @@ public class ArtCollectionEndpoints {
 			path = "artcollections/{artcollection_id}/comment",
 			httpMethod = HttpMethod.POST
 	)
-	public void addCommentToArtCollection(
+	public Response addCommentToArtCollection(
 			@Named("artcollection_id") Long artCollectionId, @Named("comment") String comment) {
-		FreyaDao dao = new FreyaDao();
-		ArtCollection artcollection = dao.getArtCollection(artCollectionId);
-		if (artcollection != null)
-			artcollection.addComment(comment);
-		dao.close();
+		Response response = new Response();
+		if (comment != null) {
+			FreyaDao dao = new FreyaDao();
+			ArtCollection artcollection = dao.getArtCollection(artCollectionId);
+			if (artcollection != null) {
+				artcollection.addComment(comment);
+				response.setKey(artCollectionId.toString());
+			}
+			dao.close();
+		}
+		return response;
 	}
 	
 	@ApiMethod(
@@ -133,12 +145,18 @@ public class ArtCollectionEndpoints {
 			path = "artcollections/{artcollection_id}/tag",
 			httpMethod = HttpMethod.POST
 	)
-	public void addTagToArtCollection(
+	public Response addTagToArtCollection(
 			@Named("artcollection_id") Long artCollectionId, @Named("tag") String tag) {
-		FreyaDao dao = new FreyaDao();
-		ArtCollection artcollection = dao.getArtCollection(artCollectionId);
-		if (artcollection != null)
-			artcollection.addTag(tag);
-		dao.close();
+		Response response = new Response();
+		if (tag != null) {
+			FreyaDao dao = new FreyaDao();
+			ArtCollection artcollection = dao.getArtCollection(artCollectionId);
+			if (artcollection != null) {
+				artcollection.addTag(tag);
+				response.setKey(artCollectionId.toString());
+			}
+			dao.close();
+		}
+		return response;
 	}
 }
