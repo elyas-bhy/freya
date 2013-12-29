@@ -17,6 +17,7 @@ import com.dev.freya.model.Artist;
 import com.dev.freya.model.Artwork;
 import com.dev.freya.model.Dimension;
 import com.dev.freya.model.Photo;
+import com.dev.freya.model.Reproduction;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
@@ -75,6 +76,11 @@ public class FreyaDaoTest {
 		artcollection2.addArtwork(artwork1);
 		artcollection2.addArtwork(artwork3);
 		
+		Reproduction repro = new Reproduction();
+		repro.setPrice(1000.0);
+		repro.setStock(4);
+		artwork3.addReproduction(repro);
+	
 		dao.persistTransactional(artcollection1);
 		dao.persistTransactional(artwork3);
 		dao.persistTransactional(artcollection2);
