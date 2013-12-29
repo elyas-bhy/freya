@@ -16,7 +16,9 @@
 
 package com.dev.freya.model;
 
-public enum ArtTechnique {
+import java.io.Serializable;
+
+public enum ArtTechnique implements Serializable {
 
 	PAINTING_WATERCOLOR,
 	PAINTING_GOUACHE,

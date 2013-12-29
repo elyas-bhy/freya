@@ -16,6 +16,7 @@
 
 package com.dev.freya.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +32,9 @@ import javax.persistence.ManyToMany;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 @Entity
-public class ArtCollection {
+public class ArtCollection implements Serializable {
+
+	private static final long serialVersionUID = 6811444157451451808L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

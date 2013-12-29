@@ -16,12 +16,16 @@
 
 package com.dev.freya.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Basic;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 
 @Embeddable
-public class Dimension {
+public class Dimension implements Serializable {
+	
+	private static final long serialVersionUID = -2983024236533938560L;
 
 	@Basic(fetch = FetchType.EAGER)
 	private float x;

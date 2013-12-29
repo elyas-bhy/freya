@@ -16,13 +16,17 @@
 
 package com.dev.freya.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Basic;
 import javax.persistence.Embeddable;
 import javax.persistence.FetchType;
 
 @Embeddable
-public class Photo {
+public class Photo implements Serializable {
 	
+	private static final long serialVersionUID = -8556544271023580863L;
+
 	@Basic(fetch = FetchType.EAGER)
 	private String desc;
 	

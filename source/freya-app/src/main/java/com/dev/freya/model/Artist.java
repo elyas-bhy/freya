@@ -16,6 +16,8 @@
 
 package com.dev.freya.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,8 +26,10 @@ import javax.persistence.Id;
 import com.google.appengine.api.datastore.KeyFactory;
 
 @Entity
-public class Artist {
+public class Artist implements Serializable {
 	
+	private static final long serialVersionUID = 8115292118258530592L;
+
 	@Id
 	private String id;
 	

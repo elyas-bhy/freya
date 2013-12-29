@@ -16,7 +16,9 @@
 
 package com.dev.freya.model;
 
-public enum ArtSupport {
+import java.io.Serializable;
+
+public enum ArtSupport implements Serializable {
 
 	PAINTING_LINEN_CANVAS,
 	PAINTING_COTTON_CANVAS,

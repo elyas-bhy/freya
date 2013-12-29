@@ -16,6 +16,7 @@
 
 package com.dev.freya.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +44,9 @@ import org.datanucleus.api.jpa.annotations.Extension;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 @Entity
-public class Artwork {
+public class Artwork implements Serializable {
+	
+	private static final long serialVersionUID = -2251964248074083442L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
