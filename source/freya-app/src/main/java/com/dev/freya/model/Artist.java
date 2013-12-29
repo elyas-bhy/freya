@@ -55,4 +55,13 @@ public class Artist implements Serializable {
 		return name;
 	}
 	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getClass().getSimpleName());
+		sb.append("[ID: " + getId());
+		sb.append(", name: " + getName());
+		sb.append("]");
+		return sb.toString();
+	}
+	
 }

@@ -178,5 +178,21 @@ public class Artwork implements Serializable {
 	public void setDimension(Dimension dimension) {
 		this.dimension = dimension;
 	}
-	
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getClass().getSimpleName());
+		sb.append("[ID: " + getId());
+		sb.append(", artist: " + getArtist());
+		sb.append(", support: " + getSupport());
+		sb.append(", technique: " + getTechnique());
+		sb.append(", date: " + getDate().toString());
+		sb.append(", summary: " + getSummary());
+		sb.append(", comments: " + getComments());
+		sb.append(", tags: " + getTags());
+		sb.append(", photos: " + getPhotos());
+		sb.append(", dimension: " + getDimension());
+		sb.append("]");
+		return sb.toString();
+	}
 }

@@ -103,5 +103,17 @@ public class ArtCollection implements Serializable {
 	public void setPublic(boolean isPublic) {
 		this.isPublic = isPublic;
 	}
-	
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getClass().getSimpleName());
+		sb.append("[ID: " + getId());
+		sb.append(", isPublic: " + isPublic());
+		sb.append(", artworks: " + getArtworks());
+		sb.append(", tags: " + getTags());
+		sb.append(", comments: " + getComments());
+		sb.append("]");
+		return sb.toString();
+	}
+
 }

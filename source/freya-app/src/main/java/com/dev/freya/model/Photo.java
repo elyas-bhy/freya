@@ -57,5 +57,14 @@ public class Photo implements Serializable {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getClass().getSimpleName());
+		sb.append("[desc: " + getDesc());
+		sb.append(", url: " + getUrl());
+		sb.append("]");
+		return sb.toString();
+	}
 	
 }

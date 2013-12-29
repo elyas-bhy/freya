@@ -69,5 +69,14 @@ public class Dimension implements Serializable {
 	public void setZ(float z) {
 		this.z = z;
 	}
-	
+
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getClass().getSimpleName());
+		sb.append("[x: " + getX());
+		sb.append(", y: " + getY());
+		sb.append(", z: " + getZ());
+		sb.append("]");
+		return sb.toString();
+	}
 }
