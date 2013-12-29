@@ -23,6 +23,7 @@ import javax.inject.Named;
 import com.dev.freya.dao.FreyaDao;
 import com.dev.freya.model.ArtCollection;
 import com.dev.freya.model.Artwork;
+import com.dev.freya.model.Response;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
@@ -83,17 +84,21 @@ public class ArtCollectionEndpoints {
 	 * POST Requests *
 	 *****************/
 
-//	@ApiMethod(
-//			name = "artcollections.add",
-//			path = "artcollections",
-//			httpMethod = HttpMethod.POST
-//	)
-//	public void addArtCollection(List<Artwork> artworks) {
-//		ArtCollection artcollection = new ArtCollection(artworks);
-//		FreyaDao dao = new FreyaDao();
-//		dao.persistTransactional(artcollection);
-//		dao.close();
-//	}
+	@ApiMethod(
+			name = "artcollections.add",
+			path = "artcollections",
+			httpMethod = HttpMethod.POST
+	)
+	public Response addArtCollection(ArtCollection artCollection) {
+		Response response = new Response();
+		if (artCollection != null) {
+			FreyaDao dao = new FreyaDao();
+			dao.persistTransactional(artCollection);
+			dao.close();
+			response.setKey(artCollection.getId().toString());
+		}
+		return response;
+	}
 
 	@ApiMethod(
 			name = "artcollections.addartwork",
