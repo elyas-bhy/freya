@@ -54,11 +54,13 @@ public class ArtCollection implements Serializable {
 
 	public ArtCollection() {
 		artworks = new ArrayList<>();
+		comments = new ArrayList<>();
 		tags = new ArrayList<>();
 	}
 	
 	public ArtCollection(List<Artwork> artworks) {
 		this.artworks = artworks;
+		this.comments = new ArrayList<>();
 		this.tags = new ArrayList<>();
 	}
 
