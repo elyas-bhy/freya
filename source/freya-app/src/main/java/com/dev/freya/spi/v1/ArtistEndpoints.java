@@ -13,6 +13,7 @@ import com.dev.freya.model.Artist;
 import com.dev.freya.model.Artwork;
 import com.dev.freya.model.Dimension;
 import com.dev.freya.model.Photo;
+import com.dev.freya.model.Reproduction;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiMethod.HttpMethod;
@@ -101,6 +102,11 @@ public class ArtistEndpoints {
 		artwork3.setSummary("Summary 3");
 		artwork3.setDimension(new Dimension(20, 5, 35));
 		
+		Reproduction repro = new Reproduction();
+		repro.setPrice(1000.0);
+		repro.setStock(4);
+		artwork3.addReproduction(repro);
+		
 		ArtCollection collection1 = new ArtCollection();
 		collection1.addArtwork(artwork1);
 		collection1.addArtwork(artwork2);
@@ -108,6 +114,7 @@ public class ArtistEndpoints {
 		ArtCollection collection2 = new ArtCollection();
 		collection2.addArtwork(artwork1);
 		collection2.addArtwork(artwork3);
+		
 		FreyaDao dao = new FreyaDao();
 		dao.persistTransactional(collection1);
 		dao.persistTransactional(artwork3);
