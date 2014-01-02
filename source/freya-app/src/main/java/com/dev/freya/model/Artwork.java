@@ -184,7 +184,6 @@ public class Artwork implements Serializable {
 	public void setDimension(Dimension dimension) {
 		this.dimension = dimension;
 	}
-<<<<<<< HEAD
 	
 	public List<Reproduction> getReproductions() {
 		return reproductions;
@@ -194,7 +193,6 @@ public class Artwork implements Serializable {
 		reproductions.add(r);
 	}
 	
-=======
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -212,5 +210,4 @@ public class Artwork implements Serializable {
 		sb.append("]");
 		return sb.toString();
 	}
->>>>>>> 684ef55182ab41c79835231e7b7bce2383f0bdb4
 }
