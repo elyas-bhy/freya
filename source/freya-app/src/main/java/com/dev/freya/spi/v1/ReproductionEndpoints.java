@@ -54,4 +54,18 @@ public class ReproductionEndpoints {
 		dao.commitTransaction();
 		dao.close();
 	}
+	
+	@ApiMethod(
+			name = "reproductions.set.price",
+			path = "reproductions/{reproduction_id}/price",
+			httpMethod = HttpMethod.POST
+	)
+	public void setReproductionPrice(@Named("reproduction_id") String reproductionId, @Named("stock") String price) {
+		FreyaDao dao = new FreyaDao();
+		Reproduction repro = dao.getReproduction(reproductionId);
+		if (repro != null)
+			repro.setPrice(Double.valueOf(price));
+		dao.persistTransactional(repro);
+		dao.close();
+	}
 }
