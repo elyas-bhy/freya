@@ -24,6 +24,7 @@ import javax.persistence.TemporalType;
 
 import org.datanucleus.api.jpa.annotations.Extension;
 
+import com.google.appengine.datanucleus.annotations.Owned;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 @Entity
@@ -70,10 +71,15 @@ public class Artwork {
 	@OneToOne(fetch = FetchType.EAGER)
 	private Dimension dimension;
 	
+	@Owned
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Reproduction> reproductions;
+	
 	public Artwork() {
 		comments = new ArrayList<>();
 		tags = new ArrayList<>();
 		photos = new ArrayList<>();
+		reproductions = new ArrayList<>();
 	}
 	
 	public String getId() {
@@ -158,6 +164,14 @@ public class Artwork {
 
 	public void setDimension(Dimension dimension) {
 		this.dimension = dimension;
+	}
+	
+	public List<Reproduction> getReproductions() {
+		return reproductions;
+	}
+	
+	public void addReproduction(Reproduction r) {
+		reproductions.add(r);
 	}
 	
 }

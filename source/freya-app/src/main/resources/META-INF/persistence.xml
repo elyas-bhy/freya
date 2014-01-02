@@ -12,6 +12,7 @@
 		<class>com.dev.freya.model.ArtCollection</class>
 		<class>com.dev.freya.model.Dimension</class>
 		<class>com.dev.freya.model.Photo</class>
+		<class>com.dev.freya.model.Reproduction</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		<properties>
 			<property name="datanucleus.NontransactionalRead" value="true" />
