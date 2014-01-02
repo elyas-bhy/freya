@@ -64,7 +64,7 @@ public class FreyaDao {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Artwork> listArtworks(String support, String technique) {
+	public List<Artwork> listArtworks(String support, String technique, Integer count) {
 		String keyword = " where ";
 		StringBuffer sb = new StringBuffer("select a from Artwork a");
 		if (support != null) {
@@ -80,7 +80,16 @@ public class FreyaDao {
 		}
 		Query query = mEntityManager.createQuery(sb.toString());
 		List<Artwork> artworks = query.getResultList();
-		return artworks;
+		List<Artwork> result = new ArrayList<Artwork>();
+		if(count != null) {
+			// size function and subqueries are not supported in the datastore
+			// Therefore we are forced to treat the query as follows
+			for(Artwork art : artworks)
+				if(art.getReproductions() != null)
+					if(art.getReproductions().size() <= count.intValue())
+						result.add(art);
+		}
+		return result;
 	}
 
 	@SuppressWarnings("unchecked")
