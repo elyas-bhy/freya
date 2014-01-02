@@ -20,12 +20,14 @@ test-output/
 *.api
 *.discovery
 local_db.bin
+freya-app\\local_db.bin
 appengine-generated/
 endpoint-libs/
 classes/
 target/
 deploy/
 war/freya-app/
+appspot/
 
 # Datanucleus logs
 datanucleus.log

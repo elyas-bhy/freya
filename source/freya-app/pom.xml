@@ -18,6 +18,21 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>1.17.0-rc</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.http-client</groupId>
+			<artifactId>google-http-client-appengine</artifactId>
+			<version>1.17.0-rc</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.http-client</groupId>
+			<artifactId>google-http-client-gson</artifactId>
+			<version>1.17.0-rc</version>
+		</dependency>
 		<!-- Compile/runtime dependencies -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -170,8 +185,8 @@
 				<executions>
 					<execution>
 						<goals>
-							<goal>endpoints_get_discovery_doc</goal>
-							<!--goal>endpoints_get_client_lib</goal -->
+							<goal>endpoints_get_discovery_doc</goal> 
+							<!-- <goal>endpoints_get_client_lib</goal>-->
 						</goals>
 					</execution>
 				</executions>
