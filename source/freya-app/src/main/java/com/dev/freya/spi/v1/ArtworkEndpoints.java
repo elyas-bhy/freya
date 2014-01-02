@@ -24,11 +24,11 @@ public class ArtworkEndpoints {
 			httpMethod = HttpMethod.GET
 			
 	)
-	// TODO add support for year, tag and reproduced_count query filters
+	// TODO add support for year, tag query filters
 	public List<Artwork> listArtworks(
-			@Named("support") String support, @Named("technique") String technique) {
+			@Named("support") String support, @Named("technique") String technique, @Named("count") int count) {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.listArtworks(support, technique);
+		List<Artwork> artworks = dao.listArtworks(support, technique, count);
 		dao.close();
 		return artworks;
 	}
