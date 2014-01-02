@@ -262,12 +262,8 @@ public class FreyaDao {
 	 * Reproduction Retrieval Methods *
 	 **********************************/
 	
-	@SuppressWarnings("unchecked")
 	public Reproduction getReproduction(String reproductionId) {
-		Query query = mEntityManager.createQuery("select r from Reproduction r where r.id = :reproductionId");
-		query.setParameter("reproductionId", reproductionId);
-		List<Reproduction> reproductions = query.getResultList();
-		return reproductions.size() > 0 ? reproductions.get(0) : null;
+		return mEntityManager.find(Reproduction.class, reproductionId);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -278,15 +274,15 @@ public class FreyaDao {
 	}
 
 	public List<Reproduction> getReproductionsByArtwork(String artworkId) {
-		Artwork artwork = mEntityManager.find(Artwork.class, artworkId);
+		Artwork artwork = getArtwork(artworkId);
 		return artwork.getReproductions();
 	}
 
 	public List<Reproduction> getReproductionsByArtCollection(Long artCollectionId) {
-		List<Artwork> artwork = getArtworksByArtCollection(artCollectionId, null);
+		List<Artwork> artworks = getArtworksByArtCollection(artCollectionId, null);
 		List<Reproduction> results = new ArrayList<Reproduction>();
-		for(Artwork a : artwork) {
-			results.addAll(a.getReproductions());
+		for (Artwork artwork : artworks) {
+			results.addAll(artwork.getReproductions());
 		}
 		return results;
 	}
