@@ -72,10 +72,9 @@ public class ArtCollectionEndpoints {
 			httpMethod = HttpMethod.GET
 			
 	)
-	// TODO add support for reproduced_count query filter
-	public List<Artwork> getArtworksByArtCollection(@Named("artcollection_id") Long artCollectionId) {
+	public List<Artwork> getArtworksByArtCollection(@Named("artcollection_id") Long artCollectionId, @Named("count") Integer count) {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.getArtworksByArtCollection(artCollectionId);
+		List<Artwork> artworks = dao.getArtworksByArtCollection(artCollectionId, count);
 		dao.close();
 		return artworks;
 	}

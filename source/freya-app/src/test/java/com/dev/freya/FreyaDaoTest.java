@@ -95,6 +95,7 @@ public class FreyaDaoTest {
 		Reproduction repro = new Reproduction();
 		repro.setPrice(1000.0);
 		repro.setStock(4);
+		repro.setSupport(ArtSupport.PAINTING_LINEN_CANVAS);
 		artwork3.addReproduction(repro);
 	
 		dao.persistTransactional(artcollection1);
@@ -197,7 +198,7 @@ public class FreyaDaoTest {
 	@Test
 	public void testGetArtworksByArtCollection() {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.getArtworksByArtCollection(artcollection1.getId());
+		List<Artwork> artworks = dao.getArtworksByArtCollection(artcollection1.getId(), null);
 		assertEquals(artworks.size(), 2);
 		dao.close();
 	}

@@ -2,11 +2,14 @@ package com.dev.freya.model;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.datanucleus.api.jpa.annotations.Extension;
+
 
 @Entity
 public class Reproduction {
@@ -21,6 +24,9 @@ public class Reproduction {
 	
 	@Basic
 	private Double price;
+	
+	@Enumerated(EnumType.STRING)
+	private ArtSupport support;
 	
 	public Reproduction() {
 	}
@@ -43,5 +49,9 @@ public class Reproduction {
 	
 	public String getId() {
 		return id;
+	}
+
+	public void setSupport(ArtSupport paintingLinenCanvas) {
+		support = paintingLinenCanvas;
 	}
 }

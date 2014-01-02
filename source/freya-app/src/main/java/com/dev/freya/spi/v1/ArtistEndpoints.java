@@ -130,6 +130,7 @@ public class ArtistEndpoints {
 		Reproduction repro = new Reproduction();
 		repro.setPrice(1000.0);
 		repro.setStock(4);
+		repro.setSupport(ArtSupport.PAINTING_COTTON_CANVAS);
 		artwork3.addReproduction(repro);
 		
 		ArtCollection collection1 = new ArtCollection();
