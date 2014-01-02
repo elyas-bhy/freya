@@ -106,7 +106,7 @@ public class ArtCollectionEndpoints {
 			FreyaDao dao = new FreyaDao();
 			dao.persistTransactional(artCollection);
 			dao.close();
-			response.setKey(artCollection.getId().toString());
+			response.setValue(artCollection.getId().toString());
 		}
 		return response;
 	}
@@ -124,7 +124,7 @@ public class ArtCollectionEndpoints {
 			ArtCollection artcollection = dao.getArtCollection(artCollectionId);
 			if (artcollection != null) {
 				artcollection.addArtwork(artwork);
-				response.setKey(artCollectionId.toString());
+				response.setValue(artCollectionId.toString());
 			}
 			dao.close();
 		}
@@ -144,7 +144,7 @@ public class ArtCollectionEndpoints {
 			ArtCollection artcollection = dao.getArtCollection(artCollectionId);
 			if (artcollection != null) {
 				artcollection.addComment(comment);
-				response.setKey(artCollectionId.toString());
+				response.setValue(artCollectionId.toString());
 			}
 			dao.close();
 		}
@@ -164,7 +164,7 @@ public class ArtCollectionEndpoints {
 			ArtCollection artcollection = dao.getArtCollection(artCollectionId);
 			if (artcollection != null) {
 				artcollection.addTag(tag);
-				response.setKey(artCollectionId.toString());
+				response.setValue(artCollectionId.toString());
 			}
 			dao.close();
 		}

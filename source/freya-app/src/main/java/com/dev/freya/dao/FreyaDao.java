@@ -132,8 +132,8 @@ public class FreyaDao {
 		}
 		Query query = mEntityManager.createQuery(sb.toString());
 		List<Artwork> artworks = query.getResultList();
-		List<Artwork> result = new ArrayList<Artwork>();
 		if(count != null) {
+			List<Artwork> result = new ArrayList<Artwork>();
 			// size function and subqueries are not supported in the datastore
 			// Therefore we are forced to treat the query as follows
 			for(Artwork art : artworks)
@@ -143,8 +143,9 @@ public class FreyaDao {
 				} else {
 					result.add(art);
 				}
+			return result;
 		}
-		return result;
+		return artworks;
 	}
 
 	/**

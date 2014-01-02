@@ -22,6 +22,8 @@ import javax.inject.Named;
 
 import com.dev.freya.dao.FreyaDao;
 import com.dev.freya.model.ArtSupport;
+import com.dev.freya.model.ArtCollection;
+import com.dev.freya.model.Artist;
 import com.dev.freya.model.Artwork;
 import com.dev.freya.model.Photo;
 import com.dev.freya.model.Reproduction;
@@ -48,7 +50,7 @@ public class ArtworkEndpoints {
 			)
 	// TODO add support for year, tag query filters
 	public List<Artwork> listArtworks(
-			@Named("support") String support, @Named("technique") String technique, @Named("count") int count) {
+			@Named("support") String support, @Named("technique") String technique, @Named("count") Integer count) {
 		FreyaDao dao = new FreyaDao();
 		List<Artwork> artworks = dao.listArtworks(support, technique, count);
 		dao.close();
@@ -107,7 +109,6 @@ public class ArtworkEndpoints {
 		return reproductions;
 	}
 
-
 	/*****************
 	 * POST Requests *
 	 *****************/
@@ -125,7 +126,7 @@ public class ArtworkEndpoints {
 			if(artwork != null) {
 				artwork.addReproduction(repro);
 				dao.persistTransactional(repro);
-				response.setKey(artworkId);
+				response.setValue(artworkId);
 			}
 		}
 		return response;
@@ -144,9 +145,64 @@ public class ArtworkEndpoints {
 			if(artwork != null) {
 				artwork.addComment(comment);
 				dao.persistTransactional(artwork);
-				response.setKey(artworkId);
+				response.setValue(artworkId);
 			}
 		}
 		return response;
 	}
+	
+	@ApiMethod(
+			name = "artworks.add",
+			path = "artworks",
+			httpMethod = HttpMethod.POST
+	)
+	public Response addArtwork(Artwork artwork) {
+		Response response = new Response();
+		if (artwork != null) {
+			FreyaDao dao = new FreyaDao();
+			dao.persistTransactional(artwork);
+			dao.close();
+			response.setValue(artwork.getId());
+		}
+		return response;
+	}
+
+	@ApiMethod(
+			name = "artworks.addArtist",
+			path = "artworks/{artwork_id}/artist",
+			httpMethod = HttpMethod.POST
+	)
+	public Response addArtistToArtwork(@Named("artwork_id") String artworkId, Artist artist) {
+		Response response = new Response();
+		if (artist != null) {
+			FreyaDao dao = new FreyaDao();
+			Artwork artwork = dao.getArtwork(artworkId);
+			if (artwork != null) {
+				artwork.setArtist(artist);
+				response.setValue(artwork.getId());
+			}
+			dao.close();
+		}
+		return response;
+	}
+	
+	@ApiMethod(
+			name = "artworks.addPhoto",
+			path = "artworks/{artwork_id}/photo",
+			httpMethod = HttpMethod.POST
+	)
+	public Response addPhotoToArtwork(@Named("artwork_id") String artworkId, Photo photo) {
+		Response response = new Response();
+		if (photo != null) {
+			FreyaDao dao = new FreyaDao();
+			Artwork artwork = dao.getArtwork(artworkId);
+			if (artwork != null) {
+				artwork.addPhoto(photo);
+				response.setValue(artwork.getId());
+			}
+			dao.close();
+		}
+		return response;
+	}
+	
 }
