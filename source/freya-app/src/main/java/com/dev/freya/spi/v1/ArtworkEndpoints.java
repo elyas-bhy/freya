@@ -21,8 +21,6 @@ import java.util.List;
 import javax.inject.Named;
 
 import com.dev.freya.dao.FreyaDao;
-import com.dev.freya.model.ArtSupport;
-import com.dev.freya.model.ArtCollection;
 import com.dev.freya.model.Artist;
 import com.dev.freya.model.Artwork;
 import com.dev.freya.model.Photo;
@@ -35,7 +33,7 @@ import com.google.api.server.spi.config.ApiMethod.HttpMethod;
 @Api(
 		name = "freya",
 		version = "v1"
-		)
+)
 public class ArtworkEndpoints {
 
 	/****************
@@ -46,8 +44,7 @@ public class ArtworkEndpoints {
 			name = "artworks.list",
 			path = "artworks",
 			httpMethod = HttpMethod.GET
-
-			)
+	)
 	// TODO add support for year, tag query filters
 	public List<Artwork> listArtworks(
 			@Named("support") String support, @Named("technique") String technique, @Named("count") Integer count) {
@@ -58,11 +55,22 @@ public class ArtworkEndpoints {
 	}
 
 	@ApiMethod(
-			name = "artworks.photos",
+			name = "artworks.get",
+			path = "artworks/{artwork_id}",
+			httpMethod = HttpMethod.GET
+	)
+	public Artwork getArtwork(@Named("artwork_id") String artworkId) {
+		FreyaDao dao = new FreyaDao();
+		Artwork artwork = dao.getArtwork(artworkId);
+		dao.close();
+		return artwork;
+	}
+
+	@ApiMethod(
+			name = "artworks.getPhotos",
 			path = "artworks/photos",
 			httpMethod = HttpMethod.GET
-
-			)
+	)
 	// TODO add support for query filters
 	public List<Photo> getArtworkPhotos() {
 		FreyaDao dao = new FreyaDao();
@@ -72,24 +80,10 @@ public class ArtworkEndpoints {
 	}
 
 	@ApiMethod(
-			name = "artworks.get",
-			path = "artworks/{artwork_id}",
-			httpMethod = HttpMethod.GET
-
-			)
-	public Artwork getArtwork(@Named("artwork_id") String artworkId) {
-		FreyaDao dao = new FreyaDao();
-		Artwork artwork = dao.getArtwork(artworkId);
-		dao.close();
-		return artwork;
-	}
-
-	@ApiMethod(
-			name = "artworks.artwork.photos",
+			name = "artworks.getPhotosByArtwork",
 			path = "artworks/{artwork_id}/photos",
 			httpMethod = HttpMethod.GET
-
-			)
+	)
 	public List<Photo> getPhotosByArtwork(@Named("artwork_id") String artworkId) {
 		FreyaDao dao = new FreyaDao();
 		List<Photo> photos = dao.getPhotosByArtwork(artworkId);
@@ -98,10 +92,10 @@ public class ArtworkEndpoints {
 	}
 
 	@ApiMethod(
-			name = "artworks.artwork.reproductions",
+			name = "artworks.getReproductionsByArtwork",
 			path = "artworks/{artwork_id}/reproductions",
 			httpMethod = HttpMethod.GET
-			)
+	)
 	public List<Reproduction> getReproductionsByArtwork(@Named("artwork_id") String artworkId) {
 		FreyaDao dao = new FreyaDao();
 		List<Reproduction> reproductions = dao.getReproductionsByArtwork(artworkId);
@@ -112,48 +106,10 @@ public class ArtworkEndpoints {
 	/*****************
 	 * POST Requests *
 	 *****************/
-
-	@ApiMethod(
-			name = "artworks.artwork.addReproduction",
-			path = "artworks/{artwork_id}/reproductions/add",
-			httpMethod = HttpMethod.POST
-			)
-	public Response addReproduction(@Named("artwork_id") String artworkId, Reproduction repro) {
-		Response response = new Response();
-		if(repro != null) {
-			FreyaDao dao = new FreyaDao();
-			Artwork artwork = dao.getArtwork(artworkId);
-			if(artwork != null) {
-				artwork.addReproduction(repro);
-				dao.persistTransactional(repro);
-				response.setValue(artworkId);
-			}
-		}
-		return response;
-	}
-
-	@ApiMethod(
-			name = "artworks.artwork.addComment",
-			path = "artworks/{artwork_id}/comments/add",
-			httpMethod = HttpMethod.POST
-			)
-	public Response addComment(@Named("artwork_id") String artworkId, @Named("comment") String comment) {
-		Response response = new Response();
-		if(comment != null) {
-			FreyaDao dao = new FreyaDao();
-			Artwork artwork = dao.getArtwork(artworkId);
-			if(artwork != null) {
-				artwork.addComment(comment);
-				dao.persistTransactional(artwork);
-				response.setValue(artworkId);
-			}
-		}
-		return response;
-	}
 	
 	@ApiMethod(
 			name = "artworks.add",
-			path = "artworks",
+			path = "artworks/add",
 			httpMethod = HttpMethod.POST
 	)
 	public Response addArtwork(Artwork artwork) {
@@ -168,8 +124,8 @@ public class ArtworkEndpoints {
 	}
 
 	@ApiMethod(
-			name = "artworks.addArtist",
-			path = "artworks/{artwork_id}/artist",
+			name = "artworks.addArtistToArtwork",
+			path = "artworks/{artwork_id}/artist/add",
 			httpMethod = HttpMethod.POST
 	)
 	public Response addArtistToArtwork(@Named("artwork_id") String artworkId, Artist artist) {
@@ -187,8 +143,8 @@ public class ArtworkEndpoints {
 	}
 	
 	@ApiMethod(
-			name = "artworks.addPhoto",
-			path = "artworks/{artwork_id}/photo",
+			name = "artworks.addPhotoToArtwork",
+			path = "artworks/{artwork_id}/photo/add",
 			httpMethod = HttpMethod.POST
 	)
 	public Response addPhotoToArtwork(@Named("artwork_id") String artworkId, Photo photo) {
@@ -201,6 +157,42 @@ public class ArtworkEndpoints {
 				response.setValue(artwork.getId());
 			}
 			dao.close();
+		}
+		return response;
+	}
+
+	@ApiMethod(
+			name = "artworks.addCommentToArtwork",
+			path = "artworks/{artwork_id}/comments/add",
+			httpMethod = HttpMethod.POST
+	)
+	public Response addCommentToArtwork(@Named("artwork_id") String artworkId, @Named("comment") String comment) {
+		Response response = new Response();
+		if (comment != null) {
+			FreyaDao dao = new FreyaDao();
+			Artwork artwork = dao.getArtwork(artworkId);
+			if (artwork != null) {
+				artwork.addComment(comment);
+				response.setValue(artworkId);
+			}
+		}
+		return response;
+	}
+
+	@ApiMethod(
+			name = "artworks.addReproductionToArtwork",
+			path = "artworks/{artwork_id}/reproductions/add",
+			httpMethod = HttpMethod.POST
+	)
+	public Response addReproductionToArtwork(@Named("artwork_id") String artworkId, Reproduction repro) {
+		Response response = new Response();
+		if (repro != null) {
+			FreyaDao dao = new FreyaDao();
+			Artwork artwork = dao.getArtwork(artworkId);
+			if (artwork != null) {
+				artwork.addReproduction(repro);
+				response.setValue(artworkId);
+			}
 		}
 		return response;
 	}

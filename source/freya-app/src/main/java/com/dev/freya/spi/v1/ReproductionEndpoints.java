@@ -1,3 +1,19 @@
+/*
+ * (C) Copyright 2013 Freya Development Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.dev.freya.spi.v1;
 
 import java.util.List;
@@ -14,6 +30,10 @@ import com.google.api.server.spi.config.Named;
 		version = "v1"
 )
 public class ReproductionEndpoints {
+
+	/****************
+	 * GET Requests *
+	 ****************/
 	
 	@ApiMethod(
 			name = "reproductions.list",
@@ -41,31 +61,35 @@ public class ReproductionEndpoints {
 		return reproduction;
 	}
 
+	/*****************
+	 * POST Requests *
+	 *****************/
+
 	@ApiMethod(
-			name = "reproductions.set.stock",
-			path = "reproductions/{reproduction_id}/stock",
+			name = "reproductions.addStockToReproduction",
+			path = "reproductions/{reproduction_id}/stock/add",
 			httpMethod = HttpMethod.POST
 	)
-	public void setReproductionStock(@Named("reproduction_id") String reproductionId, @Named("stock") String stock) {
+	public void addStockToReproduction(@Named("reproduction_id") String reproductionId, @Named("stock") String stock) {
 		FreyaDao dao = new FreyaDao();
 		Reproduction repro = dao.getReproduction(reproductionId);
-		if (repro != null)
+		if (repro != null) {
 			repro.setStock(Integer.valueOf(stock));
-		dao.commitTransaction();
+		}
 		dao.close();
 	}
 	
 	@ApiMethod(
-			name = "reproductions.set.price",
-			path = "reproductions/{reproduction_id}/price",
+			name = "reproductions.addPriceToReproduction",
+			path = "reproductions/{reproduction_id}/price/add",
 			httpMethod = HttpMethod.POST
 	)
-	public void setReproductionPrice(@Named("reproduction_id") String reproductionId, @Named("stock") String price) {
+	public void addPriceToReproduction(@Named("reproduction_id") String reproductionId, @Named("stock") String price) {
 		FreyaDao dao = new FreyaDao();
 		Reproduction repro = dao.getReproduction(reproductionId);
-		if (repro != null)
+		if (repro != null) {
 			repro.setPrice(Double.valueOf(price));
-		dao.persistTransactional(repro);
+		}
 		dao.close();
 	}
 }

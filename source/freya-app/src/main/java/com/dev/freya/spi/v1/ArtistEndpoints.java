@@ -59,7 +59,7 @@ public class ArtistEndpoints {
 	}
 	
 	@ApiMethod(
-			name = "artists.artworks",
+			name = "artists.getArtworksByArtist",
 			path = "artists/{artist_id}/artworks",
 			httpMethod = HttpMethod.GET
 			
@@ -73,7 +73,7 @@ public class ArtistEndpoints {
 	}
 	
 	@ApiMethod(
-			name = "artists.photos",
+			name = "artists.getPhotosByArtist",
 			path = "artists/{artist_id}/photos",
 			httpMethod = HttpMethod.GET
 			

@@ -67,7 +67,7 @@ public class ArtCollectionEndpoints {
 	}
 
 	@ApiMethod(
-			name = "artcollections.artcollection.artworks",
+			name = "artcollections.getArtworksByArtCollection",
 			path = "artcollections/{artcollection_id}/artworks",
 			httpMethod = HttpMethod.GET
 			
@@ -80,7 +80,7 @@ public class ArtCollectionEndpoints {
 	}
 	
 	@ApiMethod(
-			name = "artcollections.artcollection.reproductions",
+			name = "artcollections.getReproductionsByArtCollection",
 			path = "artcollections/{artcollection_id}/reproductions",
 			httpMethod = HttpMethod.GET
 	)
@@ -112,7 +112,7 @@ public class ArtCollectionEndpoints {
 	}
 
 	@ApiMethod(
-			name = "artcollections.addartwork",
+			name = "artcollections.addArtworkToArtCollection",
 			path = "artcollections/{artcollection_id}/artworks/add",
 			httpMethod = HttpMethod.POST
 	)
@@ -132,7 +132,7 @@ public class ArtCollectionEndpoints {
 	}
 
 	@ApiMethod(
-			name = "artcollections.addcomment",
+			name = "artcollections.addCommentToArtCollection",
 			path = "artcollections/{artcollection_id}/comments/add",
 			httpMethod = HttpMethod.POST
 	)
@@ -152,7 +152,7 @@ public class ArtCollectionEndpoints {
 	}
 	
 	@ApiMethod(
-			name = "artcollections.addtag",
+			name = "artcollections.addTagToArtCollection",
 			path = "artcollections/{artcollection_id}/tags/add",
 			httpMethod = HttpMethod.POST
 	)
