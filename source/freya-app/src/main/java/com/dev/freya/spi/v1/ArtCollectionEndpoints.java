@@ -97,7 +97,7 @@ public class ArtCollectionEndpoints {
 
 	@ApiMethod(
 			name = "artcollections.add",
-			path = "artcollections",
+			path = "artcollections/add",
 			httpMethod = HttpMethod.POST
 	)
 	public Response addArtCollection(ArtCollection artCollection) {
@@ -113,7 +113,7 @@ public class ArtCollectionEndpoints {
 
 	@ApiMethod(
 			name = "artcollections.addartwork",
-			path = "artcollections/{artcollection_id}",
+			path = "artcollections/{artcollection_id}/artworks/add",
 			httpMethod = HttpMethod.POST
 	)
 	public Response addArtworkToArtCollection(
@@ -133,7 +133,7 @@ public class ArtCollectionEndpoints {
 
 	@ApiMethod(
 			name = "artcollections.addcomment",
-			path = "artcollections/{artcollection_id}/comment",
+			path = "artcollections/{artcollection_id}/comments/add",
 			httpMethod = HttpMethod.POST
 	)
 	public Response addCommentToArtCollection(
@@ -153,7 +153,7 @@ public class ArtCollectionEndpoints {
 	
 	@ApiMethod(
 			name = "artcollections.addtag",
-			path = "artcollections/{artcollection_id}/tag",
+			path = "artcollections/{artcollection_id}/tags/add",
 			httpMethod = HttpMethod.POST
 	)
 	public Response addTagToArtCollection(
