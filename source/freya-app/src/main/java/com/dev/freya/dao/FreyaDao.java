@@ -43,7 +43,7 @@ public class FreyaDao {
 	/**
 	 * Memcache service object for Memcache access
 	 */
-	private final MemcacheService mCache = MemcacheServiceFactory.getMemcacheService();
+	//private final MemcacheService mCache = MemcacheServiceFactory.getMemcacheService();
 
 	/**
 	 * App logger
@@ -155,15 +155,22 @@ public class FreyaDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public Artwork getArtwork(String artworkId) {
+		Artwork artwork = null;/*(Artwork) mCache.get(artworkId);
+		if (artwork != null) {
+			return artwork;
+		}*/
 		// The method: mEntityManager.find(Artwork.class, artworkId) fails to
 		// properly load Artwork.photos field, so use standard query instead
 		Query query = mEntityManager
 				.createQuery("select a from Artwork a where a.id = :artworkId");
 		query.setParameter("artworkId", artworkId);
 		List<Artwork> artworks = query.getResultList();
-		if (artworks.size() > 0)
-			return artworks.get(0);
-		return null;
+		if (artworks.size() > 0) {
+			artwork = artworks.get(0);
+			/*mCache.put(artworkId, artwork, Expiration.byDeltaSeconds(CACHE_PERIOD), 
+					SetPolicy.ADD_ONLY_IF_NOT_PRESENT);*/
+		}
+		return artwork;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -263,13 +270,13 @@ public class FreyaDao {
 	 * @return
 	 */
 	public ArtCollection getArtCollection(Long artCollectionId) {
-		ArtCollection artCollection = (ArtCollection) mCache.get(artCollectionId);
+		ArtCollection artCollection /*= (ArtCollection) mCache.get(artCollectionId);
 		if (artCollection != null) {
 			return artCollection;
 		}
-		artCollection = mEntityManager.find(ArtCollection.class, artCollectionId);
-		mCache.put(artCollectionId, artCollection, Expiration.byDeltaSeconds(CACHE_PERIOD), 
-				SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
+		artCollection*/ = mEntityManager.find(ArtCollection.class, artCollectionId);
+		/*mCache.put(artCollectionId, artCollection, Expiration.byDeltaSeconds(CACHE_PERIOD), 
+				SetPolicy.ADD_ONLY_IF_NOT_PRESENT);*/
 		return artCollection;
 	}
 
