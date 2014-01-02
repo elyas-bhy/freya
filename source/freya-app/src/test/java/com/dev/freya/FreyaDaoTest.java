@@ -1,3 +1,19 @@
+/*
+ * (C) Copyright 2013 Freya Development Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.dev.freya;
 
 import static org.junit.Assert.assertEquals;
@@ -98,7 +114,7 @@ public class FreyaDaoTest {
 	@Test
 	public void testGetArtworksByArtist() {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.listArtworksByArtist(daliArtistId);
+		List<Artwork> artworks = dao.getArtworksByArtist(daliArtistId);
 		assertEquals(artworks.size(), 2);
 		dao.close();
 	}
@@ -106,7 +122,7 @@ public class FreyaDaoTest {
 	@Test
 	public void testGetPhotosByArtist() {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.listPhotosByArtist(daliArtistId);
+		List<Photo> photos = dao.getPhotosByArtist(daliArtistId);
 		assertEquals(photos.size(), 2);
 		dao.close();
 	}

@@ -1,7 +1,24 @@
+/*
+ * (C) Copyright 2013 Freya Development Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.dev.freya.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -11,26 +28,45 @@ import com.dev.freya.model.Artist;
 import com.dev.freya.model.Artwork;
 import com.dev.freya.model.Photo;
 import com.dev.freya.model.Reproduction;
+import com.google.appengine.api.memcache.Expiration;
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheService.SetPolicy;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
 public class FreyaDao {
+	
+	/**
+     * Cache duration for memcache (in seconds).
+     */
+    private static final int CACHE_PERIOD = 60;
+    
+    /**
+     * Memcache service object for Memcache access
+     */
+    private final MemcacheService mCache = MemcacheServiceFactory.getMemcacheService();
 
+    /**
+     * App logger
+     */
+	private static final Logger LOGGER = Logger.getLogger(FreyaDao.class.getName());
+	
+	/**
+	 * The entity manager used by this instance
+	 */
 	private EntityManager mEntityManager;
 
 	public FreyaDao() {
 		mEntityManager = EMFService.createEntityManager();
 	}
 
-	public void persist(Object o) {
-		mEntityManager.persist(o);
-	}
-
-	public void persistTransactional(Object o) {
-		mEntityManager.getTransaction().begin();
-		mEntityManager.persist(o);
-		mEntityManager.flush();
-		mEntityManager.getTransaction().commit();
-	}
-
+	/****************************
+	 * Artist Retrieval Methods *
+	 ****************************/
+	
+	/**
+	 * Returns a list of all stored artists
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Artist> listArtists() {
 		Query query = mEntityManager.createQuery("select a from Artist a");
@@ -44,7 +80,16 @@ public class FreyaDao {
 		List<Reproduction> reproductions = query.getResultList();
 		return reproductions;
 	}
+	
+	/*****************************
+	 * Artwork Retrieval Methods *
+	 *****************************/
 
+	/**
+	 * Retrieves an artwork with the specified ID
+	 * @param artworkId the artwork's ID
+	 * @return the matching artwork if found, or null
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Artwork> listArtworksByArtist(String artistId) {
 		Query query = mEntityManager
@@ -63,6 +108,13 @@ public class FreyaDao {
 		return photos;
 	}
 
+
+	/**
+	 * Returns a list of all stored artworks matching the specified optional filters
+	 * @param support optional filter: the type of support used by the artworks
+	 * @param technique optional filter: the technique used by the artworks
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Artwork> listArtworks(String support, String technique, Integer count) {
 		String keyword = " where ";
@@ -91,7 +143,12 @@ public class FreyaDao {
 		}
 		return result;
 	}
-
+	
+	/**
+	 * Returns a list of artworks made by the specified artist
+	 * @param artistId the artist's ID
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public Artwork getArtwork(String artworkId) {
 		// The method: mEntityManager.find(Artwork.class, artworkId) fails to
@@ -113,6 +170,62 @@ public class FreyaDao {
 		return reproductions.size() > 0 ? reproductions.get(0) : null;
 	}
 
+	public List<Artwork> getArtworksByArtist(String artistId) {
+		Query query = mEntityManager.createQuery(
+				"select a from Artwork a join a.artist t where t.id = :artistId");
+		query.setParameter("artistId", artistId);
+		List<Artwork> artworks = query.getResultList();
+		return artworks;
+	}
+
+	/**
+	 * Returns a list of artworks contained in the specified artcollection
+	 * @param artCollectionId the artcollection's ID
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Artwork> getArtworksByArtCollection(Long artCollectionId) {
+		Query query = mEntityManager.createQuery(
+				"select c.artworks from ArtCollection c where c.id = :artCollectionId");
+		query.setParameter("artCollectionId", artCollectionId);
+		List<List<Artwork>> result = query.getResultList();
+		return flatten(result, Artwork.class);
+	}
+
+	/***************************
+	 * Photo Retrieval Methods *
+	 ***************************/
+	
+	/**
+	 * Returns a list of all stored photos
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Photo> getArtworkPhotos() {
+		Query query = mEntityManager.createQuery("select a.photos from Artwork a");
+		List<List<Photo>> result = query.getResultList();
+		return flatten(result, Photo.class);
+	}
+	
+	/**
+	 * Returns a list of photos of the specified artist's artworks 
+	 * @param artistId the artist's ID
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Photo> getPhotosByArtist(String artistId) {
+		Query query = mEntityManager.createQuery(
+				"select a.photos from Artwork a join a.artist t where t.id = :artistId");
+		query.setParameter("artistId", artistId);
+		List<Photo> photos = query.getResultList();
+		return photos;
+	}
+	
+	/**
+	 * Returns a list of photos of the specified artwork
+	 * @param artworkId the artwork's ID
+	 * @return
+	 */
 	public List<Photo> getPhotosByArtwork(String artworkId) {
 		Artwork artwork = getArtwork(artworkId);
 		if (artwork != null) {
@@ -121,14 +234,31 @@ public class FreyaDao {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Photo> getArtworkPhotos() {
-		Query query = mEntityManager
-				.createQuery("select a.photos from Artwork a");
-		List<List<Photo>> result = query.getResultList();
-		return flatten(result, Photo.class);
-	}
 
+	/***********************************
+	 * ArtCollection Retrieval Methods *
+	 ***********************************/
+	
+	/**
+	 * Retrieves an artcollection with the specified ID
+	 * @param artCollectionId the artcollection's ID
+	 * @return
+	 */
+	public ArtCollection getArtCollection(Long artCollectionId) {
+		ArtCollection artCollection = (ArtCollection) mCache.get(artCollectionId);
+		if (artCollection != null) {
+			return artCollection;
+		}
+		artCollection = mEntityManager.find(ArtCollection.class, artCollectionId);
+		mCache.put(artCollectionId, artCollection, Expiration.byDeltaSeconds(CACHE_PERIOD), 
+				SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
+		return artCollection;
+	}
+	
+	/**
+	 * Returns a list of all stored artcollections
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<ArtCollection> listArtCollections() {
 		Query query = mEntityManager
@@ -136,18 +266,21 @@ public class FreyaDao {
 		List<ArtCollection> artCollections = query.getResultList();
 		return artCollections;
 	}
+	
+	/*************
+	 * Utilities *
+	 *************/
 
-	public ArtCollection getArtCollection(Long artCollectionId) {
-		return mEntityManager.find(ArtCollection.class, artCollectionId);
+	public void persist(Object o) {
+		mEntityManager.persist(o);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Artwork> getArtworksByArtCollection(Long artCollectionId) {
-		Query query = mEntityManager
-				.createQuery("select c.artworks from ArtCollection c where c.id = :artCollectionId");
-		query.setParameter("artCollectionId", artCollectionId);
-		List<List<Artwork>> result = query.getResultList();
-		return flatten(result, Artwork.class);
+	
+	public void persistTransactional(Object o) {
+		mEntityManager.getTransaction().begin();
+		mEntityManager.persist(o);
+		mEntityManager.flush();
+		mEntityManager.getTransaction().commit();
 	}
 
 	public List<Reproduction> getReproductionsByArtwork(String artworkId) {
@@ -179,7 +312,14 @@ public class FreyaDao {
 	public void commitTransaction() {
 		mEntityManager.getTransaction().commit();
 	}
-
+	
+	/**
+	 * Returns a list containing all the data stored as sub-elements 
+	 * of the passed double-leveled list
+	 * @param collection the double-leveld list
+	 * @param clazz the class type of the sub-elements
+	 * @return
+	 */
 	private <T> List<T> flatten(List<List<T>> collection, Class<T> clazz) {
 		List<T> result = new ArrayList<>();
 		for (List<T> list : collection) {
