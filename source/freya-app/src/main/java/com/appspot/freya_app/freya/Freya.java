@@ -57,7 +57,8 @@ public class Freya extends com.google.api.client.googleapis.services.json.Abstra
    *
    * @since 1.7
    */
-  public static final String DEFAULT_ROOT_URL = "https://freya-app.appspot.com/_ah/api/";
+  //public static final String DEFAULT_ROOT_URL = "https://freya-app.appspot.com/_ah/api/";
+  public static final String DEFAULT_ROOT_URL = "http://localhost:8080/_ah/api/";
 
   /**
    * The default encoded service path of the service. This is determined when the library is
