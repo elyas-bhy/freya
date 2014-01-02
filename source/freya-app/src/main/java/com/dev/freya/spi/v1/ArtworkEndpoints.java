@@ -18,11 +18,15 @@ package com.dev.freya.spi.v1;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.inject.Named;
 
 import com.dev.freya.dao.FreyaDao;
+import com.dev.freya.model.ArtSupport;
+import com.dev.freya.model.ArtTechnique;
 import com.dev.freya.model.Artist;
 import com.dev.freya.model.Artwork;
+import com.dev.freya.model.Dimension;
 import com.dev.freya.model.Photo;
 import com.dev.freya.model.Reproduction;
 import com.dev.freya.model.Response;
@@ -141,7 +145,7 @@ public class ArtworkEndpoints {
 		}
 		return response;
 	}
-	
+
 	@ApiMethod(
 			name = "artworks.addPhotoToArtwork",
 			path = "artworks/{artwork_id}/photo/add",
@@ -160,21 +164,22 @@ public class ArtworkEndpoints {
 		}
 		return response;
 	}
-
+	
 	@ApiMethod(
-			name = "artworks.addCommentToArtwork",
-			path = "artworks/{artwork_id}/comments/add",
+			name = "artworks.addDimensionsToArtwork",
+			path = "artworks/{artwork_id}/dimensions/add",
 			httpMethod = HttpMethod.POST
 	)
-	public Response addCommentToArtwork(@Named("artwork_id") String artworkId, @Named("comment") String comment) {
+	public Response addDimensionsToArtwork(@Named("artwork_id") String artworkId, Dimension dimension) {
 		Response response = new Response();
-		if (comment != null) {
+		if (dimension != null) {
 			FreyaDao dao = new FreyaDao();
 			Artwork artwork = dao.getArtwork(artworkId);
 			if (artwork != null) {
-				artwork.addComment(comment);
-				response.setValue(artworkId);
+				artwork.setDimension(dimension);
+				response.setValue(artwork.getId());
 			}
+			dao.close();
 		}
 		return response;
 	}
@@ -193,7 +198,35 @@ public class ArtworkEndpoints {
 				artwork.addReproduction(repro);
 				response.setValue(artworkId);
 			}
+			dao.close();
 		}
+		return response;
+	}
+	
+	@ApiMethod(
+			name = "artworks.addMetadataToArtwork",
+			path = "artworks/{artwork_id}/metadata/add",
+			httpMethod = HttpMethod.POST
+	)
+	public Response addMetadataToArtwork(
+			@Named("artwork_id") String artworkId,
+			@Nullable @Named("support") ArtSupport support, 
+			@Nullable @Named("technique") ArtTechnique technique,
+			@Nullable @Named("title") String title, @Nullable @Named("summary") String summary,
+			@Nullable @Named("tag") String tag, @Nullable @Named("comment") String comment) {
+		Response response = new Response();
+		FreyaDao dao = new FreyaDao();
+		Artwork artwork = dao.getArtwork(artworkId);
+		if (artwork != null) {
+			if (support != null) artwork.setSupport(support);
+			if (technique != null) artwork.setTechnique(technique);
+			if (title != null) artwork.setTitle(title);
+			if (summary != null) artwork.setSummary(summary);
+			if (tag != null) artwork.addTag(tag);
+			if (comment != null) artwork.addComment(comment);
+			response.setValue(artworkId);
+		}
+		dao.close();
 		return response;
 	}
 	
