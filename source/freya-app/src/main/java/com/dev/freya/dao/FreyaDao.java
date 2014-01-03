@@ -30,6 +30,7 @@ import com.dev.freya.model.Photo;
 import com.dev.freya.model.Reproduction;
 import com.google.appengine.api.memcache.Expiration;
 import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheService.IdentifiableValue;
 import com.google.appengine.api.memcache.MemcacheService.SetPolicy;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
@@ -43,7 +44,7 @@ public class FreyaDao {
 	/**
 	 * Memcache service object for Memcache access
 	 */
-	//private final MemcacheService mCache = MemcacheServiceFactory.getMemcacheService();
+	private final MemcacheService mCache = MemcacheServiceFactory.getMemcacheService();
 
 	/**
 	 * App logger
@@ -85,10 +86,10 @@ public class FreyaDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public Artwork getArtwork(String artworkId) {
-		Artwork artwork = null;/*(Artwork) mCache.get(artworkId);
+		Artwork artwork = (Artwork) mCache.get(artworkId);
 		if (artwork != null) {
 			return artwork;
-		}*/
+		}
 		// The method: mEntityManager.find(Artwork.class, artworkId) fails to
 		// properly load Artwork.photos field, so use standard query instead
 		Query query = mEntityManager
@@ -97,8 +98,8 @@ public class FreyaDao {
 		List<Artwork> artworks = query.getResultList();
 		if (artworks.size() > 0) {
 			artwork = artworks.get(0);
-			/*mCache.put(artworkId, artwork, Expiration.byDeltaSeconds(CACHE_PERIOD), 
-					SetPolicy.ADD_ONLY_IF_NOT_PRESENT);*/
+			mCache.put(artworkId, artwork, Expiration.byDeltaSeconds(CACHE_PERIOD), 
+					SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
 		}
 		return artwork;
 	}
@@ -237,13 +238,13 @@ public class FreyaDao {
 	 * @return
 	 */
 	public ArtCollection getArtCollection(Long artCollectionId) {
-		ArtCollection artCollection /*= (ArtCollection) mCache.get(artCollectionId);
+		ArtCollection artCollection = (ArtCollection) mCache.get(artCollectionId);
 		if (artCollection != null) {
 			return artCollection;
 		}
-		artCollection*/ = mEntityManager.find(ArtCollection.class, artCollectionId);
-		/*mCache.put(artCollectionId, artCollection, Expiration.byDeltaSeconds(CACHE_PERIOD), 
-				SetPolicy.ADD_ONLY_IF_NOT_PRESENT);*/
+		artCollection = mEntityManager.find(ArtCollection.class, artCollectionId);
+		mCache.put(artCollectionId, artCollection, Expiration.byDeltaSeconds(CACHE_PERIOD), 
+				SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
 		return artCollection;
 	}
 
@@ -317,6 +318,23 @@ public class FreyaDao {
 
 	public void commitTransaction() {
 		mEntityManager.getTransaction().commit();
+	}
+	
+	/**
+	 * Updates the value of the cached entity
+	 * @param key the key of the entity
+	 * @param value the new value of the entity
+	 */
+	public void refresh(Object key, Object value) {
+		IdentifiableValue cachedValue = mCache.getIdentifiable(key);
+		if (cachedValue != null) {
+			boolean success = mCache.putIfUntouched(key, cachedValue, value);
+			if (!success) {
+				LOGGER.info("Race condition on cached entity " + key);
+				LOGGER.info("Clearing entry from memcache");
+				mCache.delete(key);
+			}
+		}
 	}
 
 	/**

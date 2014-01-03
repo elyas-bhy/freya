@@ -139,6 +139,7 @@ public class ArtworkEndpoints {
 			Artwork artwork = dao.getArtwork(artworkId);
 			if (artwork != null) {
 				artwork.setArtist(artist);
+				dao.refresh(artworkId, artwork);
 				response.setValue(artwork.getId());
 			}
 			dao.close();
@@ -158,6 +159,7 @@ public class ArtworkEndpoints {
 			Artwork artwork = dao.getArtwork(artworkId);
 			if (artwork != null) {
 				artwork.addPhoto(photo);
+				dao.refresh(artworkId, artwork);
 				response.setValue(artwork.getId());
 			}
 			dao.close();
@@ -177,6 +179,7 @@ public class ArtworkEndpoints {
 			Artwork artwork = dao.getArtwork(artworkId);
 			if (artwork != null) {
 				artwork.setDimension(dimension);
+				dao.refresh(artworkId, artwork);
 				response.setValue(artwork.getId());
 			}
 			dao.close();
@@ -196,6 +199,7 @@ public class ArtworkEndpoints {
 			Artwork artwork = dao.getArtwork(artworkId);
 			if (artwork != null) {
 				artwork.addReproduction(repro);
+				dao.refresh(artworkId, artwork);
 				response.setValue(artworkId);
 			}
 			dao.close();
@@ -224,6 +228,7 @@ public class ArtworkEndpoints {
 			if (summary != null) artwork.setSummary(summary);
 			if (tag != null) artwork.addTag(tag);
 			if (comment != null) artwork.addComment(comment);
+			dao.refresh(artworkId, artwork);
 			response.setValue(artworkId);
 		}
 		dao.close();

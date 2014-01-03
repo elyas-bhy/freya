@@ -124,6 +124,7 @@ public class ArtCollectionEndpoints {
 			ArtCollection artcollection = dao.getArtCollection(artCollectionId);
 			if (artcollection != null) {
 				artcollection.addArtwork(artwork);
+				dao.refresh(artCollectionId, artcollection);
 				response.setValue(artCollectionId.toString());
 			}
 			dao.close();
@@ -144,6 +145,7 @@ public class ArtCollectionEndpoints {
 			ArtCollection artcollection = dao.getArtCollection(artCollectionId);
 			if (artcollection != null) {
 				artcollection.addComment(comment);
+				dao.refresh(artCollectionId, artcollection);
 				response.setValue(artCollectionId.toString());
 			}
 			dao.close();
@@ -164,6 +166,7 @@ public class ArtCollectionEndpoints {
 			ArtCollection artcollection = dao.getArtCollection(artCollectionId);
 			if (artcollection != null) {
 				artcollection.addTag(tag);
+				dao.refresh(artCollectionId, artcollection);
 				response.setValue(artCollectionId.toString());
 			}
 			dao.close();
