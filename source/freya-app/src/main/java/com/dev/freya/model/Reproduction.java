@@ -16,6 +16,8 @@
 
 package com.dev.freya.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -28,7 +30,9 @@ import org.datanucleus.api.jpa.annotations.Extension;
 
 
 @Entity
-public class Reproduction {
+public class Reproduction implements Serializable {
+	
+	private static final long serialVersionUID = -5551018882953951722L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +49,11 @@ public class Reproduction {
 	private ArtSupport support;
 	
 	public Reproduction() {
+		
+	}
+
+	public String getId() {
+		return id;
 	}
 
 	public Integer getStock() {
@@ -63,11 +72,11 @@ public class Reproduction {
 		this.price = price;
 	}
 	
-	public String getId() {
-		return id;
+	public ArtSupport getSupport() {
+		return support;
 	}
 
-	public void setSupport(ArtSupport paintingLinenCanvas) {
-		support = paintingLinenCanvas;
+	public void setSupport(ArtSupport support) {
+		this.support = support;
 	}
 }
