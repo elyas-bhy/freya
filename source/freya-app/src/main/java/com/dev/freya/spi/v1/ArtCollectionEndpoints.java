@@ -18,6 +18,7 @@ package com.dev.freya.spi.v1;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.inject.Named;
 
 import com.dev.freya.dao.FreyaDao;
@@ -72,7 +73,9 @@ public class ArtCollectionEndpoints {
 			httpMethod = HttpMethod.GET
 			
 	)
-	public List<Artwork> getArtworksByArtCollection(@Named("artcollection_id") Long artCollectionId, @Named("count") Integer count) {
+	public List<Artwork> getArtworksByArtCollection(
+			@Named("artcollection_id") Long artCollectionId, 
+			@Nullable @Named("count") Integer count) {
 		FreyaDao dao = new FreyaDao();
 		List<Artwork> artworks = dao.getArtworksByArtCollection(artCollectionId, count);
 		dao.close();

@@ -51,7 +51,9 @@ public class ArtworkEndpoints {
 	)
 	// TODO add support for year, tag query filters
 	public List<Artwork> listArtworks(
-			@Named("support") String support, @Named("technique") String technique, @Named("count") Integer count) {
+			@Nullable @Named("support") String support, 
+			@Nullable @Named("technique") String technique, 
+			@Nullable @Named("count") Integer count) {
 		FreyaDao dao = new FreyaDao();
 		List<Artwork> artworks = dao.listArtworks(support, technique, count);
 		dao.close();
