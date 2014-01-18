@@ -19,7 +19,8 @@
 
 <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="../../js/jquery.dataTables.js"></script>
-<link type="text/css" rel="stylesheet" href="../../css/smoothness/jquery-ui.css"/>
+<link type="text/css" rel="stylesheet" href="../../css/design.css"/>
+<link type="text/css" rel="stylesheet" href="../../css/ui-darkness/jquery-ui.min.css"/>
 
 <script type="text/javascript">
 
@@ -27,34 +28,36 @@
 	var items = <%=artists.getItems().toString()%>
 	
 	var input = {
-		"aaData" : items,
-		"bJQueryUI": true,
-        "sPaginationType": "full_numbers",
-		"aoColumns" : [ 
-		  { "sTitle" : "ID", "mData": "id"},
-		  { "sTitle" : "Artist name", "mData" : "name"},
-		  { "sTitle" : "Artworks", "mData" : "name", "sClass" : "aartworks"},
-		  { "sTitle" : "Photos", "mData" : "name", "sClass" : "aphotos"},
-		]
-	};
+			"aaData" : items,
+			"bJQueryUI": true,
+		    "sPaginationType": "full_numbers",
+			"aoColumns" : [ 
+			  { "sTitle" : "ID", "mData": "id", "sWidth" : "0%"},
+			  { "sTitle" : "Artist name", "mData" : "name", },
+			  { "sTitle" : "Artworks", "mData" : "name"},
+			  { "sTitle" : "Photos", "mData" : "name"},
+			]
+		};
 
 	$(document).ready(function() {
-		$('#dtable').dataTable(input);
-		
+		var oTable = $('#dtable').dataTable(input);
+		$('.DataTables_sort_wrapper').each(function() {
+			$(this).attr("title", $(this).text());
+		});
+	
 		$('#dtable tr').each(function() {
 			var id = $(this).find('td').eq(0).text();
 			$(this).find('td').eq(2).attr("data-id", id);
 			$(this).find('td').eq(3).attr("data-id", id);
+
+
+			$(this).find('td').eq(2).html("<a href='artworks.jsp?id=" + id + "'>link</a>");
+			$(this).find('td').eq(3).html("<a href='photos.jsp?id=" + id + "'>link</a>");
+
 		});
 
-		$('.aartworks').click(function() {
-			var id = $(this).data("id");
-			window.location.href = "artworks.jsp?id=" + id;
-		});
-
-		$('.aphotos').click(function() {
-			alert("Redirecting to photos: " + $(this).data("id"));
-		});
+		// Hide ID column
+		oTable.fnSetColumnVis(0, false);
 	});
 	
 	
@@ -62,9 +65,6 @@
 </head>
 
 <body>
-	<p>liste des artistes tableau:</p>
 	<table id='dtable' class='dtable' border='1'></table>
-	<p>liste des artistes json:</p>
-	<p><%=artists.getItems().toString()%></p>
 </body>
 </html>

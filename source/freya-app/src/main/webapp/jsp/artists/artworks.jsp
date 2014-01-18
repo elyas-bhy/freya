@@ -20,7 +20,8 @@
 
 <script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
 <script type="text/javascript" src="../../js/jquery.dataTables.js"></script>
-<link type="text/css" rel="stylesheet" href="../../css/smoothness/jquery-ui.css"/>
+<link type="text/css" rel="stylesheet" href="../../css/design.css"/>
+<link type="text/css" rel="stylesheet" href="../../css/ui-darkness/jquery-ui.min.css"/>
 
 <script type="text/javascript">
 
@@ -32,7 +33,7 @@
 			"bJQueryUI": true,
 		    "sPaginationType": "full_numbers",
 			"aoColumns" : [ 
-			  { "sTitle" : "ID", "mData": "id"},
+			  { "sTitle" : "ID", "mData": "id", "sWidth" : "0%"},
 			  { "sTitle" : "Title", "mData" : "title"},
 			  { "sTitle" : "Summary", "mData" : "summary"},
 			  { "sTitle" : "Support", "mData" : "support"},
@@ -45,10 +46,21 @@
 		      { "sTitle" : "Reproductions", "mData" : "reproductions"}
 		]
 	};
-
 	$(document).ready(function() {
-		$('#dtable').dataTable(input);
+		var oTable = $('#dtable').dataTable(input);
 		$('#artistname').text('Artist: ' + artist);
+		$('.DataTables_sort_wrapper').each(function() {
+			$(this).attr("title", $(this).text());
+		});
+	
+		$('#dtable tr').each(function() {
+			var id = $(this).find('td').eq(0).text();
+			$(this).find('td').eq(7).attr("data-id", id);
+			$(this).find('td').eq(7).html("<a href='reproductions.jsp?id=" + id + "'>link</a>");
+		});
+
+		// Hide ID column
+		oTable.fnSetColumnVis(0, false);
 	});
 	
 	
