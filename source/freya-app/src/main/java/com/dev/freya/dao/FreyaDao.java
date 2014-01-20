@@ -22,6 +22,11 @@ import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import com.dev.freya.model.ArtCollection;
 import com.dev.freya.model.Artist;
@@ -110,25 +115,20 @@ public class FreyaDao {
 	 * @param technique optional filter: the technique used by the artworks
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Artwork> listArtworks(String support, String technique, Integer count) {
-		String keyword = " where ";
-		StringBuffer sb = new StringBuffer("select a from Artwork a");
-		if (support != null) {
-			sb.append(keyword);
-			sb.append("a.support = ");
-			sb.append(support);
-			keyword = " and ";
-		}
-		if (technique != null) {
-			sb.append(keyword);
-			sb.append("a.technique = ");
-			sb.append(technique);
-		}
-		Query query = mEntityManager.createQuery(sb.toString());
+		CriteriaBuilder cb = mEntityManager.getCriteriaBuilder();
+		CriteriaQuery<Artwork> q = cb.createQuery(Artwork.class);
+		Root<Artwork> a = q.from(Artwork.class);
+		
+		List<Predicate> predicates = new ArrayList<>();
+		if (support != null)   predicates.add(cb.equal(a.get("support"), support));
+		if (technique != null) predicates.add(cb.equal(a.get("technique"), technique));
+		q.select(a).where(predicates.toArray(new Predicate[]{}));
+		
+		TypedQuery<Artwork> query = mEntityManager.createQuery(q);
 		List<Artwork> artworks = query.getResultList();
 		if (count != null) {
-			List<Artwork> result = new ArrayList<Artwork>();
+			List<Artwork> result = new ArrayList<>();
 			// Size function and subqueries are not supported in the datastore
 			// Therefore we are forced to treat the query as follows
 			for (Artwork art : artworks) {
