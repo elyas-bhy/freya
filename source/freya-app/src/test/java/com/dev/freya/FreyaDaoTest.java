@@ -18,6 +18,7 @@ package com.dev.freya;
 
 import static org.junit.Assert.assertEquals;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +40,7 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 public class FreyaDaoTest {
 
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	private ArtCollection artcollection1;
 	private ArtCollection artcollection2;
 
@@ -58,7 +60,7 @@ public class FreyaDaoTest {
 		artwork1.setTitle("Title 1");
 		artwork1.setSupport(ArtSupport.PAINTING_CARDBOARD);
 		artwork1.setTechnique(ArtTechnique.PAINTING_ACRYLIC);
-		artwork1.setDate(new Date());
+		artwork1.setDate(sdf.format(new Date()));
 		artwork1.setSummary("Summary 1");
 		artwork1.addPhoto(new Photo("Desc 1", "URL 1"));
 		artwork1.addPhoto(new Photo("Desc 2", "URL 2"));
@@ -69,7 +71,7 @@ public class FreyaDaoTest {
 		artwork2.setTitle("Title 2");
 		artwork2.setSupport(ArtSupport.PAINTING_LINEN_CANVAS);
 		artwork2.setTechnique(ArtTechnique.PAINTING_GOUACHE);
-		artwork2.setDate(new Date());
+		artwork2.setDate(sdf.format(new Date()));
 		artwork2.setSummary("Summary 2");
 		artwork2.addPhoto(new Photo("Desc 3", "URL 3"));
 		artwork2.addPhoto(new Photo("Desc 4", "URL 4"));
@@ -80,7 +82,7 @@ public class FreyaDaoTest {
 		artwork3.setTitle("Title 3");
 		artwork3.setSupport(ArtSupport.PAINTING_PAPER);
 		artwork3.setTechnique(ArtTechnique.PAINTING_WATERCOLOR);
-		artwork3.setDate(new Date());
+		artwork3.setDate(sdf.format(new Date()));
 		artwork3.setSummary("Summary 3");
 		artwork3.setDimension(new Dimension(20, 5, 35));
 

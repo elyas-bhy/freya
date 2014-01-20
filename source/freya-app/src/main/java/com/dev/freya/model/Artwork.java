@@ -67,8 +67,8 @@ public class Artwork implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private ArtTechnique technique;
 	
-	@Temporal(value = TemporalType.DATE)
-	private Date date;
+	@Basic
+	private String date;
 	
 	@Lob
 	private String summary;
@@ -137,11 +137,11 @@ public class Artwork implements Serializable {
 		this.technique = technique;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
