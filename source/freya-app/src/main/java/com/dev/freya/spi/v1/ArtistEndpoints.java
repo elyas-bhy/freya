@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.inject.Named;
 
 import com.dev.freya.dao.FreyaDao;
@@ -65,10 +66,13 @@ public class ArtistEndpoints {
 			httpMethod = HttpMethod.GET
 			
 	)
-	// TODO add support for query filters
-	public List<Artwork> getArtworksByArtist(@Named("artist_id") String artistId) {
+	// TODO add support for year and tag query filters
+	public List<Artwork> getArtworksByArtist(
+			@Named("artist_id") String artistId, 
+			@Nullable @Named("support") String support, 
+			@Nullable @Named("technique") String technique) {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.getArtworksByArtist(artistId);
+		List<Artwork> artworks = dao.getArtworksByArtist(artistId, support, technique);
 		dao.close();
 		return artworks;
 	}

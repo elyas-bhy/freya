@@ -25,8 +25,11 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
 
 import com.dev.freya.model.ArtCollection;
 import com.dev.freya.model.Artist;
@@ -113,6 +116,7 @@ public class FreyaDao {
 	 * Returns a list of all stored artworks matching the specified optional filters
 	 * @param support optional filter: the type of support used by the artworks
 	 * @param technique optional filter: the technique used by the artworks
+	 * @param count optional filter: the maximal number of reproductions that an artwork can have
 	 * @return
 	 */
 	public List<Artwork> listArtworks(String support, String technique, Integer count) {
@@ -147,13 +151,30 @@ public class FreyaDao {
 	/**
 	 * Returns a list of artworks made by the specified artist
 	 * @param artistId the artist's ID
+	 * @param support optional filter: the type of support used by the artworks
+	 * @param technique optional filter: the technique used by the artworks
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Artwork> getArtworksByArtist(String artistId) {
-		Query query = mEntityManager
-				.createQuery("select a from Artwork a join a.artist t where t.id = :artistId");
-		query.setParameter("artistId", artistId);
+	public List<Artwork> getArtworksByArtist(String artistId, 
+			String support, String technique) {
+		CriteriaBuilder cb = mEntityManager.getCriteriaBuilder();
+		CriteriaQuery<Artwork> q = cb.createQuery(Artwork.class);
+		Root<Artwork> a = q.from(Artwork.class);
+		List<Predicate> predicates = new ArrayList<>();
+		
+		// Workaround of JPA implementation that uses sub-object referencing,
+		// which is unsupported on Google App Engine
+		a.join("artist").alias("t");
+		a.alias("t");
+		predicates.add(cb.equal(a.get("id"), artistId));
+		a.alias("a");
+		
+		if (support != null)   predicates.add(cb.equal(a.get("support"), support));
+		if (technique != null) predicates.add(cb.equal(a.get("technique"), technique));
+		q.select(a).where(predicates.toArray(new Predicate[]{}));
+		
+		TypedQuery<Artwork> query = mEntityManager.createQuery(q);
 		List<Artwork> artworks = query.getResultList();
 		return artworks;
 	}

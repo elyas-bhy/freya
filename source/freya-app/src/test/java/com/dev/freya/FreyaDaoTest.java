@@ -85,6 +85,7 @@ public class FreyaDaoTest {
 		artwork3.setDate(sdf.format(new Date()));
 		artwork3.setSummary("Summary 3");
 		artwork3.setDimension(new Dimension(20, 5, 35));
+		artwork3.addTag("abstract");
 
 		artcollection1 = new ArtCollection();
 		artcollection1.addArtwork(artwork1);
@@ -113,12 +114,21 @@ public class FreyaDaoTest {
 	public void teardown() {
 		helper.tearDown();
 	}
-	
+
 	@Test
 	public void testGetArtworksByArtist() {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.getArtworksByArtist(daliArtistId);
+		List<Artwork> artworks = dao.getArtworksByArtist(daliArtistId, null, null);
 		assertEquals(artworks.size(), 2);
+		dao.close();
+	}
+	
+	@Test
+	public void testGetArtworksByArtistAndSupport() {
+		FreyaDao dao = new FreyaDao();
+		List<Artwork> artworks = dao.getArtworksByArtist(daliArtistId, "PAINTING_PAPER", null);
+		assertEquals(artworks.size(), 1);
+		assertEquals(artworks.get(0).getSupport(), ArtSupport.PAINTING_PAPER);
 		dao.close();
 	}
 	
