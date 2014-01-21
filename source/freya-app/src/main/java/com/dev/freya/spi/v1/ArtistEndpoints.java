@@ -83,10 +83,13 @@ public class ArtistEndpoints {
 			httpMethod = HttpMethod.GET
 			
 	)
-	// TODO add support for query filters
-	public List<Photo> getPhotosByArtist(@Named("artist_id") String artistId) {
+	// TODO add support for year and tag query filters
+	public List<Photo> getPhotosByArtist(
+			@Named("artist_id") String artistId,
+			@Nullable @Named("support") String support,
+			@Nullable @Named("technique") String technique) {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.getPhotosByArtist(artistId);
+		List<Photo> photos = dao.getPhotosByArtist(artistId, support, technique);
 		dao.close();
 		return photos;
 	}

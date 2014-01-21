@@ -131,12 +131,24 @@ public class FreyaDaoTest {
 		assertEquals(artworks.get(0).getSupport(), ArtSupport.PAINTING_PAPER);
 		dao.close();
 	}
-	
+
 	@Test
 	public void testGetPhotosByArtist() {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.getPhotosByArtist(daliArtistId);
+		List<Photo> photos = dao.getPhotosByArtist(daliArtistId, null, null);
 		assertEquals(photos.size(), 2);
+		dao.close();
+	}
+	
+	@Test
+	public void testGetPhotosByArtistAndSupport() {
+		FreyaDao dao = new FreyaDao();
+		List<Photo> photos = dao.getPhotosByArtist(daliArtistId, "PAINTING_CARDBOARD", null);
+		assertEquals(photos.size(), 2);
+		assertEquals(photos.get(0).getDesc(), "Desc 1");
+		assertEquals(photos.get(0).getUrl(), "URL 1");
+		assertEquals(photos.get(1).getDesc(), "Desc 2");
+		assertEquals(photos.get(1).getUrl(), "URL 2");
 		dao.close();
 	}
 

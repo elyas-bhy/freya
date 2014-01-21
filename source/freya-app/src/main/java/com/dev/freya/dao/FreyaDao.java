@@ -17,6 +17,7 @@
 package com.dev.freya.dao;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -189,20 +190,20 @@ public class FreyaDao {
 		Query query = mEntityManager.createQuery(
 				"select c.artworks from ArtCollection c where c.id = :artCollectionId");
 		query.setParameter("artCollectionId", artCollectionId);
-		List<List<Artwork>> result = query.getResultList();
-		List<Artwork> artworks = flatten(result, Artwork.class);
-		List<Artwork> finalResult = new ArrayList<Artwork>();
+		List<List<Artwork>> qresult = query.getResultList();
+		List<Artwork> artworks = flatten(qresult, Artwork.class);
 		if (count != null) {
+			List<Artwork> result = new ArrayList<Artwork>();
 			for (Artwork artwork : artworks) {
 				if (artwork.getReproductions() != null) {
 					if (artwork.getReproductions().size() <= count.intValue()) {
-						finalResult.add(artwork);
+						result.add(artwork);
 					}
 				} else {
-					finalResult.add(artwork);
+					result.add(artwork);
 				}
 			}
-			return finalResult;
+			return result;
 		}
 		return artworks;
 	}
@@ -228,12 +229,27 @@ public class FreyaDao {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Photo> getPhotosByArtist(String artistId) {
-		Query query = mEntityManager.createQuery(
-				"select a.photos from Artwork a join a.artist t where t.id = :artistId");
+	public List<Photo> getPhotosByArtist(String artistId, String support, String technique) {
+		// Manually build dynamic query, as some required methods from Criteria API
+		// are not supported on Google App Engine
+		StringBuffer sb = new StringBuffer("select a.photos from Artwork a");
+		sb.append(" join a.artist t where t.id = :artistId");
+		
+		if (support != null) {
+			sb.append(" and a.support = '");
+			sb.append(support);
+			sb.append("'");
+		}
+		if (technique != null) {
+			sb.append(" and a.technique = '");
+			sb.append(technique);
+			sb.append("'");
+		}
+		
+		Query query = mEntityManager.createQuery(sb.toString());
 		query.setParameter("artistId", artistId);
-		List<List<Photo>> result = query.getResultList();
-		return flatten(result, Photo.class);
+		List<List<Photo>> qresult = query.getResultList();
+		return flatten(qresult, Photo.class);
 	}
 	
 	/**
