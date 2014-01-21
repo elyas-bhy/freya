@@ -229,12 +229,11 @@ public class FreyaDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Photo> getPhotosByArtist(String artistId) {
-		// FIXME should not return empty lists
 		Query query = mEntityManager.createQuery(
 				"select a.photos from Artwork a join a.artist t where t.id = :artistId");
 		query.setParameter("artistId", artistId);
-		List<Photo> photos = query.getResultList();
-		return photos;
+		List<List<Photo>> result = query.getResultList();
+		return flatten(result, Photo.class);
 	}
 	
 	/**
