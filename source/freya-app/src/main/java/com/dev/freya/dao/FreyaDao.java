@@ -17,7 +17,6 @@
 package com.dev.freya.dao;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -26,8 +25,6 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
@@ -156,7 +153,6 @@ public class FreyaDao {
 	 * @param technique optional filter: the technique used by the artworks
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Artwork> getArtworksByArtist(String artistId, 
 			String support, String technique) {
 		CriteriaBuilder cb = mEntityManager.getCriteriaBuilder();
@@ -217,8 +213,18 @@ public class FreyaDao {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Photo> getArtworkPhotos() {
-		Query query = mEntityManager.createQuery("select a.photos from Artwork a");
+	public List<Photo> getArtworkPhotos(String support, String technique) {
+		CriteriaBuilder cb = mEntityManager.getCriteriaBuilder();
+		CriteriaQuery<List<Photo>> q = cb.createQuery((Class<List<Photo>>)(Class<?>)List.class);
+		Root<Artwork> a = q.from(Artwork.class);
+		Selection<List<Photo>> p = a.get("photos");
+		
+		List<Predicate> predicates = new ArrayList<>();
+		if (support != null)   predicates.add(cb.equal(a.get("support"), support));
+		if (technique != null) predicates.add(cb.equal(a.get("technique"), technique));
+		q.select(p).where(predicates.toArray(new Predicate[]{}));
+		
+		TypedQuery<List<Photo>> query = mEntityManager.createQuery(q);
 		List<List<Photo>> result = query.getResultList();
 		return flatten(result, Photo.class);
 	}

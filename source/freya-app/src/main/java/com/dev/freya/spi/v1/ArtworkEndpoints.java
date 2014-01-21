@@ -77,10 +77,12 @@ public class ArtworkEndpoints {
 			path = "artworks/photos",
 			httpMethod = HttpMethod.GET
 	)
-	// TODO add support for query filters
-	public List<Photo> getArtworkPhotos() {
+	// TODO add support for year and tag query filters
+	public List<Photo> getArtworkPhotos(
+			@Nullable @Named("support") String support,
+			@Nullable @Named("technique") String technique) {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.getArtworkPhotos();
+		List<Photo> photos = dao.getArtworkPhotos(support, technique);
 		dao.close();
 		return photos;
 	}
