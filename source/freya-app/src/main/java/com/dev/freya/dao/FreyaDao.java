@@ -179,6 +179,7 @@ public class FreyaDao {
 	/**
 	 * Returns a list of artworks contained in the specified artcollection
 	 * @param artCollectionId the artcollection's ID
+	 * @param count optional filter: the maximal number of reproductions that an artwork can have
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -210,6 +211,8 @@ public class FreyaDao {
 
 	/**
 	 * Returns a list of all stored photos
+	 * @param support optional filter: the type of support used by the artworks
+	 * @param technique optional filter: the technique used by the artworks
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -232,30 +235,33 @@ public class FreyaDao {
 	/**
 	 * Returns a list of photos of the specified artist's artworks 
 	 * @param artistId the artist's ID
+	 * @param support optional filter: the type of support used by the artworks
+	 * @param technique optional filter: the technique used by the artworks
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Photo> getPhotosByArtist(String artistId, String support, String technique) {
-		// Manually build dynamic query, as some required methods from Criteria API
-		// are not supported on Google App Engine
-		StringBuffer sb = new StringBuffer("select a.photos from Artwork a");
-		sb.append(" join a.artist t where t.id = :artistId");
+		CriteriaBuilder cb = mEntityManager.getCriteriaBuilder();
+		CriteriaQuery<List<Photo>> q = cb.createQuery((Class<List<Photo>>)(Class<?>)List.class);
+		Root<Artwork> a = q.from(Artwork.class);
+		Selection<List<Photo>> p = a.get("photos");
+		List<Predicate> predicates = new ArrayList<>();
 		
-		if (support != null) {
-			sb.append(" and a.support = '");
-			sb.append(support);
-			sb.append("'");
-		}
-		if (technique != null) {
-			sb.append(" and a.technique = '");
-			sb.append(technique);
-			sb.append("'");
-		}
+		// Workaround of JPA implementation that uses sub-object referencing,
+		// which is unsupported on Google App Engine
+		a.join("artist").alias("t");
+		a.alias("t");
+		predicates.add(cb.equal(a.get("id"), artistId));
+		a.alias("a");
 		
-		Query query = mEntityManager.createQuery(sb.toString());
-		query.setParameter("artistId", artistId);
-		List<List<Photo>> qresult = query.getResultList();
-		return flatten(qresult, Photo.class);
+		if (support != null)   predicates.add(cb.equal(a.get("support"), support));
+		if (technique != null) predicates.add(cb.equal(a.get("technique"), technique));
+		q.select(p).where(predicates.toArray(new Predicate[]{}));
+		
+		TypedQuery<List<Photo>> query = mEntityManager.createQuery(q);
+		LOGGER.info(query.toString());
+		List<List<Photo>> result = query.getResultList();
+		return flatten(result, Photo.class);
 	}
 	
 	/**
