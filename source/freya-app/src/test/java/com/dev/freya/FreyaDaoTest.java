@@ -76,6 +76,7 @@ public class FreyaDaoTest {
 		artwork2.addPhoto(new Photo("Desc 3", "URL 3"));
 		artwork2.addPhoto(new Photo("Desc 4", "URL 4"));
 		artwork2.setDimension(new Dimension(12, 10, 15));
+		artwork2.addTag("modern");
 		
 		Artwork artwork3 = new Artwork();
 		artwork3.setArtist(new Artist("Dali"));
@@ -118,7 +119,7 @@ public class FreyaDaoTest {
 	@Test
 	public void testListArtworks() {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.listArtworks(null, null, null, null);
+		List<Artwork> artworks = dao.listArtworks(null, null, null, null, null);
 		assertEquals(artworks.size(), 3);
 		dao.close();
 	}
@@ -126,7 +127,15 @@ public class FreyaDaoTest {
 	@Test
 	public void testListArtworksByYear() {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.listArtworks(null, null, "2010", null);
+		List<Artwork> artworks = dao.listArtworks(null, null, "2010", null, null);
+		assertEquals(artworks.size(), 1);
+		dao.close();
+	}
+	
+	@Test
+	public void testListArtworksByTag() {
+		FreyaDao dao = new FreyaDao();
+		List<Artwork> artworks = dao.listArtworks(null, null, null, "abstract", null);
 		assertEquals(artworks.size(), 1);
 		dao.close();
 	}
@@ -134,7 +143,7 @@ public class FreyaDaoTest {
 	@Test
 	public void testGetArtworksByArtist() {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.getArtworksByArtist(daliArtistId, null, null, null);
+		List<Artwork> artworks = dao.getArtworksByArtist(daliArtistId, null, null, null, null);
 		assertEquals(artworks.size(), 2);
 		dao.close();
 	}
@@ -142,7 +151,7 @@ public class FreyaDaoTest {
 	@Test
 	public void testGetArtworksByArtistAndSupport() {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.getArtworksByArtist(daliArtistId, "PAINTING_PAPER", null, null);
+		List<Artwork> artworks = dao.getArtworksByArtist(daliArtistId, "PAINTING_PAPER", null, null, null);
 		assertEquals(artworks.size(), 1);
 		assertEquals(artworks.get(0).getSupport(), ArtSupport.PAINTING_PAPER);
 		dao.close();
@@ -151,16 +160,26 @@ public class FreyaDaoTest {
 	@Test
 	public void testGetArtworksByArtistAndSupportAndTechnique() {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.getArtworksByArtist(daliArtistId, "PAINTING_PAPER", "PAINTING_WATERCOLOR", null);
+		List<Artwork> artworks = dao.getArtworksByArtist(
+				daliArtistId, "PAINTING_PAPER", "PAINTING_WATERCOLOR", null, null);
 		assertEquals(artworks.size(), 1);
 		assertEquals(artworks.get(0).getSupport(), ArtSupport.PAINTING_PAPER);
 		dao.close();
 	}
-	
+
 	@Test
 	public void testGetArtworksByArtistAndYear() {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.getArtworksByArtist(daliArtistId, null, null, "2010");
+		List<Artwork> artworks = dao.getArtworksByArtist(daliArtistId, null, null, "2010", null);
+		assertEquals(artworks.size(), 1);
+		assertEquals(artworks.get(0).getTitle(), "Title 3");
+		dao.close();
+	}
+	
+	@Test
+	public void testGetArtworksByArtistAndTag() {
+		FreyaDao dao = new FreyaDao();
+		List<Artwork> artworks = dao.getArtworksByArtist(daliArtistId, null, null, null, "abstract");
 		assertEquals(artworks.size(), 1);
 		assertEquals(artworks.get(0).getTitle(), "Title 3");
 		dao.close();
@@ -169,7 +188,7 @@ public class FreyaDaoTest {
 	@Test
 	public void testGetPhotosByArtist() {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.getPhotosByArtist(daliArtistId, null, null, null);
+		List<Photo> photos = dao.getPhotosByArtist(daliArtistId, null, null, null, null);
 		assertEquals(photos.size(), 2);
 		dao.close();
 	}
@@ -177,7 +196,7 @@ public class FreyaDaoTest {
 	@Test
 	public void testGetPhotosByArtistAndSupport() {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.getPhotosByArtist(daliArtistId, "PAINTING_CARDBOARD", null, null);
+		List<Photo> photos = dao.getPhotosByArtist(daliArtistId, "PAINTING_CARDBOARD", null, null, null);
 		assertEquals(photos.size(), 2);
 		assertEquals(photos.get(0).getDesc(), "Desc 1");
 		assertEquals(photos.get(0).getUrl(), "URL 1");
@@ -185,11 +204,19 @@ public class FreyaDaoTest {
 		assertEquals(photos.get(1).getUrl(), "URL 2");
 		dao.close();
 	}
-	
+
 	@Test
 	public void testGetPhotosByArtistAndYear() {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.getPhotosByArtist(daliArtistId, null, null, "2010");
+		List<Photo> photos = dao.getPhotosByArtist(daliArtistId, null, null, "2010", null);
+		assertEquals(photos.size(), 0);
+		dao.close();
+	}
+	
+	@Test
+	public void testGetPhotosByArtistAndTag() {
+		FreyaDao dao = new FreyaDao();
+		List<Photo> photos = dao.getPhotosByArtist(daliArtistId, null, null, null, "abstract");
 		assertEquals(photos.size(), 0);
 		dao.close();
 	}
@@ -230,7 +257,7 @@ public class FreyaDaoTest {
 	@Test
 	public void testGetArtworkPhotos() {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.getArtworkPhotos(null, null, null);
+		List<Photo> photos = dao.getArtworkPhotos(null, null, null, null);
 		assertEquals(photos.size(), 4);
 		dao.close();
 	}
@@ -238,7 +265,19 @@ public class FreyaDaoTest {
 	@Test
 	public void testGetArtworkPhotosBySupport() {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.getArtworkPhotos("PAINTING_LINEN_CANVAS", null, null);
+		List<Photo> photos = dao.getArtworkPhotos("PAINTING_LINEN_CANVAS", null, null, null);
+		assertEquals(photos.size(), 2);
+		assertEquals(photos.get(0).getDesc(), "Desc 3");
+		assertEquals(photos.get(0).getUrl(), "URL 3");
+		assertEquals(photos.get(1).getDesc(), "Desc 4");
+		assertEquals(photos.get(1).getUrl(), "URL 4");
+		dao.close();
+	}
+
+	@Test
+	public void testGetArtworkPhotosByYear() {
+		FreyaDao dao = new FreyaDao();
+		List<Photo> photos = dao.getArtworkPhotos(null, null, "1999", null);
 		assertEquals(photos.size(), 2);
 		assertEquals(photos.get(0).getDesc(), "Desc 3");
 		assertEquals(photos.get(0).getUrl(), "URL 3");
@@ -248,9 +287,9 @@ public class FreyaDaoTest {
 	}
 	
 	@Test
-	public void testGetArtworkPhotosByYear() {
+	public void testGetArtworkPhotosByTag() {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.getArtworkPhotos(null, null, "1999");
+		List<Photo> photos = dao.getArtworkPhotos(null, null, null, "modern");
 		assertEquals(photos.size(), 2);
 		assertEquals(photos.get(0).getDesc(), "Desc 3");
 		assertEquals(photos.get(0).getUrl(), "URL 3");
