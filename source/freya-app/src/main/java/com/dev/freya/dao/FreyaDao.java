@@ -259,7 +259,6 @@ public class FreyaDao {
 		q.select(p).where(predicates.toArray(new Predicate[]{}));
 		
 		TypedQuery<List<Photo>> query = mEntityManager.createQuery(q);
-		LOGGER.info(query.toString());
 		List<List<Photo>> result = query.getResultList();
 		return flatten(result, Photo.class);
 	}
