@@ -66,13 +66,14 @@ public class ArtistEndpoints {
 			httpMethod = HttpMethod.GET
 			
 	)
-	// TODO add support for year and tag query filters
+	// TODO add support for tag query filters
 	public List<Artwork> getArtworksByArtist(
 			@Named("artist_id") String artistId, 
 			@Nullable @Named("support") String support, 
-			@Nullable @Named("technique") String technique) {
+			@Nullable @Named("technique") String technique,
+			@Nullable @Named("year") String year) {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.getArtworksByArtist(artistId, support, technique);
+		List<Artwork> artworks = dao.getArtworksByArtist(artistId, support, technique, year);
 		dao.close();
 		return artworks;
 	}
@@ -83,13 +84,14 @@ public class ArtistEndpoints {
 			httpMethod = HttpMethod.GET
 			
 	)
-	// TODO add support for year and tag query filters
+	// TODO add support for tag query filters
 	public List<Photo> getPhotosByArtist(
 			@Named("artist_id") String artistId,
 			@Nullable @Named("support") String support,
-			@Nullable @Named("technique") String technique) {
+			@Nullable @Named("technique") String technique,
+			@Nullable @Named("year") String year) {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.getPhotosByArtist(artistId, support, technique);
+		List<Photo> photos = dao.getPhotosByArtist(artistId, support, technique, year);
 		dao.close();
 		return photos;
 	}

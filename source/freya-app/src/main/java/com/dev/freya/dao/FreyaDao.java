@@ -114,10 +114,11 @@ public class FreyaDao {
 	 * Returns a list of all stored artworks matching the specified optional filters
 	 * @param support optional filter: the type of support used by the artworks
 	 * @param technique optional filter: the technique used by the artworks
+	 * @param year optional filter: the year of fabrication of the artworks
 	 * @param count optional filter: the maximal number of reproductions that an artwork can have
 	 * @return
 	 */
-	public List<Artwork> listArtworks(String support, String technique, Integer count) {
+	public List<Artwork> listArtworks(String support, String technique, String year, Integer count) {
 		CriteriaBuilder cb = mEntityManager.getCriteriaBuilder();
 		CriteriaQuery<Artwork> q = cb.createQuery(Artwork.class);
 		Root<Artwork> a = q.from(Artwork.class);
@@ -125,6 +126,7 @@ public class FreyaDao {
 		List<Predicate> predicates = new ArrayList<>();
 		if (support != null)   predicates.add(cb.equal(a.get("support"), support));
 		if (technique != null) predicates.add(cb.equal(a.get("technique"), technique));
+		if (year != null)      predicates.add(cb.like(a.<String>get("date"), year + "%"));
 		q.select(a).where(predicates.toArray(new Predicate[]{}));
 		
 		TypedQuery<Artwork> query = mEntityManager.createQuery(q);
@@ -151,10 +153,13 @@ public class FreyaDao {
 	 * @param artistId the artist's ID
 	 * @param support optional filter: the type of support used by the artworks
 	 * @param technique optional filter: the technique used by the artworks
+	 * @param year optional filter: the year of fabrication of the artworks
 	 * @return
 	 */
 	public List<Artwork> getArtworksByArtist(String artistId, 
-			String support, String technique) {
+			String support, String technique, String year) {
+		// Since joins are only supported when all filters are 'equals' filters,
+		// we need to perform further filtering on the returned query result
 		CriteriaBuilder cb = mEntityManager.getCriteriaBuilder();
 		CriteriaQuery<Artwork> q = cb.createQuery(Artwork.class);
 		Root<Artwork> a = q.from(Artwork.class);
@@ -172,7 +177,12 @@ public class FreyaDao {
 		q.select(a).where(predicates.toArray(new Predicate[]{}));
 		
 		TypedQuery<Artwork> query = mEntityManager.createQuery(q);
-		List<Artwork> artworks = query.getResultList();
+		List<Artwork> qresult = query.getResultList();
+		List<Artwork> artworks = new ArrayList<>();
+		for (Artwork artwork : qresult) {
+			if (year != null && !artwork.getDate().startsWith(year)) continue;
+			artworks.add(artwork);
+		}
 		return artworks;
 	}
 
@@ -213,10 +223,11 @@ public class FreyaDao {
 	 * Returns a list of all stored photos
 	 * @param support optional filter: the type of support used by the artworks
 	 * @param technique optional filter: the technique used by the artworks
+	 * @param year optional filter: the year of fabrication of the artworks
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Photo> getArtworkPhotos(String support, String technique) {
+	public List<Photo> getArtworkPhotos(String support, String technique, String year) {
 		CriteriaBuilder cb = mEntityManager.getCriteriaBuilder();
 		CriteriaQuery<List<Photo>> q = cb.createQuery((Class<List<Photo>>)(Class<?>)List.class);
 		Root<Artwork> a = q.from(Artwork.class);
@@ -225,6 +236,7 @@ public class FreyaDao {
 		List<Predicate> predicates = new ArrayList<>();
 		if (support != null)   predicates.add(cb.equal(a.get("support"), support));
 		if (technique != null) predicates.add(cb.equal(a.get("technique"), technique));
+		if (year != null)      predicates.add(cb.like(a.<String>get("date"), year + "%"));
 		q.select(p).where(predicates.toArray(new Predicate[]{}));
 		
 		TypedQuery<List<Photo>> query = mEntityManager.createQuery(q);
@@ -239,10 +251,12 @@ public class FreyaDao {
 	 * @param technique optional filter: the technique used by the artworks
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public List<Photo> getPhotosByArtist(String artistId, String support, String technique) {
+	public List<Photo> getPhotosByArtist(String artistId, String support, String technique, String year) {
+		// Since joins are only supported when all filters are 'equals' filters,
+		// we need to retrieve the artworks (instead of their photos) and perform
+		// further filtering on the returned query result
 		CriteriaBuilder cb = mEntityManager.getCriteriaBuilder();
-		CriteriaQuery<List<Photo>> q = cb.createQuery((Class<List<Photo>>)(Class<?>)List.class);
+		CriteriaQuery<Artwork> q = cb.createQuery(Artwork.class);
 		Root<Artwork> a = q.from(Artwork.class);
 		Selection<List<Photo>> p = a.get("photos");
 		List<Predicate> predicates = new ArrayList<>();
@@ -256,11 +270,16 @@ public class FreyaDao {
 		
 		if (support != null)   predicates.add(cb.equal(a.get("support"), support));
 		if (technique != null) predicates.add(cb.equal(a.get("technique"), technique));
-		q.select(p).where(predicates.toArray(new Predicate[]{}));
+		q.select(a).where(predicates.toArray(new Predicate[]{}));
 		
-		TypedQuery<List<Photo>> query = mEntityManager.createQuery(q);
-		List<List<Photo>> result = query.getResultList();
-		return flatten(result, Photo.class);
+		TypedQuery<Artwork> query = mEntityManager.createQuery(q);
+		List<Artwork> qresult = query.getResultList();
+		List<Photo> photos = new ArrayList<>();
+		for (Artwork artwork : qresult) {
+			if (year != null && !artwork.getDate().startsWith(year)) continue;
+			photos.addAll(artwork.getPhotos());
+		}
+		return photos;
 	}
 	
 	/**
