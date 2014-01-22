@@ -4,6 +4,7 @@
 <%@ page import="com.appspot.freya_app.freya.model.ArtworkCollection"%>
 <%@ page import="com.google.api.client.extensions.appengine.http.UrlFetchTransport"%>
 <%@ page import="com.google.api.client.json.gson.GsonFactory"%>
+<jsp:include page="includes/header.jsp"></jsp:include>
 
 <%
 	Freya freya = new Freya.Builder(new UrlFetchTransport(), new GsonFactory(), null).build();

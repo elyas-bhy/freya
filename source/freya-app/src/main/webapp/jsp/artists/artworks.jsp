@@ -10,7 +10,7 @@
 	Freya freya = new Freya.Builder(new UrlFetchTransport(), new GsonFactory(), null).build();
 	ArtworkCollection artworks = null;
 	try {
-		String id = request.getParameter("id");
+		String id = request.getParameter("artist");
 		artworks = freya.artists().getArtworksByArtist(id).execute();
 	} catch (IOException e) {
 		

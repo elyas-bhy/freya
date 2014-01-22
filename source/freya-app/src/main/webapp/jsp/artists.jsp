@@ -45,7 +45,7 @@
 			$(this).find('td').eq(3).attr("data-id", id);
 
 
-			$(this).find('td').eq(2).html("<a href='artworks.jsp?artist=" + id + "'>link</a>");
+			$(this).find('td').eq(2).html("<a href='artists/artworks.jsp?artist=" + id + "'>link</a>");
 			$(this).find('td').eq(3).html("<a href='photos.jsp?artist=" + id + "'>link</a>");
 
 		});
