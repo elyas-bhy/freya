@@ -25,8 +25,6 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
@@ -116,10 +114,13 @@ public class FreyaDao {
 	 * Returns a list of all stored artworks matching the specified optional filters
 	 * @param support optional filter: the type of support used by the artworks
 	 * @param technique optional filter: the technique used by the artworks
+	 * @param year optional filter: the year of fabrication of the artworks
+	 * @param tag optional filter: the tag used by the artworks
 	 * @param count optional filter: the maximal number of reproductions that an artwork can have
 	 * @return
 	 */
-	public List<Artwork> listArtworks(String support, String technique, Integer count) {
+	public List<Artwork> listArtworks(String support, String technique, 
+			String year, String tag, Integer count) {
 		CriteriaBuilder cb = mEntityManager.getCriteriaBuilder();
 		CriteriaQuery<Artwork> q = cb.createQuery(Artwork.class);
 		Root<Artwork> a = q.from(Artwork.class);
@@ -127,14 +128,17 @@ public class FreyaDao {
 		List<Predicate> predicates = new ArrayList<>();
 		if (support != null)   predicates.add(cb.equal(a.get("support"), support));
 		if (technique != null) predicates.add(cb.equal(a.get("technique"), technique));
+		if (year != null)      predicates.add(cb.like(a.<String>get("date"), year + "%"));
+		if (tag != null)       predicates.add(cb.isMember(tag, a.<List<String>>get("tags")));
 		q.select(a).where(predicates.toArray(new Predicate[]{}));
 		
 		TypedQuery<Artwork> query = mEntityManager.createQuery(q);
 		List<Artwork> artworks = query.getResultList();
+		
+		// Size function and subqueries are not supported in the datastore
+		// Therefore we are forced to treat the query as follows
 		if (count != null) {
 			List<Artwork> result = new ArrayList<>();
-			// Size function and subqueries are not supported in the datastore
-			// Therefore we are forced to treat the query as follows
 			for (Artwork art : artworks) {
 				if (art.getReproductions() != null) {
 					if (art.getReproductions().size() <= count.intValue())
@@ -153,11 +157,14 @@ public class FreyaDao {
 	 * @param artistId the artist's ID
 	 * @param support optional filter: the type of support used by the artworks
 	 * @param technique optional filter: the technique used by the artworks
+	 * @param year optional filter: the year of fabrication of the artworks
+	 * @param tag optional filter: the tag used by the artworks
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Artwork> getArtworksByArtist(String artistId, 
-			String support, String technique) {
+			String support, String technique, String year, String tag) {
+		// Since joins are only supported when all filters are 'equals' filters,
+		// we need to perform further filtering on the returned query result
 		CriteriaBuilder cb = mEntityManager.getCriteriaBuilder();
 		CriteriaQuery<Artwork> q = cb.createQuery(Artwork.class);
 		Root<Artwork> a = q.from(Artwork.class);
@@ -172,16 +179,23 @@ public class FreyaDao {
 		
 		if (support != null)   predicates.add(cb.equal(a.get("support"), support));
 		if (technique != null) predicates.add(cb.equal(a.get("technique"), technique));
+		if (tag != null)       predicates.add(cb.isMember(tag, a.<List<String>>get("tags")));
 		q.select(a).where(predicates.toArray(new Predicate[]{}));
 		
 		TypedQuery<Artwork> query = mEntityManager.createQuery(q);
-		List<Artwork> artworks = query.getResultList();
+		List<Artwork> qresult = query.getResultList();
+		List<Artwork> artworks = new ArrayList<>();
+		for (Artwork artwork : qresult) {
+			if (year != null && !artwork.getDate().startsWith(year)) continue;
+			artworks.add(artwork);
+		}
 		return artworks;
 	}
 
 	/**
 	 * Returns a list of artworks contained in the specified artcollection
 	 * @param artCollectionId the artcollection's ID
+	 * @param count optional filter: the maximal number of reproductions that an artwork can have
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -189,20 +203,20 @@ public class FreyaDao {
 		Query query = mEntityManager.createQuery(
 				"select c.artworks from ArtCollection c where c.id = :artCollectionId");
 		query.setParameter("artCollectionId", artCollectionId);
-		List<List<Artwork>> result = query.getResultList();
-		List<Artwork> artworks = flatten(result, Artwork.class);
-		List<Artwork> finalResult = new ArrayList<Artwork>();
+		List<List<Artwork>> qresult = query.getResultList();
+		List<Artwork> artworks = flatten(qresult, Artwork.class);
 		if (count != null) {
+			List<Artwork> result = new ArrayList<Artwork>();
 			for (Artwork artwork : artworks) {
 				if (artwork.getReproductions() != null) {
 					if (artwork.getReproductions().size() <= count.intValue()) {
-						finalResult.add(artwork);
+						result.add(artwork);
 					}
 				} else {
-					finalResult.add(artwork);
+					result.add(artwork);
 				}
 			}
-			return finalResult;
+			return result;
 		}
 		return artworks;
 	}
@@ -213,11 +227,27 @@ public class FreyaDao {
 
 	/**
 	 * Returns a list of all stored photos
+	 * @param support optional filter: the type of support used by the artworks
+	 * @param technique optional filter: the technique used by the artworks
+	 * @param year optional filter: the year of fabrication of the artworks
+	 * @param tag optional filter: the tag used by the artworks
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Photo> getArtworkPhotos() {
-		Query query = mEntityManager.createQuery("select a.photos from Artwork a");
+	public List<Photo> getArtworkPhotos(String support, String technique, String year, String tag) {
+		CriteriaBuilder cb = mEntityManager.getCriteriaBuilder();
+		CriteriaQuery<List<Photo>> q = cb.createQuery((Class<List<Photo>>)(Class<?>)List.class);
+		Root<Artwork> a = q.from(Artwork.class);
+		Selection<List<Photo>> p = a.get("photos");
+		
+		List<Predicate> predicates = new ArrayList<>();
+		if (support != null)   predicates.add(cb.equal(a.get("support"), support));
+		if (technique != null) predicates.add(cb.equal(a.get("technique"), technique));
+		if (year != null)      predicates.add(cb.like(a.<String>get("date"), year + "%"));
+		if (tag != null)       predicates.add(cb.isMember(tag, a.<List<String>>get("tags")));
+		q.select(p).where(predicates.toArray(new Predicate[]{}));
+		
+		TypedQuery<List<Photo>> query = mEntityManager.createQuery(q);
 		List<List<Photo>> result = query.getResultList();
 		return flatten(result, Photo.class);
 	}
@@ -225,15 +255,42 @@ public class FreyaDao {
 	/**
 	 * Returns a list of photos of the specified artist's artworks 
 	 * @param artistId the artist's ID
+	 * @param support optional filter: the type of support used by the artworks
+	 * @param technique optional filter: the technique used by the artworks
+	 * @param year optional filter: the year of fabrication of the artworks
+	 * @param tag optional filter: the tag used by the artworks
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public List<Photo> getPhotosByArtist(String artistId) {
-		// FIXME should not return empty lists
-		Query query = mEntityManager.createQuery(
-				"select a.photos from Artwork a join a.artist t where t.id = :artistId");
-		query.setParameter("artistId", artistId);
-		List<Photo> photos = query.getResultList();
+	public List<Photo> getPhotosByArtist(String artistId, 
+			String support, String technique, String year, String tag) {
+		// Since joins are only supported when all filters are 'equals' filters,
+		// we need to retrieve the artworks (instead of their photos) and perform
+		// further filtering on the returned query result
+		CriteriaBuilder cb = mEntityManager.getCriteriaBuilder();
+		CriteriaQuery<Artwork> q = cb.createQuery(Artwork.class);
+		Root<Artwork> a = q.from(Artwork.class);
+		Selection<List<Photo>> p = a.get("photos");
+		List<Predicate> predicates = new ArrayList<>();
+		
+		// Workaround of JPA implementation that uses sub-object referencing,
+		// which is unsupported on Google App Engine
+		a.join("artist").alias("t");
+		a.alias("t");
+		predicates.add(cb.equal(a.get("id"), artistId));
+		a.alias("a");
+		
+		if (support != null)   predicates.add(cb.equal(a.get("support"), support));
+		if (technique != null) predicates.add(cb.equal(a.get("technique"), technique));
+		if (tag != null)       predicates.add(cb.isMember(tag, a.<List<String>>get("tags")));
+		q.select(a).where(predicates.toArray(new Predicate[]{}));
+		
+		TypedQuery<Artwork> query = mEntityManager.createQuery(q);
+		List<Artwork> qresult = query.getResultList();
+		List<Photo> photos = new ArrayList<>();
+		for (Artwork artwork : qresult) {
+			if (year != null && !artwork.getDate().startsWith(year)) continue;
+			photos.addAll(artwork.getPhotos());
+		}
 		return photos;
 	}
 	

@@ -172,6 +172,10 @@ public class Artwork implements Serializable {
 	public List<Photo> getPhotos() {
 		return photos;
 	}
+	
+	public void setPhotos(List<Photo> photos) {
+		this.photos = photos ;
+	}
 
 	public void addPhoto(Photo photo) {
 		photos.add(photo);

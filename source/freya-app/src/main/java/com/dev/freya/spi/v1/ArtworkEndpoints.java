@@ -49,13 +49,14 @@ public class ArtworkEndpoints {
 			path = "artworks",
 			httpMethod = HttpMethod.GET
 	)
-	// TODO add support for year, tag query filters
 	public List<Artwork> listArtworks(
 			@Nullable @Named("support") String support, 
 			@Nullable @Named("technique") String technique, 
+			@Nullable @Named("year") String year,
+			@Nullable @Named("tag") String tag,
 			@Nullable @Named("count") Integer count) {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.listArtworks(support, technique, count);
+		List<Artwork> artworks = dao.listArtworks(support, technique, year, tag, count);
 		dao.close();
 		return artworks;
 	}
@@ -77,10 +78,13 @@ public class ArtworkEndpoints {
 			path = "artworks/photos",
 			httpMethod = HttpMethod.GET
 	)
-	// TODO add support for query filters
-	public List<Photo> getArtworkPhotos() {
+	public List<Photo> getArtworkPhotos(
+			@Nullable @Named("support") String support,
+			@Nullable @Named("technique") String technique,
+			@Nullable @Named("year") String year,
+			@Nullable @Named("tag") String tag) {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.getArtworkPhotos();
+		List<Photo> photos = dao.getArtworkPhotos(support, technique, year, tag);
 		dao.close();
 		return photos;
 	}

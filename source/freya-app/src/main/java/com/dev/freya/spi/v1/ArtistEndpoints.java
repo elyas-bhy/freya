@@ -66,13 +66,14 @@ public class ArtistEndpoints {
 			httpMethod = HttpMethod.GET
 			
 	)
-	// TODO add support for year and tag query filters
 	public List<Artwork> getArtworksByArtist(
 			@Named("artist_id") String artistId, 
 			@Nullable @Named("support") String support, 
-			@Nullable @Named("technique") String technique) {
+			@Nullable @Named("technique") String technique,
+			@Nullable @Named("year") String year,
+			@Nullable @Named("tag") String tag) {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.getArtworksByArtist(artistId, support, technique);
+		List<Artwork> artworks = dao.getArtworksByArtist(artistId, support, technique, year, tag);
 		dao.close();
 		return artworks;
 	}
@@ -83,10 +84,14 @@ public class ArtistEndpoints {
 			httpMethod = HttpMethod.GET
 			
 	)
-	// TODO add support for query filters
-	public List<Photo> getPhotosByArtist(@Named("artist_id") String artistId) {
+	public List<Photo> getPhotosByArtist(
+			@Named("artist_id") String artistId,
+			@Nullable @Named("support") String support,
+			@Nullable @Named("technique") String technique,
+			@Nullable @Named("year") String year,
+			@Nullable @Named("tag") String tag) {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.getPhotosByArtist(artistId);
+		List<Photo> photos = dao.getPhotosByArtist(artistId, support, technique, year, tag);
 		dao.close();
 		return photos;
 	}
@@ -118,20 +123,22 @@ public class ArtistEndpoints {
 		artwork2.setTitle("Title 2");
 		artwork2.setSupport(ArtSupport.PAINTING_LINEN_CANVAS);
 		artwork2.setTechnique(ArtTechnique.PAINTING_GOUACHE);
-		artwork2.setDate(sdf.format(new Date()));
+		artwork2.setDate("1999-12-31");
 		artwork2.setSummary("Summary 2");
 		artwork2.addPhoto(new Photo("Desc 3", "URL 3"));
 		artwork2.addPhoto(new Photo("Desc 4", "URL 4"));
 		artwork2.setDimension(new Dimension(12, 10, 15));
+		artwork2.addTag("modern");
 		
 		Artwork artwork3 = new Artwork();
 		artwork3.setArtist(new Artist("Dali"));
 		artwork3.setTitle("Title 3");
 		artwork3.setSupport(ArtSupport.PAINTING_PAPER);
 		artwork3.setTechnique(ArtTechnique.PAINTING_WATERCOLOR);
-		artwork3.setDate(sdf.format(new Date()));
+		artwork3.setDate("2010-11-29");
 		artwork3.setSummary("Summary 3");
 		artwork3.setDimension(new Dimension(20, 5, 35));
+		artwork3.addTag("abstract");
 		
 		Reproduction repro = new Reproduction();
 		repro.setPrice(1000.0);
