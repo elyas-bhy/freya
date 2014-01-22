@@ -1,3 +1,4 @@
+<jsp:include page="../includes/header.jsp"></jsp:include>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ page import="java.io.IOException"%>
 <%@ page import="com.appspot.freya_app.freya.Freya"%>
@@ -5,8 +6,6 @@
 <%@ page import="com.google.api.client.extensions.appengine.http.UrlFetchTransport"%>
 <%@ page import="com.google.api.client.json.gson.GsonFactory"%>
 
-<html>
-<head>
 <%
 	Freya freya = new Freya.Builder(new UrlFetchTransport(), new GsonFactory(), null).build();
 	ArtistCollection artists = null;
@@ -16,11 +15,6 @@
 		
 	}
 %>
-
-<script type="text/javascript" src="../../js/jquery-2.0.3.min.js"></script>
-<script type="text/javascript" src="../../js/jquery.dataTables.js"></script>
-<link type="text/css" rel="stylesheet" href="../../css/design.css"/>
-<link type="text/css" rel="stylesheet" href="../../css/ui-darkness/jquery-ui.min.css"/>
 
 <script type="text/javascript">
 

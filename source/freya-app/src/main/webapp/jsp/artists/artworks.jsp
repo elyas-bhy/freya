@@ -4,36 +4,24 @@
 <%@ page import="com.appspot.freya_app.freya.model.ArtworkCollection"%>
 <%@ page import="com.google.api.client.extensions.appengine.http.UrlFetchTransport"%>
 <%@ page import="com.google.api.client.json.gson.GsonFactory"%>
+<jsp:include page="../includes/header.jsp"></jsp:include>
 
 <%
 	Freya freya = new Freya.Builder(new UrlFetchTransport(), new GsonFactory(), null).build();
 	ArtworkCollection artworks = null;
-	String artistId = null;
-	String collection =null;
 	try {
-		artistId = request.getParameter("artist");
-		collection = request.getParameter("collection");
-		if (collection != null){
-			Long collectionId = Long.parseLong(collection);
-			artworks = freya.artcollections().getArtworksByArtCollection(collectionId).execute();
-		}
-		else if(artistId != null)
-			artworks = freya.artists().getArtworksByArtist(artistId).execute();
-		else 
-			artworks = freya.artworks().list().execute();
+		String id = request.getParameter("id");
+		artworks = freya.artists().getArtworksByArtist(id).execute();
 	} catch (IOException e) {
 		
 	}
 %>
+
 <body>
 <script type="text/javascript">
 
 	// Builds the HTML Table out of myList.
-	<%if( artworks != null){%>
 	var items = <%=artworks.getItems().toString()%>
-	<%}else{%>
-	console.log("null pointer at items initilization")
-	<%}%>
 	var artist = items[0].artist.name;
 	var input = {
 			"aaData" : items,
@@ -72,9 +60,7 @@
 	
 	
 </script>
-<%if (artistId != null){ %>
 	<p id='artistname'></p>
-<%} %>
 	<table id='dtable' class='dtable' border='1'></table>
 </body>
 </html>
