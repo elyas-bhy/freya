@@ -63,7 +63,7 @@
 		$('#dtable tr').each(function() {
 			var id = $(this).find('td').eq(0).text();
 			$(this).find('td').eq(7).attr("data-id", id);
-			$(this).find('td').eq(7).html("<a href='reproductions.jsp?id=" + id + "'>link</a>");
+			$(this).find('td').eq(7).html("<a href='<%=request.getContextPath()%>/jsp/reproductions.jsp?id=" + id + "'>link</a>");
 		});
 
 		// Hide ID column
