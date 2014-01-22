@@ -4,7 +4,7 @@
   <body>
 	<p><a href="jsp/artists/list.jsp">Artists</a></p>
 	<p><a href="jsp/artworks/list.jsp">Artworks</a></p>
-	<p><a href="jsp/collections/list.jsp">Art Collections</a></p>
+	<p><a href="jsp/artcollections/list.jsp">Art Collections</a></p>
 	<p><a href="jsp/reproductions/list.jsp">Reproductions</a></p>
   </body>
 </html>
