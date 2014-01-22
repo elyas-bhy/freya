@@ -2,9 +2,9 @@
 <jsp:include page="jsp/includes/header.jsp"></jsp:include>
 <html>
   <body>
-	<p><a href="jsp/artists.jsp">Artists</a></p>
-	<p><a href="jsp/artworks.jsp">Artworks</a></p>
-	<p><a href="jsp/collections.jsp">Art Collections</a></p>
-	<p><a href="jsp/reproductions.jsp">Reproductions</a></p>
+	<p><a href="jsp/artists/list.jsp">Artists</a></p>
+	<p><a href="jsp/artworks/list.jsp">Artworks</a></p>
+	<p><a href="jsp/collections/list.jsp">Art Collections</a></p>
+	<p><a href="jsp/reproductions/list.jsp">Reproductions</a></p>
   </body>
 </html>

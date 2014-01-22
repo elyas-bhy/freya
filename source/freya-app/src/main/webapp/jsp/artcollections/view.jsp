@@ -36,7 +36,7 @@
 			<li><a href="#tags">Tags</a></li>
 		</ul>
 		<div id="artworks">
-			<jsp:include page="../artworks.jsp">
+			<jsp:include page="../includes/artworks.jsp">
     		<jsp:param name="collection" value="${param.id}"/>
     		</jsp:include>
 		</div>

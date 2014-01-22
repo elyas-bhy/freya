@@ -4,7 +4,6 @@
 <%@ page import="com.appspot.freya_app.freya.model.ArtworkCollection"%>
 <%@ page import="com.google.api.client.extensions.appengine.http.UrlFetchTransport"%>
 <%@ page import="com.google.api.client.json.gson.GsonFactory"%>
-<jsp:include page="includes/header.jsp"></jsp:include>
 
 <%
 	Freya freya = new Freya.Builder(new UrlFetchTransport(), new GsonFactory(), null).build();
@@ -64,7 +63,7 @@
 		$('#dtable tr').each(function() {
 			var id = $(this).find('td').eq(0).text();
 			$(this).find('td').eq(7).attr("data-id", id);
-			$(this).find('td').eq(7).html("<a href='<%=request.getContextPath()%>reproductions.jsp?id=" + id + "'>link</a>");
+			$(this).find('td').eq(7).html("<a href='../artworks/view.jsp?id=" + id + "'>link</a>");
 		});
 
 		// Hide ID column
