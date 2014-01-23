@@ -80,6 +80,31 @@ public class FreyaDao {
 		List<Artist> artists = query.getResultList();
 		return artists;
 	}
+	
+	/**
+	 * Retrieves an artist with the specified ID
+	 * @param artistId the artist's ID
+	 * @return the matching artist if found, or null
+	 */
+	@SuppressWarnings("unchecked")
+	public Artist getArtist(String artistId) {
+		Artist artist = (Artist) mCache.get(artistId);
+		if (artist != null) {
+			return artist;
+		}
+		// The method: mEntityManager.find(Artwork.class, artworkId) fails to
+		// properly load Artwork.photos field, so use standard query instead
+		Query query = mEntityManager
+				.createQuery("select a from Artist a where a.id = :artistId");
+		query.setParameter("artistId", artistId);
+		List<Artist> artists = query.getResultList();
+		if (artists.size() > 0) {
+			artist = artists.get(0);
+			mCache.put(artistId, artist, Expiration.byDeltaSeconds(CACHE_PERIOD), 
+					SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
+		}
+		return artist;
+	}
 
 	/*****************************
 	 * Artwork Retrieval Methods *

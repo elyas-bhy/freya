@@ -46,6 +46,21 @@ public class ArtistEndpoints {
 	/****************
 	 * GET Requests *
 	 ****************/
+
+	
+	@ApiMethod(
+			name = "artists.get",
+			path = "artists/{artist_id}",
+			httpMethod = HttpMethod.GET
+			
+	)
+	public Artist getArtist(@Named("artist_id") String artistId) {
+		FreyaDao dao = new FreyaDao();
+		Artist artist = dao.getArtist(artistId);
+		dao.close();
+		return artist;
+	}
+	
 	
 	@ApiMethod(
 			name = "artists.list",

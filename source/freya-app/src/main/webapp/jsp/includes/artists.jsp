@@ -16,10 +16,12 @@
 %>
 
 <script type="text/javascript">
-
 	// Builds the HTML Table out of myList.
-	var items = <%=artists.getItems().toString()%>
-	
+	<%if(artists != null) {%>
+	var items = <%=artists.getItems().toString()%>;
+	<%}else{%>
+	console.log("null pointer at items initialization");
+	<%}%>
 	var input = {
 			"aaData" : items,
 			"bJQueryUI": true,

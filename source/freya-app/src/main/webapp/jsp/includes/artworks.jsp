@@ -34,7 +34,6 @@
 	<%}else{%>
 	console.log("null pointer at items initilization")
 	<%}%>
-	var artist = items[0].artist.name;
 	var input = {
 			"aaData" : items,
 			"bJQueryUI": true,
@@ -55,7 +54,6 @@
 	};
 	$(document).ready(function() {
 		var oTable = $('#dtable').dataTable(input);
-		$('#artistname').text('Artist: ' + artist);
 		$('.DataTables_sort_wrapper').each(function() {
 			$(this).attr("title", $(this).text());
 		});
@@ -72,9 +70,6 @@
 	
 	
 </script>
-<%if (artistId != null){ %>
-	<p id='artistname'></p>
-<%} %>
 	<table id='dtable' class='dtable' border='1'></table>
 </body>
 </html>
