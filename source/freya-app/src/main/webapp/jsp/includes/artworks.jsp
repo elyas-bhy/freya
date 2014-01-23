@@ -8,17 +8,17 @@
 <%
 	Freya freya = new Freya.Builder(new UrlFetchTransport(), new GsonFactory(), null).build();
 	ArtworkCollection artworks = null;
-	String artistId = null;
+	String artistId_aw = null;
 	String collection =null;
 	try {
-		artistId = request.getParameter("artist");
+		artistId_aw = request.getParameter("artist");
 		collection = request.getParameter("collection");
 		if (collection != null){
 			Long collectionId = Long.parseLong(collection);
 			artworks = freya.artcollections().getArtworksByArtCollection(collectionId).execute();
 		}
-		else if(artistId != null)
-			artworks = freya.artists().getArtworksByArtist(artistId).execute();
+		else if(artistId_aw != null)
+			artworks = freya.artists().getArtworksByArtist(artistId_aw).execute();
 		else 
 			artworks = freya.artworks().list().execute();
 	} catch (IOException e) {
@@ -30,12 +30,12 @@
 
 	// Builds the HTML Table out of myList.
 	<%if( artworks != null){%>
-	var items = <%=artworks.getItems().toString()%>
+	var items_aw = <%=artworks.getItems().toString()%>
 	<%}else{%>
 	console.log("null pointer at items initilization")
 	<%}%>
-	var input = {
-			"aaData" : items,
+	var input_aw = {
+			"aaData" : items_aw,
 			"bJQueryUI": true,
 		    "sPaginationType": "full_numbers",
 			"aoColumns" : [ 
@@ -53,23 +53,23 @@
 		]
 	};
 	$(document).ready(function() {
-		var oTable = $('#dtable').dataTable(input);
+		var oTable_aw = $('#dtable_artworks').dataTable(input_aw);
 		$('.DataTables_sort_wrapper').each(function() {
 			$(this).attr("title", $(this).text());
 		});
 	
-		$('#dtable tr').each(function() {
-			var id = $(this).find('td').eq(0).text();
-			$(this).find('td').eq(7).attr("data-id", id);
-			$(this).find('td').eq(7).html("<a href='../artworks/view.jsp?id=" + id + "'>link</a>");
+		$('#dtable_artworks tr').each(function() {
+			var id_aw = $(this).find('td').eq(0).text();
+			$(this).find('td').eq(7).attr("data-id", id_aw);
+			$(this).find('td').eq(7).html("<a href='../artworks/view.jsp?id=" + id_aw + "'>link</a>");
 		});
 
 		// Hide ID column
-		oTable.fnSetColumnVis(0, false);
+		oTable_aw.fnSetColumnVis(0, false);
 	});
 	
 	
 </script>
-	<table id='dtable' class='dtable' border='1'></table>
+	<table id='dtable_artworks' class='dtable' border='1'></table>
 </body>
 </html>
