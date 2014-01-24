@@ -92,8 +92,10 @@ public class FreyaDao {
 			return artist;
 		}
 		artist = mEntityManager.find(Artist.class, artistId);
-		mCache.put(artistId, artist, Expiration.byDeltaSeconds(CACHE_PERIOD), 
-				SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
+		if (artist != null) {
+			mCache.put(artistId, artist, Expiration.byDeltaSeconds(CACHE_PERIOD), 
+					SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
+		}
 		return artist;
 	}
 
@@ -243,7 +245,7 @@ public class FreyaDao {
 	 * @return
 	 */
 	public Artwork getArtworkByReproduction(String reproductionId) {
-		Reproduction reproduction = mEntityManager.find(Reproduction.class, reproductionId);
+		Reproduction reproduction = getReproduction(reproductionId);
 		if (reproduction != null)
 			return getArtwork(reproduction.getArtworkId());
 		return null;
@@ -349,8 +351,10 @@ public class FreyaDao {
 			return artCollection;
 		}
 		artCollection = mEntityManager.find(ArtCollection.class, artCollectionId);
-		mCache.put(artCollectionId, artCollection, Expiration.byDeltaSeconds(CACHE_PERIOD), 
-				SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
+		if (artCollection != null) {
+			mCache.put(artCollectionId, artCollection, Expiration.byDeltaSeconds(CACHE_PERIOD), 
+					SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
+		}
 		return artCollection;
 	}
 
