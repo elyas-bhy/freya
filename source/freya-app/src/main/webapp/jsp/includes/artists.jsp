@@ -31,6 +31,7 @@
 			  { "sTitle" : "Artist name", "mData" : "name", },
 			  { "sTitle" : "Artworks", "mData" : "name"},
 			  { "sTitle" : "Photos", "mData" : "name"},
+			  { "sTitle" : "Actions"},
 			]
 		};
 
@@ -44,10 +45,16 @@
 			var id = $(this).find('td').eq(0).text();
 			$(this).find('td').eq(2).attr("data-id", id);
 			$(this).find('td').eq(3).attr("data-id", id);
+			$(this).find('td').eq(4).attr("data-id", id);
 
 
 			$(this).find('td').eq(2).html("<a href='view.jsp?id=" + id + "'>link</a>");
 			$(this).find('td').eq(3).html("<a href='view.jsp?id=" + id + "'>link</a>");
+			$(this).find('td').eq(4).html(
+					 "<a class='button' href='view.jsp?id=" +id+ "'><img class='btn' src='../../resources/view.png' alt='' /></a>"
+					+"<a class='button' href='edit.jsp?id=" +id+ "'><img class='btn' src='../../resources/edit.png' alt='' /></a>"
+					+"<a class='button' href='edit.jsp?id=" +id+ "'><img class='btn' src='../../resources/delete.png' alt='' /></a>"
+			);
 
 		});
 
