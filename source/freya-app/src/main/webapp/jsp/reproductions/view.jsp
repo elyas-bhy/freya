@@ -26,3 +26,4 @@ Artwork artwork;
 
 <h2> Price: </h2>
 <p><%=reproduction.getPrice() %></p>
+</html>
