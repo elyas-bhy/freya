@@ -24,7 +24,6 @@
 
 
 <script type="text/javascript">
-
 	// Builds the HTML Table out of myList.
 	<%if( reproductions != null){%>
 	var items = <%=reproductions.getItems().toString()%>
@@ -36,7 +35,8 @@
 			  { "sTitle" : "ID", "mData": "id", "sWidth" : "0%"},
 			  { "sTitle" : "Stock", "mData" : "stock"},
 			  { "sTitle" : "Price", "mData" : "price"},
-			  { "sTitle" : "Support", "mData" : "support"}
+			  { "sTitle" : "Support", "mData" : "support"},
+			  { "sTitle" : "Actions"}
 		]
 	};
 	$(document).ready(function() {
@@ -44,7 +44,17 @@
 		$('.DataTables_sort_wrapper').each(function() {
 			$(this).attr("title", $(this).text());
 		});
+		
+		$('#dtable tr').each(function() {
+			var id = $(this).find('td').eq(0).text();
+			$(this).find('td').eq(4).attr("data-id", id);
+			$(this).find('td').eq(4).html(
+					 "<a class='button' href='"+pwd+"jsp/reproductions/view.jsp?id=" +id+ "'><img class='btn' src='../../resources/view.png' alt='' /></a>"
+					+"<a class='button' href='"+pwd+"jsp/reproductions/edit.jsp?id=" +id+ "'><img class='btn' src='../../resources/edit.png' alt='' /></a>"
+					+"<a class='button' href='"+pwd+"jsp/reproductions/edit.jsp?id=" +id+ "'><img class='btn' src='../../resources/delete.png' alt='' /></a>"
+			);
 
+		});
 		// Hide ID column
 		oTable.fnSetColumnVis(0, false);
 	});

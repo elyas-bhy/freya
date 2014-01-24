@@ -9,7 +9,7 @@
 	Freya freya = new Freya.Builder(new UrlFetchTransport(), new GsonFactory(), null).build();
 	ArtworkCollection artworks = null;
 	String artistId_aw = null;
-	String collection =null;
+	String collection = null;
 	try {
 		artistId_aw = request.getParameter("artist");
 		collection = request.getParameter("collection");
@@ -27,7 +27,6 @@
 %>
 <body>
 <script type="text/javascript">
-
 	// Builds the HTML Table out of myList.
 	<%if( artworks != null){%>
 	var items_aw = <%=artworks.getItems().toString()%>
@@ -49,7 +48,8 @@
 			  	return "(" + data.x + ", " + data.y + ", " + data.z + ")";
 		          }
 		      },
-		      { "sTitle" : "Reproductions", "mData" : "reproductions"}
+		      { "sTitle" : "Reproductions", "mData" : "reproductions"},
+		      { "sTitle" : "Actions"}
 		]
 	};
 	$(document).ready(function() {
@@ -61,7 +61,13 @@
 		$('#dtable_artworks tr').each(function() {
 			var id_aw = $(this).find('td').eq(0).text();
 			$(this).find('td').eq(7).attr("data-id", id_aw);
+			$(this).find('td').eq(8).attr("data-id", id_aw);
 			$(this).find('td').eq(7).html("<a href='../artworks/view.jsp?id=" + id_aw + "'>link</a>");
+			$(this).find('td').eq(8).html(
+					 "<a class='button' href='"+pwd+"jsp/artworks/view.jsp?id=" +id_aw+ "'><img class='btn' src='../../resources/view.png' alt='' /></a>"
+					+"<a class='button' href='"+pwd+"jsp/artworks/edit.jsp?id=" +id_aw+ "'><img class='btn' src='../../resources/edit.png' alt='' /></a>"
+					+"<a class='button' href='"+pwd+"jsp/artworks/edit.jsp?id=" +id_aw+ "'><img class='btn' src='../../resources/delete.png' alt='' /></a>"
+			);
 		});
 
 		// Hide ID column

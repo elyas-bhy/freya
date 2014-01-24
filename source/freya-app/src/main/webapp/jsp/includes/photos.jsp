@@ -26,7 +26,6 @@
 %>
 <body>
 <script type="text/javascript">
-
 	// Builds the HTML Table out of myList.
 	<%if( photos != null){%>
 	var items_ph = <%=photos.getItems().toString()%>
@@ -40,7 +39,8 @@
 			"aoColumns" : [ 
 			  { "sTitle" : "ID", "mData": "id", "sWidth" : "0%"},
 			  { "sTitle" : "Description", "mData" : "desc"},
-			  { "sTitle" : "URL", "mData" : "url"}
+			  { "sTitle" : "URL", "mData" : "url"},
+			  { "sTitle" : "Actions"}
 		]
 	};
 	$(document).ready(function() {
@@ -52,7 +52,13 @@
 		$('#dtable_photos tr').each(function() {
 			var link = $(this).find('td').eq(2).text();
 			$(this).find('td').eq(2).attr("data-id", link);
+			$(this).find('td').eq(3).attr("data-id", link);
 			$(this).find('td').eq(2).html("<a href='" + link + "'>link</a>");
+			$(this).find('td').eq(3).html(
+					 "<a class='button' href='"+pwd+"jsp/photos/view.jsp?id=" +id+ "'><img class='btn' src='../../resources/view.png' alt='' /></a>"
+					+"<a class='button' href='"+pwd+"jsp/photos/edit.jsp?id=" +id+ "'><img class='btn' src='../../resources/edit.png' alt='' /></a>"
+					+"<a class='button' href='"+pwd+"jsp/photos/edit.jsp?id=" +id+ "'><img class='btn' src='../../resources/delete.png' alt='' /></a>"
+			);
 		});
 
 		// Hide ID column
