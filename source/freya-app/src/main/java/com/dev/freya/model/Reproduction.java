@@ -40,6 +40,9 @@ public class Reproduction implements Serializable {
 	private String id;
 	
 	@Basic
+	private String artworkId;
+	
+	@Basic
 	private Integer stock;
 	
 	@Basic
@@ -54,6 +57,14 @@ public class Reproduction implements Serializable {
 
 	public String getId() {
 		return id;
+	}
+	
+	public String getArtworkId() {
+		return artworkId;
+	}
+	
+	public void setArtworkId(String artworkId) {
+		this.artworkId = artworkId;
 	}
 
 	public Integer getStock() {

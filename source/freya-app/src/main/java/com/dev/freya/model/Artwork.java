@@ -18,7 +18,6 @@ package com.dev.freya.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -36,12 +35,9 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.datanucleus.api.jpa.annotations.Extension;
 
-import com.google.appengine.datanucleus.annotations.Owned;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 @Entity
@@ -90,7 +86,7 @@ public class Artwork implements Serializable {
 	@OneToOne(fetch = FetchType.EAGER)
 	private Dimension dimension;
 	
-	@Owned
+	@ElementCollection
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Reproduction> reproductions;
 	

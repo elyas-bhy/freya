@@ -173,6 +173,8 @@ public class ArtistEndpoints {
 		dao.persistTransactional(collection1);
 		dao.persistTransactional(artwork3);
 		dao.persistTransactional(collection2);
+		repro.setArtworkId(artwork3.getId());
+		dao.persist(repro);
 		dao.close();
 	}
 }

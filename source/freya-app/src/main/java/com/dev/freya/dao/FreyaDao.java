@@ -237,6 +237,18 @@ public class FreyaDao {
 		return artworks;
 	}
 
+	/**
+	 * Returns the parent artwork of the specified reproduction
+	 * @param reproductionId the reproduction's ID
+	 * @return
+	 */
+	public Artwork getArtworkByReproduction(String reproductionId) {
+		Reproduction reproduction = mEntityManager.find(Reproduction.class, reproductionId);
+		if (reproduction != null)
+			return getArtwork(reproduction.getArtworkId());
+		return null;
+	}
+
 	/***************************
 	 * Photo Retrieval Methods *
 	 ***************************/
@@ -285,7 +297,6 @@ public class FreyaDao {
 		CriteriaBuilder cb = mEntityManager.getCriteriaBuilder();
 		CriteriaQuery<Artwork> q = cb.createQuery(Artwork.class);
 		Root<Artwork> a = q.from(Artwork.class);
-		Selection<List<Photo>> p = a.get("photos");
 		List<Predicate> predicates = new ArrayList<>();
 		
 		// Workaround of JPA implementation that uses sub-object referencing,

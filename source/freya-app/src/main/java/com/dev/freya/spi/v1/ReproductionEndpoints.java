@@ -19,6 +19,7 @@ package com.dev.freya.spi.v1;
 import java.util.List;
 
 import com.dev.freya.dao.FreyaDao;
+import com.dev.freya.model.Artwork;
 import com.dev.freya.model.Reproduction;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -59,6 +60,19 @@ public class ReproductionEndpoints {
 		Reproduction reproduction = dao.getReproduction(reproductionId);
 		dao.close();
 		return reproduction;
+	}
+	
+
+	@ApiMethod(
+			name = "reproductions.getArtworkByReproduction",
+			path = "reproductions/{reproduction_id}/artwork",
+			httpMethod = HttpMethod.GET
+	)
+	public Artwork getArtworkByReproduction(@Named("reproduction_id") String reproductionId) {
+		FreyaDao dao = new FreyaDao();
+		Artwork artwork = dao.getArtworkByReproduction(reproductionId);
+		dao.close();
+		return artwork;
 	}
 
 	/*****************
