@@ -12,20 +12,23 @@ Freya freya = new Freya.Builder(new UrlFetchTransport(), new GsonFactory(), null
 Artist artist = freya.artists().get(artistId).execute();
 %>
 
-<script>
-$('#artistname').text('Artist: ' + "<%=artist.getName()%>");
-$('#artworks').text('Artworks List');
-$('#photos').text('Photos List');
-</script>
+<html>
+<h1>Artist: <%=artist.getName()%></h1>
+</html>
 
-Artist: <%=artist.getName()%>
 <p id='artistname'></p>
 
+<html>
+<h2>Artworks</h2>
+</html>
 <p id='artworks'></p>
 <jsp:include page="../includes/artworks.jsp">
 	<jsp:param name="artist" value="${param.id}" />
 </jsp:include>
 
+<html>
+<h2>Photos</h2>
+</html>
 <p id='photos'></p>
 <jsp:include page="../includes/photos.jsp">
 	<jsp:param name="artist" value="${param.id}" />
