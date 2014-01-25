@@ -14,8 +14,8 @@ String reproductionId = request.getParameter("id");
 Freya freya = new Freya.Builder(new UrlFetchTransport(), new GsonFactory(), null).build();
 try {
 reproduction = freya.reproductions().get(reproductionId).execute();
-artwork = null;
-if(reproduction == null) {
+artwork = freya.reproductions().getArtworkByReproduction(reproductionId).execute();
+if(reproduction == null || artwork == null) {
 	response.sendRedirect("../404.jsp");
 	return;
 }
@@ -23,7 +23,6 @@ if(reproduction == null) {
 	response.sendRedirect("../404.jsp");
 	return;
 }
-//TODO request to get artwork from reproduction
 %>
 <div id="container">
 <%
@@ -43,4 +42,4 @@ if(artwork != null) {
 <p><%=reproduction.getPrice() %></p>
 
 </div>
-<jsp:include page="../includes/footer.jsp"></jsp:include>
+<jsp:include page= "../includes/footer.jsp"></jsp:include>
