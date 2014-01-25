@@ -124,6 +124,38 @@ public class FreyaDaoTest {
 	}
 
 	@Test
+	public void testConsistentIDs() {
+		assertEquals(artcollection1.getArtworks().size(), 2);
+		assertEquals(artcollection2.getArtworks().size(), 2);
+		
+		assertEquals(artcollection1.getArtworks().get(0).getId(), 
+				artcollection2.getArtworks().get(0).getId());
+	}
+	
+	/*****************
+	 * Artists Tests *
+	 *****************/
+
+	@Test
+	public void testUniqueArtists() {
+		FreyaDao dao = new FreyaDao();
+		dao.beginTransaction();
+		dao.persist(new Artist("Dali"));
+		dao.persist(new Artist("Pablo Picasso"));
+		dao.persist(new Artist("Dali"));
+		dao.flush();
+		dao.commitTransaction();
+		
+		List<Artist> artists = dao.listArtists();
+		assertEquals(artists.size(), 2);
+		dao.close();
+	}
+	
+	/*******************
+	 *  Artworks Tests *
+	 *******************/
+	
+	@Test
 	public void testListArtworks() {
 		FreyaDao dao = new FreyaDao();
 		List<Artwork> artworks = dao.listArtworks(null, null, null, null, null);
@@ -144,6 +176,16 @@ public class FreyaDaoTest {
 		FreyaDao dao = new FreyaDao();
 		List<Artwork> artworks = dao.listArtworks(null, null, null, "abstract", null);
 		assertEquals(artworks.size(), 1);
+		dao.close();
+	}
+
+	@Test
+	public void testGetArtwork() {
+		FreyaDao dao = new FreyaDao();
+		Artwork artwork = dao.getArtwork(daliArtworkId1);
+		assertEquals(artwork.getId(), daliArtworkId1);
+		assertEquals(artwork.getTitle(), "Title 1");
+		assertEquals(artwork.getPhotos().size(), 2);
 		dao.close();
 	}
 
@@ -191,6 +233,14 @@ public class FreyaDaoTest {
 		assertEquals(artworks.get(0).getTitle(), "Title 3");
 		dao.close();
 	}
+
+	@Test
+	public void testGetArtworksByArtCollection() {
+		FreyaDao dao = new FreyaDao();
+		List<Artwork> artworks = dao.getArtworksByArtCollection(artcollection1.getId(), null);
+		assertEquals(artworks.size(), 2);
+		dao.close();
+	}
 	
 	@Test
 	public void testGetArtworkByReproduction() {
@@ -200,6 +250,10 @@ public class FreyaDaoTest {
 		assertEquals(artwork.getId(), daliArtworkId3);
 		dao.close();
 	}
+	
+	/*****************
+	 *  Photos Tests *
+	 *****************/
 
 	@Test
 	public void testGetPhotosByArtist() {
@@ -234,31 +288,6 @@ public class FreyaDaoTest {
 		FreyaDao dao = new FreyaDao();
 		List<Photo> photos = dao.getPhotosByArtist(daliArtistId, null, null, null, "abstract");
 		assertEquals(photos.size(), 0);
-		dao.close();
-	}
-
-	@Test
-	public void testUniqueArtists() {
-		FreyaDao dao = new FreyaDao();
-		dao.beginTransaction();
-		dao.persist(new Artist("Dali"));
-		dao.persist(new Artist("Pablo Picasso"));
-		dao.persist(new Artist("Dali"));
-		dao.flush();
-		dao.commitTransaction();
-		
-		List<Artist> artists = dao.listArtists();
-		assertEquals(artists.size(), 2);
-		dao.close();
-	}
-
-	@Test
-	public void testGetArtwork() {
-		FreyaDao dao = new FreyaDao();
-		Artwork artwork = dao.getArtwork(daliArtworkId1);
-		assertEquals(artwork.getId(), daliArtworkId1);
-		assertEquals(artwork.getTitle(), "Title 1");
-		assertEquals(artwork.getPhotos().size(), 2);
 		dao.close();
 	}
 
@@ -313,15 +342,10 @@ public class FreyaDaoTest {
 		assertEquals(photos.get(1).getUrl(), "URL 4");
 		dao.close();
 	}
-
-	@Test
-	public void testConsistentIDs() {
-		assertEquals(artcollection1.getArtworks().size(), 2);
-		assertEquals(artcollection2.getArtworks().size(), 2);
-		
-		assertEquals(artcollection1.getArtworks().get(0).getId(), 
-				artcollection2.getArtworks().get(0).getId());
-	}
+	
+	/***********************
+	 * ArtCollection Tests *
+	 ***********************/
 
 	@Test
 	public void testListArtCollections() {
@@ -337,14 +361,6 @@ public class FreyaDaoTest {
 		ArtCollection artcollection = dao.getArtCollection(artcollection1.getId());
 		assertEquals(artcollection.getArtworks().size(), 2);
 		assertEquals(artcollection.getArtworks().get(0).getId(), daliArtworkId1);
-		dao.close();
-	}
-	
-	@Test
-	public void testGetArtworksByArtCollection() {
-		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.getArtworksByArtCollection(artcollection1.getId(), null);
-		assertEquals(artworks.size(), 2);
 		dao.close();
 	}
 

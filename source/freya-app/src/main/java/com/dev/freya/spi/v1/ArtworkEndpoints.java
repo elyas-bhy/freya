@@ -54,7 +54,7 @@ public class ArtworkEndpoints {
 			@Nullable @Named("technique") String technique, 
 			@Nullable @Named("year") String year,
 			@Nullable @Named("tag") String tag,
-			@Nullable @Named("count") Integer count) {
+			@Nullable @Named("reproduction_count") Integer count) {
 		FreyaDao dao = new FreyaDao();
 		List<Artwork> artworks = dao.listArtworks(support, technique, year, tag, count);
 		dao.close();

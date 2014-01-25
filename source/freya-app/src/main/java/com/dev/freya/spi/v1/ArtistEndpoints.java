@@ -46,7 +46,6 @@ public class ArtistEndpoints {
 	/****************
 	 * GET Requests *
 	 ****************/
-
 	
 	@ApiMethod(
 			name = "artists.get",
@@ -60,7 +59,6 @@ public class ArtistEndpoints {
 		dao.close();
 		return artist;
 	}
-	
 	
 	@ApiMethod(
 			name = "artists.list",
@@ -177,4 +175,5 @@ public class ArtistEndpoints {
 		dao.persist(repro);
 		dao.close();
 	}
+	
 }

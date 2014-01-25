@@ -46,13 +46,9 @@
 			</jsp:include>
 		</div>
 		<div id="comments">
-			<%
-				if (collection.getComments() != null) {
-					for (String comment : collection.getComments()) {
-						out.println("<p>" + comment + "</p>");
-					}
-				}
-			%>
+			<jsp:include page="../includes/comments.jsp">
+				<jsp:param name="collection" value="${param.id}" />
+			</jsp:include>
 		</div>
 		<div id="tags">
 			<%
