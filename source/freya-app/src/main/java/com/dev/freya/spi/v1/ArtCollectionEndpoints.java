@@ -75,7 +75,7 @@ public class ArtCollectionEndpoints {
 	)
 	public List<Artwork> getArtworksByArtCollection(
 			@Named("artcollection_id") Long artCollectionId, 
-			@Nullable @Named("count") Integer count) {
+			@Nullable @Named("reproduction_count") Integer count) {
 		FreyaDao dao = new FreyaDao();
 		List<Artwork> artworks = dao.getArtworksByArtCollection(artCollectionId, count);
 		dao.close();
