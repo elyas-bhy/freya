@@ -4,7 +4,8 @@
 <%@ page import="com.appspot.freya_app.freya.Freya"%>
 <%@ page import="com.appspot.freya_app.freya.model.Artwork"%>
 <%@ page import="com.appspot.freya_app.freya.model.ArtCollection"%>
-<%@ page import="com.google.api.client.extensions.appengine.http.UrlFetchTransport"%>
+<%@ page
+	import="com.google.api.client.extensions.appengine.http.UrlFetchTransport"%>
 <%@ page import="com.google.api.client.json.gson.GsonFactory"%>
 
 <%
@@ -16,26 +17,26 @@
 		artistId_com = request.getParameter("artist");
 		collectionId_com = request.getParameter("collection");
 		if (collectionId_com != null){
-			Long collectionId = Long.parseLong(collectionId_com);
-			comments = freya.artcollections().get(collectionId).execute().getComments();
+	Long collectionId = Long.parseLong(collectionId_com);
+	comments = freya.artcollections().get(collectionId).execute().getComments();
 		}
 		else if(artistId_com != null)
-			comments = freya.artworks().get(artistId_com).execute().getComments();
-		if(comments == null) {
-			response.sendRedirect("../404.jsp");
-			return;
-		}
+	comments = freya.artworks().get(artistId_com).execute().getComments();
+
 	} catch (IOException e) {
 		response.sendRedirect("../404.jsp");
 		return;
 	}
 %>
 
-<body>
 <%
 out.println("<div class='comment'>");
-for (String s : comments){
-	out.println("<p>" + s + "</p>");
+if(comments != null) {
+	for (String s : comments){
+		out.println("<p>" + s + "</p>");
+	}
+} else {
+	out.println("<p>There are no comments to be displayed</p>"));
 }
-out.println("</div>");%>
-</body>
+out.println("</div>");
+%>

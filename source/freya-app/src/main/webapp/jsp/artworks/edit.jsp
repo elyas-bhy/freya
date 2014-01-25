@@ -31,7 +31,7 @@
 				artwork = new Artwork();
 			}
 
-			String title, support, technique, date, summary, tags = null;
+			String title, support, technique, date, summary, tags, comments = null;
 			artistName = request.getParameter("artist");
 			title = request.getParameter("title");
 			support = request.getParameter("support");
@@ -39,14 +39,25 @@
 			date = request.getParameter("date");
 			summary = request.getParameter("summary");
 			tags = request.getParameter("tags");
+			comments = request.getParameter("comments");
 			
-			if(tags != null) {
+
+			if (tags != null) {
 				String tagArray[] = tags.split(";");
 				ArrayList<String> strings = new ArrayList<String>();
-				for(String s : tagArray) {
+				for (String s : tagArray) {
 					strings.add(s);
 				}
 				artwork.setTags(strings);
+			}
+			
+			if(comments != null) {
+				String commentArray[] = comments.split(";");
+				ArrayList<String> strings = new ArrayList<String>();
+				for (String s : commentArray) {
+					strings.add(s);
+				}
+				artwork.setComments(strings);
 			}
 
 			if (artistName != null && title != null && support != null
@@ -69,8 +80,9 @@
 				artwork.setSummary(summary);
 
 				freya.artworks().add(artwork).execute();
-				freya.artworks().addArtistToArtwork(artwork.getId(),
-						artist).execute();
+				/*freya.artworks()
+						.addArtistToArtwork(artwork.getId(), artist)
+						.execute();*/
 				response.sendRedirect("list.jsp");
 				return;
 			}
@@ -129,22 +141,31 @@
 					.getDimension().getZ()%>" />
 		<br /> Summary:
 		<textarea rows="5" cols="20" name="summary">
-				<%=(artwork.getSummary() == null) ? "" : (artwork.getSummary().equals("")) ? "" : artwork.getSummary()%>
+				<%=(artwork.getSummary() == null) ? "" : (artwork
+					.getSummary().equals("")) ? "" : artwork.getSummary()%>
 			</textarea>
-		<br /> Comments:
 		<%
-			String tags2 = null;
-			StringBuffer sb = new StringBuffer();
-			if(artwork.getTags() != null) {
-				for(String s : artwork.getTags()) {
-					sb.append(s);
-					sb.append(";");
+			StringBuffer tagsSb = new StringBuffer();
+			StringBuffer commentsSb = new StringBuffer();
+			if (artwork.getTags() != null) {
+				for (String s : artwork.getTags()) {
+					tagsSb.append(s);
+					tagsSb.append(";");
+				}
+			}
+			
+			if(artwork.getComments() != null) {
+				for(String s : artwork.getComments()) {
+					commentsSb.append(s);
+					commentsSb.append(";");
 				}
 			}
 		%>
-		<br /> Tags: <textarea rows="5" cols="20" name="tags"><%=(artwork.getTags() == null) ? "" : sb.toString()%></textarea>
-		<br /> <input type="submit"
-			value="Submit" />
+		<br /> Comments:
+		<textarea rows="5" cols="20" name="comments"><%=(artwork.getComments() == null) ? "" : commentsSb.toString()%></textarea>
+		<br /> Tags:
+		<textarea rows="5" cols="20" name="tags"><%=(artwork.getTags() == null) ? "" : tagsSb.toString()%></textarea>
+		<br /> <input type="submit" value="Submit" />
 	</form>
 </div>
 
