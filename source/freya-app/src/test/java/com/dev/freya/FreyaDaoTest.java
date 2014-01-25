@@ -17,6 +17,7 @@
 package com.dev.freya;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,8 +45,10 @@ public class FreyaDaoTest {
 	private ArtCollection artcollection1;
 	private ArtCollection artcollection2;
 
-	private String daliArtworkId;
+	private String daliArtworkId1;
+	private String daliArtworkId3;
 	private String daliArtistId;
+	private String daliReproductionId;
     
     private final LocalServiceTestHelper helper =
             new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig()
@@ -95,7 +98,7 @@ public class FreyaDaoTest {
 		artcollection2 = new ArtCollection();
 		artcollection2.addArtwork(artwork1);
 		artcollection2.addArtwork(artwork3);
-		
+
 		Reproduction repro = new Reproduction();
 		repro.setPrice(1000.0);
 		repro.setStock(4);
@@ -105,10 +108,14 @@ public class FreyaDaoTest {
 		dao.persistTransactional(artcollection1);
 		dao.persistTransactional(artwork3);
 		dao.persistTransactional(artcollection2);
-		dao.close();
 		
-		daliArtworkId = artwork1.getId();
+		repro.setArtworkId(artwork3.getId());
+		dao.close();
+
+		daliArtworkId1 = artwork1.getId();
+		daliArtworkId3 = artwork3.getId();
 		daliArtistId = artwork1.getArtist().getId();
+		daliReproductionId = repro.getId();
 	}
 
 	@After
@@ -184,6 +191,15 @@ public class FreyaDaoTest {
 		assertEquals(artworks.get(0).getTitle(), "Title 3");
 		dao.close();
 	}
+	
+	@Test
+	public void testGetArtworkByReproduction() {
+		FreyaDao dao = new FreyaDao();
+		Artwork artwork = dao.getArtworkByReproduction(daliReproductionId);
+		assertNotNull(artwork);
+		assertEquals(artwork.getId(), daliArtworkId3);
+		dao.close();
+	}
 
 	@Test
 	public void testGetPhotosByArtist() {
@@ -239,8 +255,8 @@ public class FreyaDaoTest {
 	@Test
 	public void testGetArtwork() {
 		FreyaDao dao = new FreyaDao();
-		Artwork artwork = dao.getArtwork(daliArtworkId);
-		assertEquals(artwork.getId(), daliArtworkId);
+		Artwork artwork = dao.getArtwork(daliArtworkId1);
+		assertEquals(artwork.getId(), daliArtworkId1);
 		assertEquals(artwork.getTitle(), "Title 1");
 		assertEquals(artwork.getPhotos().size(), 2);
 		dao.close();
@@ -249,7 +265,7 @@ public class FreyaDaoTest {
 	@Test
 	public void testGetPhotosByArtwork() {
 		FreyaDao dao = new FreyaDao();
-		List<Photo> photos = dao.getPhotosByArtwork(daliArtworkId);
+		List<Photo> photos = dao.getPhotosByArtwork(daliArtworkId1);
 		assertEquals(photos.size(), 2);
 		dao.close();
 	}
@@ -320,7 +336,7 @@ public class FreyaDaoTest {
 		FreyaDao dao = new FreyaDao();
 		ArtCollection artcollection = dao.getArtCollection(artcollection1.getId());
 		assertEquals(artcollection.getArtworks().size(), 2);
-		assertEquals(artcollection.getArtworks().get(0).getId(), daliArtworkId);
+		assertEquals(artcollection.getArtworks().get(0).getId(), daliArtworkId1);
 		dao.close();
 	}
 	

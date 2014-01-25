@@ -80,6 +80,24 @@ public class FreyaDao {
 		List<Artist> artists = query.getResultList();
 		return artists;
 	}
+	
+	/**
+	 * Retrieves an artist with the specified ID
+	 * @param artistId the artist's ID
+	 * @return the matching artist if found, or null
+	 */
+	public Artist getArtist(String artistId) {
+		Artist artist = (Artist) mCache.get(artistId);
+		if (artist != null) {
+			return artist;
+		}
+		artist = mEntityManager.find(Artist.class, artistId);
+		if (artist != null) {
+			mCache.put(artistId, artist, Expiration.byDeltaSeconds(CACHE_PERIOD), 
+					SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
+		}
+		return artist;
+	}
 
 	/*****************************
 	 * Artwork Retrieval Methods *
@@ -221,6 +239,18 @@ public class FreyaDao {
 		return artworks;
 	}
 
+	/**
+	 * Returns the parent artwork of the specified reproduction
+	 * @param reproductionId the reproduction's ID
+	 * @return
+	 */
+	public Artwork getArtworkByReproduction(String reproductionId) {
+		Reproduction reproduction = getReproduction(reproductionId);
+		if (reproduction != null)
+			return getArtwork(reproduction.getArtworkId());
+		return null;
+	}
+
 	/***************************
 	 * Photo Retrieval Methods *
 	 ***************************/
@@ -269,7 +299,6 @@ public class FreyaDao {
 		CriteriaBuilder cb = mEntityManager.getCriteriaBuilder();
 		CriteriaQuery<Artwork> q = cb.createQuery(Artwork.class);
 		Root<Artwork> a = q.from(Artwork.class);
-		Selection<List<Photo>> p = a.get("photos");
 		List<Predicate> predicates = new ArrayList<>();
 		
 		// Workaround of JPA implementation that uses sub-object referencing,
@@ -322,8 +351,10 @@ public class FreyaDao {
 			return artCollection;
 		}
 		artCollection = mEntityManager.find(ArtCollection.class, artCollectionId);
-		mCache.put(artCollectionId, artCollection, Expiration.byDeltaSeconds(CACHE_PERIOD), 
-				SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
+		if (artCollection != null) {
+			mCache.put(artCollectionId, artCollection, Expiration.byDeltaSeconds(CACHE_PERIOD), 
+					SetPolicy.ADD_ONLY_IF_NOT_PRESENT);
+		}
 		return artCollection;
 	}
 
