@@ -4702,7 +4702,7 @@
 		 */
 		function _fnLog( oSettings, iLevel, sMesg )
 		{
-			var sAlert = (oSettings===null) ?
+			/*var sAlert = (oSettings===null) ?
 				"DataTables warning: "+sMesg :
 				"DataTables warning (table id = '"+oSettings.sTableId+"'): "+sMesg;
 			
@@ -4721,7 +4721,7 @@
 			else if ( window.console && console.log )
 			{
 				console.log( sAlert );
-			}
+			}*/
 		}
 		
 		
