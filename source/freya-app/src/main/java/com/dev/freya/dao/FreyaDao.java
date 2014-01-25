@@ -369,6 +369,40 @@ public class FreyaDao {
 		return artCollections;
 	}
 
+	/**
+	 * Deletes the specified artcollection
+	 * @param artCollectionId
+	 */
+	public void deleteArtCollection(Long artCollectionId) {
+		ArtCollection artCollection = getArtCollection(artCollectionId);
+		if (artCollection != null) {
+			beginTransaction();
+			remove(artCollection);
+			commitTransaction();
+			mCache.clearAll();
+		}
+	}
+	
+	/**
+	 * Removes the specified artwork from the specified artcollection
+	 * @param artCollectionId
+	 */
+	public void removeArtworkFromArtCollection(Long artCollectionId, String artworkId) {
+		ArtCollection artCollection = getArtCollection(artCollectionId);
+		if (artCollection != null) {
+			Artwork artwork = getArtwork(artworkId);
+			if (artwork != null) {
+				// Workaround of GAE's unowned dependencies management. For more info:
+				// http://bit.do/appengine-keep-the-original-entity-when-deleting-from-unowned
+				List<Artwork> dup = new ArrayList<Artwork>(artCollection.getArtworks());
+				dup.remove(artwork);
+				artCollection.getArtworks().clear();
+				artCollection.setArtworks(dup);
+				mCache.clearAll();
+			}
+		}
+	}
+
 	/**********************************
 	 * Reproduction Retrieval Methods *
 	 **********************************/
@@ -406,12 +440,15 @@ public class FreyaDao {
 		mEntityManager.persist(o);
 	}
 
-
 	public void persistTransactional(Object o) {
 		mEntityManager.getTransaction().begin();
 		mEntityManager.persist(o);
 		mEntityManager.flush();
 		mEntityManager.getTransaction().commit();
+	}
+	
+	public void remove(Object o) {
+		mEntityManager.remove(o);
 	}
 
 	public void flush() {

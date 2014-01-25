@@ -176,4 +176,33 @@ public class ArtCollectionEndpoints {
 		}
 		return response;
 	}
+	
+	/*******************
+	 * DELETE Requests *
+	 *******************/
+
+	@ApiMethod(
+			name = "artcollections.delete",
+			path = "artcollections/{artcollection_id}/delete",
+			httpMethod = HttpMethod.DELETE
+			
+	)
+	public void deleteArtCollection(@Named("artcollection_id") Long artCollectionId) {
+		FreyaDao dao = new FreyaDao();
+		dao.deleteArtCollection(artCollectionId);
+		dao.close();
+	}
+	
+	@ApiMethod(
+			name = "artcollections.removeArtworkFromArtCollection",
+			path = "artcollections/{artcollection_id}/artworks/{artwork_id}/delete",
+			httpMethod = HttpMethod.DELETE
+			
+	)
+	public void removeArtworkFromArtCollection(
+			@Named("artcollection_id") Long artCollectionId, @Named("artwork_id") String artworkId) {
+		FreyaDao dao = new FreyaDao();
+		dao.removeArtworkFromArtCollection(artCollectionId, artworkId);
+		dao.close();
+	}
 }
