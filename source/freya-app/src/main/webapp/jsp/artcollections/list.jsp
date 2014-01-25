@@ -23,15 +23,6 @@
 
 	$(document).ready(function() {
 		var oTable = $('#dtable').dataTable();
-		
-		$('.collectionRow').click(function() {
-			var elements = $('.' + $(this).data('id'));
-			if(elements.first().is(":visible")) {
-				$('.' + $(this).data('id')).show('slow');
-			} else {
-				$('.' + $(this).data('id')).hide('slow');
-			}
-		});
 	});
 	
 	
@@ -55,11 +46,11 @@
 			<tr class="collectionRow" data-id="<%=ac.getId()%>">
 				<td><%=ac.getId()%></td>
 				<td><%=ac.getPublic()? "Yes" : "No" %></td>
-				<td><a href="/jsp/artcollections/view.jsp?id=<%=ac.getId()%>&#artworks">Artworks</a></td>
-				<td><a href="/jsp/artcollections/view.jsp?id=<%=ac.getId()%>&#comments">Comments</a></td>
-				<td><a href="/jsp/artcollections/view.jsp?id=<%=ac.getId()%>&#tags">Tags</a></td>
-				<td><a href="">Edit</a></td>
-				<td><a href="">Delete</a></td>
+				<td><a href="view.jsp?id=<%=ac.getId()%>&#artworks">Artworks</a></td>
+				<td><a href="view.jsp?id=<%=ac.getId()%>&#comments">Comments</a></td>
+				<td><a href="view.jsp?id=<%=ac.getId()%>&#tags">Tags</a></td>
+				<td><a href="#">Edit</a></td>
+				<td><a href="#">Delete</a></td>
 			</tr>
 			<%
 			}

@@ -5,8 +5,6 @@
 <%@ page import="com.google.api.client.extensions.appengine.http.UrlFetchTransport"%>
 <%@ page import="com.google.api.client.json.gson.GsonFactory"%>
 
-<html>
-<head>
 <%
 	Freya freya = new Freya.Builder(new UrlFetchTransport(), new GsonFactory(), null).build();
 	ReproductionCollection reproductions = null;
@@ -53,9 +51,5 @@
 	<%}%>
 	
 </script>
-</head>
 
-<body>
-	<table id='dtable' class='dtable' border='1'></table>
-</body>
-</html>
+<table id='dtable' class='dtable' border='1'></table>

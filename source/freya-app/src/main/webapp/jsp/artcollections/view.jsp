@@ -21,13 +21,14 @@
 	} catch(Exception e) {
 	}
 %>
-<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
 <script>
 	$(document).ready(function() {
 		$('#tabs').tabs();
 	});
 </script>
 <body>
+	<jsp:include page="../includes/nav.jsp"></jsp:include>
 	<h2>Collection <%=request.getParameter("id") %></h2>
 	<div id="tabs">
 		<ul>
