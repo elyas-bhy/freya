@@ -2,34 +2,49 @@
 <%@ page import="java.io.IOException"%>
 <%@ page import="com.appspot.freya_app.freya.Freya"%>
 <%@ page import="com.appspot.freya_app.freya.model.Artist"%>
-<%@ page import="com.google.api.client.extensions.appengine.http.UrlFetchTransport"%>
+<%@ page
+	import="com.google.api.client.extensions.appengine.http.UrlFetchTransport"%>
 <%@ page import="com.google.api.client.json.gson.GsonFactory"%>
 <jsp:include page="../includes/header.jsp"></jsp:include>
 
-<%
-String artistId = request.getParameter("id");
-Freya freya = new Freya.Builder(new UrlFetchTransport(), new GsonFactory(), null).build();
-Artist artist = freya.artists().get(artistId).execute();
+<%	
+	Artist artist = null;
+	String artistId = request.getParameter("id");
+	Freya freya = new Freya.Builder(new UrlFetchTransport(),
+			new GsonFactory(), null).build();
+	try {
+	artist = freya.artists().get(artistId).execute();
+	if(artist == null) {
+		response.sendRedirect("../404.jsp");
+		return;
+	}
+	} catch (Exception e) {
+		response.sendRedirect("../404.jsp");
+		return;
+	}
 %>
+<div id="container">
+	<h1>
+		Artist:
+		<%=artist.getName()%></h1>
 
-<html>
-<h1>Artist: <%=artist.getName()%></h1>
-</html>
+	<p id='artistname'></p>
 
-<p id='artistname'></p>
-
-<html>
-<h2>Artworks</h2>
-</html>
-<p id='artworks'></p>
-<jsp:include page="../includes/artworks.jsp">
-	<jsp:param name="artist" value="${param.id}" />
-</jsp:include>
-
-<html>
-<h2>Photos</h2>
-</html>
-<p id='photos'></p>
-<jsp:include page="../includes/photos.jsp">
-	<jsp:param name="artist" value="${param.id}" />
-</jsp:include>
+	<div id="tabs">
+		<ul>
+			<li><a href="#artworks">Artworks</a></li>
+			<li><a href="#photos">Photos</a></li>
+		</ul>
+		<div id="artworks">
+			<jsp:include page="../includes/artworks.jsp">
+				<jsp:param name="artist" value="${param.id}" />
+			</jsp:include>
+		</div>
+		<div id="photos">
+			<jsp:include page="../includes/photos.jsp">
+				<jsp:param name="artist" value="${param.id}" />
+			</jsp:include>
+		</div>
+	</div>
+</div>
+<jsp:include page="../includes/footer.jsp"></jsp:include>
