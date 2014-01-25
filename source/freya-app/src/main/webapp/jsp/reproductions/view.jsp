@@ -25,7 +25,7 @@ if(reproduction == null) {
 }
 //TODO request to get artwork from reproduction
 %>
-
+<div id="container">
 <%
 if(artwork != null) {
 %>
@@ -41,3 +41,6 @@ if(artwork != null) {
 
 <h2> Price: </h2>
 <p><%=reproduction.getPrice() %></p>
+
+</div>
+<jsp:include page="../includes/footer.jsp"></jsp:include>

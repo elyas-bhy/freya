@@ -24,6 +24,7 @@
 		return;
 	}
 %>
+<div id="container">
 <h1>
 	Artwork :
 	<%=artwork.getTitle()%></h1>
@@ -54,5 +55,6 @@
 <jsp:include page="../includes/reproductions.jsp">
 	<jsp:param name="artist" value="${param.id}" />
 </jsp:include>
+</div>
 
 <jsp:include page="../includes/footer.jsp"></jsp:include>
