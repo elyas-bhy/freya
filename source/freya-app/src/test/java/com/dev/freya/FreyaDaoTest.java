@@ -124,6 +124,19 @@ public class FreyaDaoTest {
 	}
 
 	@Test
+	public void testConsistentIDs() {
+		assertEquals(artcollection1.getArtworks().size(), 2);
+		assertEquals(artcollection2.getArtworks().size(), 2);
+		
+		assertEquals(artcollection1.getArtworks().get(0).getId(), 
+				artcollection2.getArtworks().get(0).getId());
+	}
+	
+	/*****************
+	 * Artists Tests *
+	 *****************/
+
+	@Test
 	public void testUniqueArtists() {
 		FreyaDao dao = new FreyaDao();
 		dao.beginTransaction();
@@ -136,15 +149,6 @@ public class FreyaDaoTest {
 		List<Artist> artists = dao.listArtists();
 		assertEquals(artists.size(), 2);
 		dao.close();
-	}
-
-	@Test
-	public void testConsistentIDs() {
-		assertEquals(artcollection1.getArtworks().size(), 2);
-		assertEquals(artcollection2.getArtworks().size(), 2);
-		
-		assertEquals(artcollection1.getArtworks().get(0).getId(), 
-				artcollection2.getArtworks().get(0).getId());
 	}
 	
 	/*******************
