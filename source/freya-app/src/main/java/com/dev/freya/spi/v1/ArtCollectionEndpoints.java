@@ -75,7 +75,7 @@ public class ArtCollectionEndpoints {
 	)
 	public List<Artwork> getArtworksByArtCollection(
 			@Named("artcollection_id") Long artCollectionId, 
-			@Nullable @Named("count") Integer count) {
+			@Nullable @Named("reproduction_count") Integer count) {
 		FreyaDao dao = new FreyaDao();
 		List<Artwork> artworks = dao.getArtworksByArtCollection(artCollectionId, count);
 		dao.close();
@@ -175,5 +175,34 @@ public class ArtCollectionEndpoints {
 			dao.close();
 		}
 		return response;
+	}
+	
+	/*******************
+	 * DELETE Requests *
+	 *******************/
+
+	@ApiMethod(
+			name = "artcollections.delete",
+			path = "artcollections/{artcollection_id}/delete",
+			httpMethod = HttpMethod.DELETE
+			
+	)
+	public void deleteArtCollection(@Named("artcollection_id") Long artCollectionId) {
+		FreyaDao dao = new FreyaDao();
+		dao.deleteArtCollection(artCollectionId);
+		dao.close();
+	}
+	
+	@ApiMethod(
+			name = "artcollections.removeArtworkFromArtCollection",
+			path = "artcollections/{artcollection_id}/artworks/{artwork_id}/delete",
+			httpMethod = HttpMethod.DELETE
+			
+	)
+	public void removeArtworkFromArtCollection(
+			@Named("artcollection_id") Long artCollectionId, @Named("artwork_id") String artworkId) {
+		FreyaDao dao = new FreyaDao();
+		dao.removeArtworkFromArtCollection(artCollectionId, artworkId);
+		dao.close();
 	}
 }
