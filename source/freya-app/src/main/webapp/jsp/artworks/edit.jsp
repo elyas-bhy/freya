@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.appspot.freya_app.freya.model.Dimension"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ page import="java.io.IOException"%>
@@ -8,7 +9,6 @@
 <%@ page import="com.appspot.freya_app.freya.model.Reproduction"%>
 <%@ page import="com.dev.freya.model.ArtSupport"%>
 <%@ page import="com.dev.freya.model.ArtTechnique"%>
-<%@ page import="java.util.ArrayList"%>
 <%@ page
 	import="com.google.api.client.extensions.appengine.http.UrlFetchTransport"%>
 <%@ page import="com.google.api.client.json.gson.GsonFactory"%>
@@ -31,13 +31,23 @@
 				artwork = new Artwork();
 			}
 
-			String title, support, technique, date, summary = null;
+			String title, support, technique, date, summary, tags = null;
 			artistName = request.getParameter("artist");
 			title = request.getParameter("title");
 			support = request.getParameter("support");
 			technique = request.getParameter("technique");
 			date = request.getParameter("date");
 			summary = request.getParameter("summary");
+			tags = request.getParameter("tags");
+			
+			if(tags != null) {
+				String tagArray[] = tags.split(";");
+				ArrayList<String> strings = new ArrayList<String>();
+				for(String s : tagArray) {
+					strings.add(s);
+				}
+				artwork.setTags(strings);
+			}
 
 			if (artistName != null && title != null && support != null
 					&& technique != null && date != null
@@ -60,7 +70,7 @@
 
 				freya.artworks().add(artwork).execute();
 				freya.artworks().addArtistToArtwork(artwork.getId(),
-						artist);
+						artist).execute();
 				response.sendRedirect("list.jsp");
 				return;
 			}
@@ -118,10 +128,22 @@
 			value="<%=(artwork.getDimension() == null) ? "" : artwork
 					.getDimension().getZ()%>" />
 		<br /> Summary:
-		<textarea name="summary">
+		<textarea rows="5" cols="20" name="summary">
 				<%=(artwork.getSummary() == null) ? "" : (artwork.getSummary().equals("")) ? "" : artwork.getSummary()%>
 			</textarea>
-		<br /> Comments: <br /> Tags: <br /> <input type="submit"
+		<br /> Comments:
+		<%
+			String tags2 = null;
+			StringBuffer sb = new StringBuffer();
+			if(artwork.getTags() != null) {
+				for(String s : artwork.getTags()) {
+					sb.append(s);
+					sb.append(";");
+				}
+			}
+		%>
+		<br /> Tags: <textarea rows="5" cols="20" name="tags"><%=(artwork.getTags() == null) ? "" : sb.toString()%></textarea>
+		<br /> <input type="submit"
 			value="Submit" />
 	</form>
 </div>
