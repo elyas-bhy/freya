@@ -179,7 +179,7 @@
 					<enhancerApi>JPA</enhancerApi>
 					<enableJarClasses>false</enableJarClasses>
 					<jvmFlags>
-						<jvmFlag>-Ddatastore.backing_store=${project.basedir}local_db.bin</jvmFlag>
+						<jvmFlag>-Ddatastore.backing_store=${project.basedir}/local_db.bin</jvmFlag>
 					</jvmFlags>
 				</configuration>
 				<executions>
