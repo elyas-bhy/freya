@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@page import="com.appspot.freya_app.freya.model.Dimension"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ page import="java.io.IOException"%>
@@ -8,7 +9,6 @@
 <%@ page import="com.appspot.freya_app.freya.model.Reproduction"%>
 <%@ page import="com.dev.freya.model.ArtSupport"%>
 <%@ page import="com.dev.freya.model.ArtTechnique"%>
-<%@ page import="java.util.ArrayList"%>
 <%@ page
 	import="com.google.api.client.extensions.appengine.http.UrlFetchTransport"%>
 <%@ page import="com.google.api.client.json.gson.GsonFactory"%>
@@ -31,13 +31,34 @@
 				artwork = new Artwork();
 			}
 
-			String title, support, technique, date, summary = null;
+			String title, support, technique, date, summary, tags, comments = null;
 			artistName = request.getParameter("artist");
 			title = request.getParameter("title");
 			support = request.getParameter("support");
 			technique = request.getParameter("technique");
 			date = request.getParameter("date");
 			summary = request.getParameter("summary");
+			tags = request.getParameter("tags");
+			comments = request.getParameter("comments");
+			
+
+			if (tags != null) {
+				String tagArray[] = tags.split(";");
+				ArrayList<String> strings = new ArrayList<String>();
+				for (String s : tagArray) {
+					strings.add(s);
+				}
+				artwork.setTags(strings);
+			}
+			
+			if(comments != null) {
+				String commentArray[] = comments.split(";");
+				ArrayList<String> strings = new ArrayList<String>();
+				for (String s : commentArray) {
+					strings.add(s);
+				}
+				artwork.setComments(strings);
+			}
 
 			if (artistName != null && title != null && support != null
 					&& technique != null && date != null
@@ -59,8 +80,9 @@
 				artwork.setSummary(summary);
 
 				freya.artworks().add(artwork).execute();
-				freya.artworks().addArtistToArtwork(artwork.getId(),
-						artist);
+				/*freya.artworks()
+						.addArtistToArtwork(artwork.getId(), artist)
+						.execute();*/
 				response.sendRedirect("list.jsp");
 				return;
 			}
@@ -118,11 +140,32 @@
 			value="<%=(artwork.getDimension() == null) ? "" : artwork
 					.getDimension().getZ()%>" />
 		<br /> Summary:
-		<textarea name="summary">
-				<%=(artwork.getSummary() == null) ? "" : (artwork.getSummary().equals("")) ? "" : artwork.getSummary()%>
+		<textarea rows="5" cols="20" name="summary">
+				<%=(artwork.getSummary() == null) ? "" : (artwork
+					.getSummary().equals("")) ? "" : artwork.getSummary()%>
 			</textarea>
-		<br /> Comments: <br /> Tags: <br /> <input type="submit"
-			value="Submit" />
+		<%
+			StringBuffer tagsSb = new StringBuffer();
+			StringBuffer commentsSb = new StringBuffer();
+			if (artwork.getTags() != null) {
+				for (String s : artwork.getTags()) {
+					tagsSb.append(s);
+					tagsSb.append(";");
+				}
+			}
+			
+			if(artwork.getComments() != null) {
+				for(String s : artwork.getComments()) {
+					commentsSb.append(s);
+					commentsSb.append(";");
+				}
+			}
+		%>
+		<br /> Comments:
+		<textarea rows="5" cols="20" name="comments"><%=(artwork.getComments() == null) ? "" : commentsSb.toString()%></textarea>
+		<br /> Tags:
+		<textarea rows="5" cols="20" name="tags"><%=(artwork.getTags() == null) ? "" : tagsSb.toString()%></textarea>
+		<br /> <input type="submit" value="Submit" />
 	</form>
 </div>
 
