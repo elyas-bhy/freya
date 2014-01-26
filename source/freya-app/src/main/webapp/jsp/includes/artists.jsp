@@ -64,9 +64,4 @@
 	
 	
 </script>
-</head>
-
-<body>
 	<table id='dtable' class='dtable' border='1'></table>
-</body>
-</html>

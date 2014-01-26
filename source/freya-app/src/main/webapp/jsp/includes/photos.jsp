@@ -24,7 +24,6 @@
 		
 	}
 %>
-<body>
 <script type="text/javascript">
 	// Builds the HTML Table out of myList.
 	<%if( photos != null){%>
@@ -68,5 +67,3 @@
 	
 </script>
 	<table id='dtable_photos' class='dtable' border='1'></table>
-</body>
-</html>

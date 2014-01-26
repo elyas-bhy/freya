@@ -42,14 +42,19 @@
 
 <h2>Dimensions:</h2>
 <p>
-	Width :
+	Width:
 	<%=artwork.getDimension().getX()%></p>
 <p>
-	Height :
+	Height:
 	<%=artwork.getDimension().getY()%></p>
 <p>
-	Depth :
+	Depth:
 	<%=artwork.getDimension().getZ()%></p>
+	
+<h2>Photos:</h2>
+<jsp:include page="../includes/photos.jsp">
+	<jsp:param name="artist" value="${param.id}" />
+</jsp:include>
 
 <h2>Reproductions:</h2>
 <jsp:include page="../includes/reproductions.jsp">
