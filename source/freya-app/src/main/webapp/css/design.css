@@ -1,61 +1,57 @@
-body {background-color: #D1CDCD;}
-table { border-collapse:collapse; border-spacing:0; text-align: center;}
-.datatables_ref:hover { text-decoration: underline; cursor: pointer; *cursor: hand; }
-.dataTables_wrapper { position: relative; min-height: 302px; _height: 302px; clear: both; display:inline-block; }
-.dataTables_processing { position: absolute; top: 0px; left: 50%; width: 250px; margin-left: -125px; border: 1px solid #ddd; text-align: center; color: #999; font-size: 11px; padding: 2px 0; }
-.dataTables_length { width: 40%; float: left; }
-.dataTables_filter { width: 50%; float: right; text-align: right; }
-.dataTables_info { width: 60%; float: left; padding-top: 10px; }
-.dataTables_paginate { width: 44px; * width: 50px; float: right; text-align: right; padding-top: 10px; }
-#dtable_paginate { display: table; }
-table.display td.css_small { font-size: 0.7em; line-height: 1.45em; }
-table.parameters { width: 100%; margin-bottom: 1em; }
-table.features td { line-height: 17px; }
-td.parameter { width: 306px; }
-td.label { width: 180px; padding-left: 20px; }
-table.display { margin: 0 auto; width: 100%; clear: both; }
-table.display thead th { padding: 3px 10px; border-bottom: 1px solid black; font-weight: bold; cursor: pointer; * cursor: hand; font-size: 0.8em; }
-table.display tfoot th { padding: 3px 10px; border-top: 1px solid black; font-weight: bold; }
-table.display tr.heading2 td { border-bottom: 1px solid #aaa; }
-table.display td { padding: 3px 10px; font-size: 0.8em;}
-table.display td.center { text-align: center; }
-table.display tr.odd.gradeA { background-color: #ddffdd; }
-table.display tr.even.gradeA { background-color: #eeffee; }
-table.display tr.odd.gradeA { background-color: #ddffdd; }
-table.display tr.even.gradeA { background-color: #eeffee; }
-table.display tr.odd.gradeC { background-color: #ddddff; }
-table.display tr.even.gradeC { background-color: #eeeeff; }
-table.display tr.odd.gradeX { background-color: #ffdddd; }
-table.display tr.even.gradeX { background-color: #ffeeee; }
-table.display tr.odd.gradeU { background-color: #ddd; }
-table.display tr.even.gradeU { background-color: #eee; }
-.top .dataTables_info { float: none; }
+/* CSS Reset
+------------------------------------------------
+   http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
 
-tr.odd { background-color: #CED3DE; }
-tr.even { background-color: #EBECED; }
-
-.DataTables_sort_wrapper {
-	min-width: 100px;
-	max-width: 100px;
-	display: inline-block;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
 }
 
-.paginate_disabled_previous, .paginate_enabled_previous, .paginate_disabled_next, .paginate_enabled_next { height: 19px; width: 19px; margin-left: 3px; float: left; }
 
-.dName {
-    white-space: nowrap;
-}
-
-table.display thead th div.DataTables_sort_wrapper {
-  padding: 0
-}
-table.display thead th {
-  padding: 3px
-}
-
+/* 
+------------------------------------------------*/
 .button {
 	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
 	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
@@ -108,8 +104,90 @@ img.btn {
 
 #nav li { display: inline; }
 
+
+/* Main Theme
+------------------------------------------------*/
+body, #wrapper {
+	background-color: #fff;
+	margin: 0px;
+}
 #wrapper {
-	background-color: #9C9C9C;
+	margin: auto;
 	width: 1000px;
-	
+}
+
+#header {
+	width:100%;
+	height:340px;
+	background-position: center;
+	background-image: url("../resources/header.jpg");
+	background-repeat: no-repeat;
+}
+#header h1 {
+	margin: auto;
+	text-align: center;
+	padding-top: 130px;
+	font-size: 60px;
+	color: #fff;
+	font-family: 'Ubuntu', sans-serif;
+	font-weight: 400;
+	text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+#nav ul {
+	background-color: #f5f5f5;
+	border: 1px solid #dedede;
+	margin: 30px;
+	padding: 0px;
+}
+#nav ul li {
+	display: inline-block;
+}
+#nav ul li:hover {
+	background-color: #ededed;
+}
+#nav ul li a {
+	color:#564a4a;
+	font-family: arial;
+	font-size: 14px;
+	padding: 16px;
+	display: inline-block;
+	text-decoration: none;
+}
+
+
+a.button {
+	margin: 5px;
+}
+
+#dtable {
+	width: 100% !important;
+}
+table.dataTable tr {
+	background-color: #f9f9f9;
+}
+table.dataTable tr:nth-child(2n+1) {
+	background-color: #fff;
+}
+table.dataTable td,
+table.dataTable th {
+	border: 1px solid #ddd;
+}
+table.dataTable td {
+	padding: 4px 2px;
+}
+table.dataTable th {
+	color: #000 !important;
+	font-weight: bold !important;
+	padding: 6px 4px;
+	background-color: #f0efef;
+}
+
+p.comment {
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #F5C982;
+	background-color: #FFEFD7;
+	color: #443F3B;
+	margin: 10px;
 }
