@@ -103,6 +103,7 @@ public class FreyaDaoTest {
 		repro.setPrice(1000.0);
 		repro.setStock(4);
 		repro.setSupport(ArtSupport.PAINTING_LINEN_CANVAS);
+		repro.setTechnique(ArtTechnique.PAINTING_OIL);
 		artwork3.addReproduction(repro);
 	
 		dao.persistTransactional(artcollection1);

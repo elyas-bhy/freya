@@ -47,9 +47,12 @@ public class Reproduction implements Serializable {
 	
 	@Basic
 	private Double price;
-	
+
 	@Enumerated(EnumType.STRING)
 	private ArtSupport support;
+	
+	@Enumerated(EnumType.STRING)
+	private ArtTechnique technique;
 	
 	public Reproduction() {
 		
@@ -90,4 +93,13 @@ public class Reproduction implements Serializable {
 	public void setSupport(ArtSupport support) {
 		this.support = support;
 	}
+
+	public ArtTechnique getTechnique() {
+		return technique;
+	}
+
+	public void setTechnique(ArtTechnique technique) {
+		this.technique = technique;
+	}
+	
 }

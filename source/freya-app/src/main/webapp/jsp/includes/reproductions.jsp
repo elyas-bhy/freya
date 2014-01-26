@@ -34,6 +34,7 @@
 			  { "sTitle" : "Stock", "mData" : "stock"},
 			  { "sTitle" : "Price", "mData" : "price"},
 			  { "sTitle" : "Support", "mData" : "support"},
+			  { "sTitle" : "Technique", "mData" : "technique"},
 			  { "sTitle" : "Actions"}
 		]
 	};
@@ -45,8 +46,8 @@
 		
 		$('#dtable tr').each(function() {
 			var id = $(this).find('td').eq(0).text();
-			$(this).find('td').eq(4).attr("data-id", id);
-			$(this).find('td').eq(4).html(
+			$(this).find('td').eq(5).attr("data-id", id);
+			$(this).find('td').eq(5).html(
 					 "<a class='button' href='"+pwd+"jsp/reproductions/view.jsp?id=" +id+ "'><img class='btn' src='../../resources/view.png' alt='' /></a>"
 					+"<a class='button' href='"+pwd+"jsp/reproductions/edit.jsp?id=" +id+ "'><img class='btn' src='../../resources/edit.png' alt='' /></a>"
 					+"<a class='button' href='"+pwd+"jsp/reproductions/edit.jsp?id=" +id+ "'><img class='btn' src='../../resources/delete.png' alt='' /></a>"
