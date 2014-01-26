@@ -2,12 +2,14 @@
 <%@ page import="java.io.IOException"%>
 <%@ page import="com.appspot.freya_app.freya.Freya"%>
 <%@ page import="com.appspot.freya_app.freya.model.ArtworkCollection"%>
+<%@ page import="com.appspot.freya_app.freya.model.ArtCollection"%>
 <%@ page import="com.google.api.client.extensions.appengine.http.UrlFetchTransport"%>
 <%@ page import="com.google.api.client.json.gson.GsonFactory"%>
 
 <%
 	Freya freya = new Freya.Builder(new UrlFetchTransport(), new GsonFactory(), null).build();
 	ArtworkCollection artworks = null;
+	ArtCollection collec = null;
 	String artistId_aw = null;
 	String collection = null;
 	try {
@@ -16,6 +18,7 @@
 		if (collection != null){
 			Long collectionId = Long.parseLong(collection);
 			artworks = freya.artcollections().getArtworksByArtCollection(collectionId).execute();
+			collec = freya.artcollections().get(collectionId).execute();
 		}
 		else if(artistId_aw != null)
 			artworks = freya.artists().getArtworksByArtist(artistId_aw).execute();
@@ -52,6 +55,8 @@
 		      { "sTitle" : "Actions"}
 		]
 	};
+	
+
 	$(document).ready(function() {
 		var oTable_aw = $('#dtable_artworks').dataTable(input_aw);
 		$('.DataTables_sort_wrapper').each(function() {
@@ -63,11 +68,19 @@
 			$(this).find('td').eq(7).attr("data-id", id_aw);
 			$(this).find('td').eq(8).attr("data-id", id_aw);
 			$(this).find('td').eq(7).html("<a href='../artworks/view.jsp?id=" + id_aw + "'>link</a>");
+			<%if (collection == null){%>
 			$(this).find('td').eq(8).html(
 					 "<a class='button' href='"+pwd+"jsp/artworks/view.jsp?id=" +id_aw+ "'><img class='btn' src='../../resources/view.png' alt='' /></a>"
 					+"<a class='button' href='"+pwd+"jsp/artworks/edit.jsp?id=" +id_aw+ "'><img class='btn' src='../../resources/edit.png' alt='' /></a>"
-					+"<a class='button' href='"+pwd+"jsp/artworks/edit.jsp?id=" +id_aw+ "'><img class='btn' src='../../resources/delete.png' alt='' /></a>"
+					+"<a class='button' href='"+pwd+"jsp/artworks/view.jsp?id=" +id_aw+ "&del=true'><img class='btn' src='../../resources/delete.png' alt='' /></a>"
 			);
+			<%}else{%>
+			$(this).find('td').eq(8).html(
+					 "<a class='button' href='"+pwd+"jsp/artworks/view.jsp?id=" +id_aw+ "'><img class='btn' src='../../resources/view.png' alt='' /></a>"
+					+"<a class='button' href='"+pwd+"jsp/artworks/edit.jsp?id=" +id_aw+ "'><img class='btn' src='../../resources/edit.png' alt='' /></a>"
+					+"<a class='button' href='"+pwd+"jsp/artworks/edit.jsp?id=" +id_aw+ "'><img class='btn' src='../../resources/no.png' alt='' /></a>"
+			);
+			<%}%>
 		});
 
 		// Hide ID column

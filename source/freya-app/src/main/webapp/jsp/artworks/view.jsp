@@ -24,6 +24,23 @@
 		return;
 	}
 %>
+
+<script>
+$(document).ready(function(){
+	var del = "" + ${param.del};
+	if(del != ""){
+		var answer = confirm("Are you sure you want to delete this item?");
+		if(answer){
+			if(history.length == 0) { 
+				window.location = pwd +"jsp/artworks/list.jsp";
+			} else {
+				history.go(-1);
+			}
+		}
+	}
+});
+</script>
+
 <div id="container">
 <h1>
 	Artwork :
