@@ -36,7 +36,7 @@ if(comments != null) {
 		out.println("<p>" + s + "</p>");
 	}
 } else {
-	out.println("<p>There are no comments to be displayed</p>"));
+	out.println("<p>There are no comments to be displayed</p>");
 }
 out.println("</div>");
 %>
