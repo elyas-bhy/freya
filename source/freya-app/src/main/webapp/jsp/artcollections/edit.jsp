@@ -125,13 +125,16 @@
 		<textarea rows="5" cols="20" name="comments"><%=(artCollection.getComments() == null) ? "" : commentsSb.toString()%></textarea>
 		<br /> Tags:
 		<textarea rows="5" cols="20" name="tags"><%=(artCollection.getTags() == null) ? "" : tagsSb.toString()%></textarea>
-		<br /> Public: <select name="public">
+		<br /> Public: <select class="chosen" name="public">
 			<option value="">Select a value</option>
 		<% if(artCollection.getPublic() != null) {
 			if(artCollection.getPublic()) {
 			%> 
 			<option value="false">No</option>
 			<option value="true" selected="selected">Yes</option>
+			<%} else {%>
+				<option value="false" selected="selected">No</option>
+				<option value="true">Yes</option>
 			<%}
 		} else { %>
 			<option value="false">No</option>

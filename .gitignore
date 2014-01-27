@@ -30,3 +30,10 @@ war/freya-app/
 
 # Datanucleus logs
 datanucleus.log
+
+# LaTeX generated files
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz

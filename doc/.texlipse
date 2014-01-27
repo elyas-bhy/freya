@@ -1,0 +1,14 @@
+#TeXlipse project settings
+#Mon Jan 27 22:00:11 CET 2014
+markTmpDer=true
+builderNum=2
+outputDir=
+makeIndSty=
+bibrefDir=
+outputFormat=pdf
+tempDir=tmp
+mainTexFile=documentation.tex
+outputFile=ALD_Freya.pdf
+langSpell=en
+markDer=true
+srcDir=

@@ -1,0 +1,138 @@
+\documentclass [pdftex,12pt] {report}
+\usepackage [utf8x]{inputenc}
+\usepackage [french] {babel}
+\usepackage[pdftex]{graphicx}
+\usepackage{sidecap}
+\usepackage{float}
+\usepackage{natbib,hyperref}
+\usepackage{indentfirst}
+\usepackage[T1]{fontenc} 
+\usepackage{amsfonts}
+\usepackage{tabularx}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{textcomp}
+\usepackage{adjustbox}
+
+\usepackage{titlesec}
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp\textcolor{gray75}{|}\hsp}{0pt}{\Huge\bfseries}
+\titlespacing*{\chapter}{0pt}{-40pt}{40pt}
+
+\usepackage{hyperref}
+\hypersetup{
+  backref=true,
+  pagebackref=true,
+  hyperindex=true,
+  breaklinks=true,
+  colorlinks=true,
+  urlcolor=blue,
+  linkcolor=black,
+  citecolor=black
+}
+\definecolor{gray75}{gray}{0.75}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{lightblue}{rgb}{0.0,0.4,0.9}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{forestgreen}{RGB}{34,139,34}
+\definecolor{orangered}{RGB}{239,134,64}
+ 
+\lstdefinestyle{Java}{
+  language=Java,
+  basicstyle=\footnotesize\ttfamily,
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  backgroundcolor=\color{white},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  frame=single,
+  rulecolor=\color{black},
+  tabsize=4,
+  breaklines=true,
+  breakatwhitespace=false,
+  title=\lstname,
+  keywordstyle=\color{lightblue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  escapeinside={\%*}{*)},
+  keywords=[2]{DATA},
+  keywordstyle=[2]\color{red},
+  morekeywords={R,View,ViewGroup,TextView,ImageView,ViewHolder}
+}
+
+\lstdefinestyle{XML} {
+    language=XML,
+    frame=single, 
+    extendedchars=true, 
+    breaklines=true,
+    breakatwhitespace=true,
+    emph={},
+    emphstyle=\color{red},
+    basicstyle=\small\ttfamily,
+    columns=fullflexible,
+    commentstyle=\color{gray}\upshape,
+    morestring=[b]",
+    morecomment=[s]{<?}{?>},
+    morecomment=[s][\color{forestgreen}]{<!--}{-->},
+    keywordstyle=\color{orangered},
+    stringstyle=\ttfamily\color{black}\normalfont,
+    tagstyle=\color{darkblue}\bf,
+    morekeywords={attribute,xmlns,version,type,release},
+}
+
+
+\lstdefinestyle{HTML} {
+    language=HTML,
+    frame=single, 
+    extendedchars=true,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    breaklines=true,
+    breakatwhitespace=true,
+    emph={},
+    emphstyle=\color{darkblue},
+    basicstyle=\tiny\ttfamily,
+    columns=fullflexible,
+    commentstyle=\color{gray}\upshape,
+    morestring=[b]",
+    morecomment=[s]{<?}{?>},
+    morecomment=[s][\color{dkgreen}]{<!--}{-->},
+    keywordstyle=\color{purple},
+    stringstyle=\ttfamily\color{black}\normalfont,
+    tagstyle=\color{lightblue}\bf,
+}
+
+\lstset{language=Java,frame=lines}
+\lstset{language=XML,frame=lines}
+
+
+\def\wl{\par \vspace{\baselineskip}}
+\renewcommand{\lstlistingname}{Code}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\newcommand{\hsp}{\hspace{20pt}}
+
+\begin {document}
+
+\input{frontpage}
+
+\tableofcontents
+\newpage 
+
+\input{chapter-presentation}
+\input{chapter-backend}
+\input{chapter-api}
+\input{chapter-clientlib}
+\input{chapter-frontend}
+\input{chapter-difficulties}
+
+\end{document}
+ 

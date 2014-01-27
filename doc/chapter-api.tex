@@ -1,0 +1,42 @@
+\chapter{API REST}
+
+L’un des avantages de GAE est qu’il permet de facilement mettre en place une API
+REST et de l’exposer, grâce au module Google Cloud Endpoints
+(GCE)\footnote{GCE:
+\url{https://developers.google.com/appengine/docs/java/endpoints/}}.
+
+Pour ce faire, on a simplement à annoter une classe comme étant une API, et
+déclarer les méthodes d’API (notamment routes, paramètres, méthodes HTTP).\\
+
+\begin{adjustbox}{minipage=1.02\textwidth,margin=0pt \smallskipamount,center}
+\begin{lstlisting}[style=Java, label=endpoints, caption=Exemple d'API avec
+Google Cloud Endpoints]
+@Api(name = "myapi", version = "v1")
+public class MyEndpoints {
+
+	@ApiMethod(
+	    name = "elements.get",
+	    path = "elements/{element_id}",
+	    httpMethod = HttpMethod.GET
+	)
+	public Element getElement(@Named("element_id") String id) {
+	    // ...
+	}
+}
+\end{lstlisting}
+\end{adjustbox}
+
+
+GCE se chargera ensuite de construire et déployer l’API avec la description des
+méthodes exposées.\\
+La description de l’API Freya (v1) se situe à cette
+adresse\footnote{Descriptif:
+\url{https://github.com/elyas-bhy/freya/wiki/freya-RESTful-API}}.\\
+La version déployée de cette API se situe à cette adresse\footnote{Version
+déployée de l'API: \url{http://goo.gl/o9GGBB}}.\\
+
+Exemple d’interaction avec l’API en utilisant curl:
+\begin{verbatim}
+curl --header “Content-Type: application/json” -X GET
+https://freya-app.appspot.com/_ah/api/freya/v1/artworks
+\end{verbatim}

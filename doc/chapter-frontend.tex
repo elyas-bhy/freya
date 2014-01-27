@@ -1,0 +1,54 @@
+\chapter{Front-end}
+
+Pour mettre en place le front-end de Freya\footnote{Front-end Freya:
+\url{http://freya-app.appspot.com/}}, nous avons voulu profiter de la
+bibliothèque client générée pour pouvoir accéder à l’API directement, sans
+passer par des étapes intermédiaires. C’est la raison pour laquelle nous avons
+choisi d’utiliser des pages JSP plutôt qu’utiliser GWT, qui est assez lourd à
+mettre en place et très verbeux.
+
+\section{Site web}
+
+Le front-end de notre projet est un site Internet constitué de pages JSP. Ce
+site est organisé de la manière suivante:\\
+
+- A la racine du site (\emph{webapp}), un fichier \emph{index.jsp} sert de point
+d’entrée par défaut dans l’application.\\
+
+- Un dossier \emph{includes} regroupe les pages qui ne sont pas destinées à être
+affichées seules mais qui sont là pour factoriser du code, notamment les parties
+statiques du site (header, footer), mais aussi les manières de lister des
+éléments.\\
+
+- Pour chaque entité, un dossier contenant les fichiers \emph{view.jsp},
+\emph{edit.jsp} et \emph{list.jsp} qui leurs sont propres. Le fichier
+\emph{view} permet d’accéder à la vue détaillée d’une entité, permettant de
+consulter l’ensemble de ses champs. Le fichier \emph{edit} permet de créer et
+modifier une entité en renseignant ses champs. Le fichier \emph{list} permet de
+lister l’ensemble des entités d’un même type. Pour cela il utilise le fichier à
+inclure sachant lister une sous-partie ou l’ensemble de ces entités.
+
+\newpage
+\section{JavaScript}
+
+
+Nous avons eu recours à plusieurs bibliothèques JavaScript, notamment JQuery et
+ses modules DataTables, Chosen et Tabs.
+Nous avons choisi ces plugins afin de rendre l’interface plus agréable à
+utiliser.\\
+
+Le plugin DataTables nous permet d’ajouter beaucoup de fonctionnalités à nos
+tableaux. Notamment la pagination des données, et la possibilité de trier le
+tableau suivant les colonnes.
+De plus, DataTables peut être appliqué sur un tableau HTML existant, ou
+encore nous pouvons lui passer en entrée des données en JSON, et lui demander de
+construire la table lui-même.\\
+
+Chosen est un plugin qui s’applique aux menus déroulants, permettant d’effectuer
+des recherches au sein des menus, tout en appliquant une modification esthétique
+agréable.\\
+
+Le plugin Tabs est un outil de tabulation de div. Avec ce plugin nous avons pu
+rendre plus agréable la disposition des pages présentant plusieurs tables. Avec
+ce plugin, nous pouvons également spécifier, à l’aide d’un suffixe à l’URL, la
+tabulation à afficher en priorité au moment du chargement de la page.

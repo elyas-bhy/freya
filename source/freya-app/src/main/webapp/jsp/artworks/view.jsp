@@ -43,31 +43,21 @@ $(document).ready(function(){
 
 <div id="container">
 <div class="content_listing">
-<h1>
-	Artwork :
-	<%=artwork.getTitle()%></h1>
 
-<p><%=artwork.getSummary()%></p>
-
-<h2>Date of creation:</h2>
-<p><%=artwork.getDate()%></p>
-
-<h2>Support Used:</h2>
-<p><%=artwork.getSupport()%></p>
-
-<h2>Technique:</h2>
-<p><%=artwork.getTechnique()%></p>
-
-<h2>Dimensions:</h2>
-<p>
-	Width:
-	<%=artwork.getDimension().getX()%></p>
-<p>
-	Height:
-	<%=artwork.getDimension().getY()%></p>
-<p>
-	Depth:
-	<%=artwork.getDimension().getZ()%></p>
+	Artwork: <%=artwork.getTitle()%>
+	<br />
+	Summary: <%=artwork.getSummary()%>
+	<br />
+	Creation date: <%=artwork.getDate()%>
+	<br />
+	Support Used: <%=artwork.getSupport()%>
+	<br />
+	Technique: <%=artwork.getTechnique()%>
+	<br />
+	Dimensions:<br />
+	&nbsp;Width: <%=artwork.getDimension().getX()%><br />
+	&nbsp;Height: <%=artwork.getDimension().getY()%><br />
+	&nbsp;Depth: <%=artwork.getDimension().getZ()%><br />
 </div>
 
 <div id="tabs">

@@ -46,7 +46,7 @@
 			"aoColumns" : [ 
 			  { "sTitle" : "ID", "mData": "id", "sWidth" : "0%"},
 			  { "sTitle" : "Description", "mData" : "desc"},
-			  { "sTitle" : "URL", "mData" : "url"},
+			  { "sTitle" : "URL", "mData" : "url", "mRender" : function(data, type, val){return "<img src='" + data + "' />";}},
 			  { "sTitle" : "Actions"}
 		]
 	};
