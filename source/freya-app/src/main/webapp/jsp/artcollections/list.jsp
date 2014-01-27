@@ -19,44 +19,10 @@
 	}
 %>
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		var oTable = $('#dtable').dataTable();
-	});
-</script>
 <div id="container">
 	<div>
-		<a style="float: right;" class="button new" href="edit.jsp">New Artwork</a>
+		<a style="float: right;" class="button new" href="edit.jsp">New ArtCollections</a>
 	</div>
-	<table id="dtable" class="dtable">
-		<thead>
-			<tr>
-				<th>id</th>
-				<th>isPublic</th>
-				<th>Artworks</th>
-				<th>Comments</th>
-				<th>Tags</th>
-				<th>Edit</th>
-				<th>Delete</th>
-			</tr>
-		</thead>
-		<tbody>
-			<%
-				for (ArtCollection ac : collections.getItems()) {
-			%>
-			<tr class="collectionRow" data-id="<%=ac.getId()%>">
-				<td><%=ac.getId()%></td>
-				<td><%=ac.getPublic() ? "Yes" : "No"%></td>
-				<td><a href="view.jsp?id=<%=ac.getId()%>&#artworks">Artworks</a></td>
-				<td><a href="view.jsp?id=<%=ac.getId()%>&#comments">Comments</a></td>
-				<td><a href="view.jsp?id=<%=ac.getId()%>&#tags">Tags</a></td>
-				<td><a href="edit.jsp?id=<%=ac.getId()%>">Edit</a></td>
-				<td><a href="#">Delete</a></td>
-			</tr>
-			<%
-				}
-			%>
-		</tbody>
-	</table>
+	<jsp:include page="../includes/artcollections.jsp"></jsp:include>
 </div>
 <jsp:include page="../includes/footer.jsp"></jsp:include>
