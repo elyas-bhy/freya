@@ -1,0 +1,31 @@
+\chapter{Présentation}
+Freya est une application web conçue pour faciliter la gestion des musées aux
+conservateurs.\\
+Ce projet a été mis en place grâce à de nombreux outils et frameworks, notamment
+Maven\footnote{Maven: \url{http://maven.apache.org/}} et Google App
+Engine\footnote{Google App Engine:
+\url{https://developers.google.com/appengine/}}.
+
+
+\section{Maven}
+Maven est un outil de gestion de projet. Il permet notamment de spécifier
+comment un logiciel doit être compilé, et décrire ses dépendances. Il permet
+aussi d’intégrer des plugins dans des phases de compilation spécifiques, ce qui
+permet d’avoir un environnement configurable.
+
+\section{Google App Engine}
+Google App Engine (GAE) est une PaaS (Platform as a Service) qui fournit un
+ensemble d’outils afin de faciliter le développement d’applications web. Cette
+plateforme met à disposition du développeur un runtime Java, une base de données
+NoSQL (appellée \emph{datastore}), et l’hébergement de l’application web sur les
+serveurs Google.\\
+
+Afin d’intéragir avec le datastore, on peut utiliser plusieurs méthodes
+différentes, comme par exemple l’API Datastore de bas niveau, JPA, JDO, ou
+encore d’autres bibliothèques tierces comme Objectify.
+Freya a été conçu en utilisant l’implémentation JPA 2.0 de
+DataNucleus\footnote{DataNucleus:
+\url{https://code.google.com/p/datanucleus-appengine/}} pour sa compatibilité avec GAE.\\
+
+GAE fournit aussi une console d’administration très complète pour monitorer
+l’état de l’application web, le traffic, les requêtes, les logs, etc...

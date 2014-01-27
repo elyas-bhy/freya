@@ -1,0 +1,29 @@
+\chapter{Bibliothèque client}
+
+Un autre avantage de GCE est qu’il permet de générer automatiquement des
+bibliothèques clients multi-plateformes (Java/Android, iOS, JavaScript) afin de
+faciliter l’interaction avec l’API.
+La bibliothèque client consiste en deux parties différentes:\\
+
+\textbf{Le modèle client}: représentation en Java des entités manipulables. Ces
+classes représentent le modèle existant du backend. Elles étendent la classe GenericJson
+afin d’être sérialisable sur le réseau.
+Exemple: le client dispose de la classe Artist (et son agrégat
+ArtistCollection\footnote{Des classes de type agrégats sont générés aussi car on
+peut sérialiser que des objets de type “bean”, c.à.d avec des getters/setters.
+Les objets de type List<Object> ne sont pas conformes et doivent donc être
+encapsulés dans une classe ObjectCollection.}), générée par GCE. Cette classe
+est une représentation fidèle à celle du backend.\\
+
+\textbf{Builders et stubs}: servent à faciliter la communication avec le
+backend.
+La classe générée Freya (nom de l’application) met en place une interface facile
+à utitliser pour le client afin d’exécuter des méthodes de l’API.\\
+
+
+\begin{adjustbox}{minipage=0.92\textwidth,margin=0pt \smallskipamount,center}
+\begin{lstlisting}[style=Java, label=endpoints, caption=Exemple d'utilisation
+de la bibliothèque client]
+Artwork a = freya.artworks().get(artworkID).execute();
+\end{lstlisting}
+\end{adjustbox}
