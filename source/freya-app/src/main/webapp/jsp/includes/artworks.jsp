@@ -69,10 +69,11 @@
 			$(this).find('td').eq(8).attr("data-id", id_aw);
 			$(this).find('td').eq(7).html("<a href='../artworks/view.jsp?id=" + id_aw + "'>link</a>");
 			<%if (collection == null){%>
+			var currentURL = encodeURIComponent(window.location);
 			$(this).find('td').eq(8).html(
 					 "<a class='button' href='"+pwd+"jsp/artworks/view.jsp?id=" +id_aw+ "'><img class='btn' src='../../resources/view.png' alt='' /></a>"
 					+"<a class='button' href='"+pwd+"jsp/artworks/edit.jsp?id=" +id_aw+ "'><img class='btn' src='../../resources/edit.png' alt='' /></a>"
-					+"<a class='button' href='"+pwd+"jsp/artworks/view.jsp?id=" +id_aw+ "&del=true'><img class='btn' src='../../resources/delete.png' alt='' /></a>"
+					+"<a class='button' href='"+pwd+"jsp/artworks/view.jsp?id=" +id_aw+ "&del="+currentURL+"'><img class='btn' src='../../resources/delete.png' alt='' /></a>"
 			);
 			<%}else{%>
 			$(this).find('td').eq(8).html(
