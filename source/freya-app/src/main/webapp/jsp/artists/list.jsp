@@ -5,9 +5,6 @@
 <%@ page import="com.google.api.client.json.gson.GsonFactory"%>
 
 <div id="container">
-	<div>
-		<a style="float: right;" class="button new" href="edit.jsp">New Artwork</a>
-	</div>
 <jsp:include page="../includes/artists.jsp"></jsp:include>
 </div>
 

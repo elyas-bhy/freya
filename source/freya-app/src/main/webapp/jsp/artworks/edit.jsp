@@ -30,6 +30,8 @@
 			if (artwork == null) {
 				// No artwork corresponds to that id, create new artwork
 				artwork = new Artwork();
+			} else {
+				artist = artwork.getArtist();
 			}
 
 			String title, support, technique, date, summary, tags, comments = null;
@@ -100,7 +102,7 @@
 		<input type="text" name="id" style="display: none"
 			value="<%=(artworkId == null) ? "" : artworkId%>" /> Artist: <input
 			type="text" name="artist"
-			value="<%=(artistName == null) ? "" : artistName%>" /> <br />
+			value="<%=(artist == null) ? "" : artist.getName()%>" /> <br />
 		Title: <input type="text" name="title"
 			value="<%=(artwork.getTitle() == null) ? "" : artwork.getTitle()%>" />
 		<br /> Support: <select name="support">

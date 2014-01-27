@@ -165,7 +165,7 @@ a.button {
 	margin: 5px;
 }
 
-#dtable {
+#dtable, #dtable_photos {
 	width: 100% !important;
 }
 table.dataTable tr {

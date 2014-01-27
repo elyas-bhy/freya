@@ -77,8 +77,9 @@
 			<%}
 			}
 			%>
-		</select> <br /> Stock: <input type="number" name="stock" /> <br /> Price: <input
-			type="number" name="price" /> <br /> Support:<select name="support">
+		</select> <br /> Stock: <input type="number" name="stock" value=<%=(reproduction.getStock() != null) ? 0 : reproduction.getStock() %> />
+			<br /> Price: <input
+			type="number" name="price" value=<%=(reproduction.getPrice() != null) ? 0 : reproduction.getPrice() %>/> <br /> Support:<select name="support">
 			<option value="">Select a value</option>
 			<%
 				for (ArtSupport sup : ArtSupport.values()) {

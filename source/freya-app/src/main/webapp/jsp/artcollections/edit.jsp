@@ -132,6 +132,9 @@
 			%> 
 			<option value="false">No</option>
 			<option value="true" selected="selected">Yes</option>
+			<%} else {%>
+				<option value="false" selected="selected">No</option>
+				<option value="true">Yes</option>
 			<%}
 		} else { %>
 			<option value="false">No</option>
