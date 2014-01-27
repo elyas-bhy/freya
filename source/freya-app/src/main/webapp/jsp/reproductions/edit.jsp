@@ -1,3 +1,4 @@
+<%@page import="com.dev.freya.model.ArtTechnique"%>
 <%@page import="com.dev.freya.model.ArtSupport"%>
 <%@page import="com.appspot.freya_app.freya.model.ArtworkCollection"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
@@ -14,11 +15,14 @@
 
 <%
 	Reproduction reproduction = null;
+	Artwork artwork= null;
 	ArtworkCollection artworks = null;
 	String reproductionId = request.getParameter("id");
 	Freya freya = new Freya.Builder(new UrlFetchTransport(),
 			new GsonFactory(), null).build();
 	try {
+		artworks = freya.artworks().list().execute();
+		reproduction = new Reproduction();
 		if (reproductionId != null) {
 			// Reproduction id was set, this is an edit
 			reproduction = freya.reproductions().get(reproductionId)
@@ -26,26 +30,34 @@
 			if (reproduction == null) {
 				// No reproductions correspond to that id, store data
 				reproduction = new Reproduction();
-				artworks = freya.artworks().list().execute();
-				String artwork = request.getParameter("artwork");
-				String stock = request.getParameter("stock");
-				String price = request.getParameter("price");
-				String support = request.getParameter("support");
-				if (artwork != null && stock != null && price != null
-						&& support != null) {
-					reproduction.setArtworkId(artwork);
-					reproduction.setPrice(Double.valueOf(price));
-					reproduction.setStock(Integer.valueOf(stock));
-					reproduction.setSupport(support);
-					freya.artworks().addReproductionToArtwork(artwork, reproduction);
-					
-					response.sendRedirect("list.jsp");
-					return;
-				}
+			}
+			
+			String artworkId = request.getParameter("artwork");
+			
+			if(artworkId != null) {
+				artwork = freya.artworks().get(artworkId).execute();
+			}
+			
+			String stock = request.getParameter("stock");
+			String price = request.getParameter("price");
+			String support = request.getParameter("support");
+			String technique = request.getParameter("technique");
+			if (artwork != null && stock != null && price != null
+					&& support != null && technique != null) {
+				reproduction.setArtworkId(artworkId);
+				reproduction.setPrice(Double.valueOf(price));
+				reproduction.setStock(Integer.valueOf(stock));
+				reproduction.setSupport(support);
+				reproduction.setTechnique(technique);
+
+				freya.artworks().addReproductionToArtwork(artwork.getId(), reproduction).execute();
+				
+				response.sendRedirect("../artworks/view.jsp?id=" + artwork.getId() + "#reproductions");
+				return;
 			}
 		}
-		reproduction = new Reproduction();
 	} catch (Exception e) {
+		System.out.println(e);
 		response.sendRedirect("../404.jsp");
 		return;
 	}
@@ -58,12 +70,12 @@
 					.getId()%>" />
 		Artwork: <select name="artwork">
 			<option value="">Select a value</option>
-			<%
+			<%if(artworks != null) {
 				for (Artwork a : artworks.getItems()) {
 			%>
 			<option value="<%=a.getId()%>"><%=a.getTitle()%></option>
-			<%
-				}
+			<%}
+			}
 			%>
 		</select> <br /> Stock: <input type="number" name="stock" /> <br /> Price: <input
 			type="number" name="price" /> <br /> Support:<select name="support">
@@ -79,7 +91,23 @@
 			<%
 				}
 			%>
-		</select> <input type="submit" value="Submit" />
+		</select>
+		<br />
+		Technique:<select name="technique">
+			<option value="">Select a value</option>
+			<%
+				for (ArtTechnique tech : ArtTechnique.values()) {
+			%>
+			<option value="<%=tech.toString()%>"
+				<%if (reproduction.getTechnique() != null) {
+					if (tech.toString().equals(reproduction.getTechnique())) {%>
+				selected="selected" <%}%> <%}%>>
+				<%=tech.toString()%></option>
+			<%
+				}
+			%>
+		</select>
+		<br /> <input type="submit" value="Submit" />
 	</form>
 </div>
 

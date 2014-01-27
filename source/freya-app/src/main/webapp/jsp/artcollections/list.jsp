@@ -25,7 +25,9 @@
 	});
 </script>
 <div id="container">
-	<a href="edit.jsp">New Art Collection</a>
+	<div>
+		<a style="float: right;" class="button new" href="edit.jsp">New Artwork</a>
+	</div>
 	<table id="dtable" class="dtable">
 		<thead>
 			<tr>

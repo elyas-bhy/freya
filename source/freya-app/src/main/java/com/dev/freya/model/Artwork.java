@@ -190,6 +190,8 @@ public class Artwork implements Serializable {
 	}
 	
 	public void addReproduction(Reproduction r) {
+		if(reproductions == null)
+			reproductions = new ArrayList<Reproduction>();
 		reproductions.add(r);
 	}
 	

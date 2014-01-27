@@ -104,6 +104,11 @@ img.btn {
 
 #nav li { display: inline; }
 
+.button.new {
+	width: auto;
+	padding: 5px;
+}
+
 
 /* Main Theme
 ------------------------------------------------*/

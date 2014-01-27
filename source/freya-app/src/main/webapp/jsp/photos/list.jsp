@@ -4,7 +4,7 @@
 <%@ page import="com.google.api.client.json.gson.GsonFactory"%>
 <jsp:include page="../includes/header.jsp"></jsp:include>
 
-<div class="container">
+<div id="container">
 <jsp:include page="../includes/photos.jsp"></jsp:include>
 </div>
 

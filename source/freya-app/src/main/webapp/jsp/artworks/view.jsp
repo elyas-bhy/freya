@@ -34,7 +34,11 @@ $(document).ready(function(){
 	if(del != ""){
 		var answer = confirm("Are you sure you want to delete this item?");
 		if(answer){
-			window.location = del;
+			if(history.length == 0) { 
+				window.location = pwd +"jsp/artworks/list.jsp";
+			} else {
+				history.go(-1);
+			}
 		}
 	}
 });
@@ -75,12 +79,14 @@ $(document).ready(function(){
 			<li><a href="#reproductions">Reproductions</a></li>
 		</ul>
 <div id="photos">
+<a class="button new" href="../photos/edit.jsp?id=<%=artwork.getId() %>">New Photo</a>
 <jsp:include page="../includes/photos.jsp">
 	<jsp:param name="artist" value="${param.id}" />
 </jsp:include>
 </div>
 
 <div id="reproductions">
+<a class="button new" href="../reproductions/edit.jsp">New Reproduction</a>
 <jsp:include page="../includes/reproductions.jsp">
 	<jsp:param name="artist" value="${param.id}" />
 </jsp:include>

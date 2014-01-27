@@ -4,8 +4,10 @@
 <%@ page import="com.google.api.client.json.gson.GsonFactory"%>
 <jsp:include page="../includes/header.jsp"></jsp:include>
 
-<div class="container">
-<a href="edit.jsp">New Artwork</a>
+<div id="container">
+	<div>
+		<a style="float: right;" class="button new" href="edit.jsp">New Artwork</a>
+	</div>
 <jsp:include page="../includes/artworks.jsp"></jsp:include>
 </div>
 

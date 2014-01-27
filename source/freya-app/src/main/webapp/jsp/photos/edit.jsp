@@ -1,3 +1,4 @@
+<%@page import="com.appspot.freya_app.freya.model.Response"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
@@ -36,11 +37,12 @@
 			if(desc != null) {
 				p.setDesc(desc);
 			}
-			List<Photo> photos = artwork.getPhotos();
-			photos.add(p);
-			artwork.setPhotos(photos);
+			Response r = freya.artworks().addPhotoToArtwork(artwork.getId(), p).execute();
+			response.sendRedirect("../artworks/view.jsp?id=" + artworkId + "#photos");
+			return;
 		}
 	} catch (Exception e) {
+		System.out.println(e);
 		response.sendRedirect("../404.jsp");
 		return;
 	}
@@ -49,8 +51,8 @@
 <div id="container">
 	<form action="edit.jsp" method="POST">
 		<input type="text" name="id" style="display:none;" value="<%=(artwork.getId() == null) ? "" : artwork.getId() %>"/>
-		Description: <textarea rows="5" cols="20" name="desc"></textarea>
-		URL: <input type="text" name="uri" />
+		Description: <textarea rows="5" cols="20" name="desc"></textarea><br />
+		URL: <input type="text" name="uri" /><br />
 		
 		<input type="submit"value="Submit" />
 	</form>

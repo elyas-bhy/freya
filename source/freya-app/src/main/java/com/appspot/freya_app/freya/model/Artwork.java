@@ -18,6 +18,8 @@
 
 package com.appspot.freya_app.freya.model;
 
+import java.util.ArrayList;
+
 /**
  * Model definition for Artwork.
  *
@@ -114,6 +116,13 @@ public final class Artwork extends com.google.api.client.json.GenericJson {
    */
   @com.google.api.client.util.Key
   private java.lang.String title;
+  
+  public Artwork() {
+	  comments = new ArrayList<>();
+	  tags = new ArrayList<>();
+	  photos = new ArrayList<>();
+	  reproductions = new ArrayList<>();
+  }
 
   /**
    * @return value or {@code null} for none
