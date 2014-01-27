@@ -374,7 +374,7 @@ public class FreyaDao {
 	 * @param artCollectionId
 	 */
 	public void deleteArtCollection(Long artCollectionId) {
-		ArtCollection artCollection = getArtCollection(artCollectionId);
+		ArtCollection artCollection = mEntityManager.find(ArtCollection.class, artCollectionId);
 		if (artCollection != null) {
 			beginTransaction();
 			remove(artCollection);

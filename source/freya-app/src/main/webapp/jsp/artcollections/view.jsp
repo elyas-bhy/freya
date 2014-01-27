@@ -1,5 +1,4 @@
-<%@page
-	import="com.google.appengine.repackaged.com.google.protobuf.ByteString.Output"%>
+<%@page	import="com.google.appengine.repackaged.com.google.protobuf.ByteString.Output"%>
 <%@page import="java.io.Console"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ page import="java.io.IOException"%>
@@ -16,9 +15,10 @@
 	Freya freya = new Freya.Builder(new UrlFetchTransport(), new GsonFactory(), null).build();
 	ArtCollection collection = null;
 	ArtworkCollection artworks = null;
+	Long collectionId;
 	try {
 		String collectionString = request.getParameter("id");
-		Long collectionId = Long.parseLong(collectionString);
+		collectionId = Long.parseLong(collectionString);
 		collection = freya.artcollections().get(collectionId).execute();
 		if(collection == null) {
 			response.sendRedirect("../404.jsp");
@@ -29,7 +29,21 @@
 		return;
 	}
 %>
-
+<script>
+$(document).ready(function(){
+	var del = "";
+	<% if(request.getParameter("del") != null) { %>
+		del = del + "${param.del}";
+	<%}%>
+	if(del != ""){
+		var answer = confirm("Are you sure you want to delete this item?");
+		if(answer){
+			var url = "delete.jsp?id="+"${param.id}"+"&del="+"${param.del}";
+			window.location = url;
+		}
+	}
+});
+</script>
 <div id="container">
 	<h2>
 		Collection
