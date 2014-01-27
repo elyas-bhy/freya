@@ -34,11 +34,7 @@ $(document).ready(function(){
 	if(del != ""){
 		var answer = confirm("Are you sure you want to delete this item?");
 		if(answer){
-			if(history.length == 0) { 
-				window.location = pwd +"jsp/artworks/list.jsp";
-			} else {
-				window.location = "http://www.pornhub.com";
-			}
+			window.location = del;
 		}
 	}
 });
