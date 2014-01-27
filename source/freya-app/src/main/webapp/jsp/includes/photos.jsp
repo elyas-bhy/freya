@@ -3,6 +3,7 @@
 <%@ page import="com.appspot.freya_app.freya.Freya"%>
 <%@ page import="com.appspot.freya_app.freya.model.PhotoCollection"%>
 <%@ page import="com.appspot.freya_app.freya.model.ArtworkCollection"%>
+<%@ page import="com.appspot.freya_app.freya.model.Artwork"%>
 <%@ page import="com.google.api.client.extensions.appengine.http.UrlFetchTransport"%>
 <%@ page import="com.google.api.client.json.gson.GsonFactory"%>
 
@@ -18,10 +19,17 @@
 			photos = freya.artists().getPhotosByArtist(artistId_ph).execute();
 		else if (artworkId != null){
 			photos = new PhotoCollection();
-			photos.setItems(freya.artworks().get(artworkId).execute().getPhotos());
+			Artwork a = freya.artworks().get(artworkId).execute();
+			if (a!= null)
+			photos.setItems(a.getPhotos());
 		}
+	if(photos == null){
+		response.sendRedirect("../404.jsp");
+		return;		
+	}
 	} catch (IOException e) {
-		
+		response.sendRedirect("../404.jsp");
+		return;		
 	}
 %>
 <script type="text/javascript">
