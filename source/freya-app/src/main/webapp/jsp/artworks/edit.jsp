@@ -105,7 +105,7 @@
 			value="<%=(artist == null) ? "" : artist.getName()%>" /> <br />
 		Title: <input type="text" name="title"
 			value="<%=(artwork.getTitle() == null) ? "" : artwork.getTitle()%>" />
-		<br /> Support: <select name="support">
+		<br /> Support: <select class="chosen" name="support">
 			<option value="">Select a value</option>
 			<%
 				for (ArtSupport sup : ArtSupport.values()) {
@@ -118,7 +118,7 @@
 			<%
 				}
 			%>
-		</select> <br /> Technique: <select name="technique">
+		</select> <br /> Technique: <select class="chosen" name="technique">
 			<option value="">Select a value</option>
 			<%
 				for (ArtTechnique tech : ArtTechnique.values()) {

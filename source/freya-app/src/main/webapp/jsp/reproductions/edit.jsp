@@ -68,7 +68,7 @@
 		<input type="text" name="id" style="display: none;"
 			value="<%=(reproduction.getId() == null) ? "" : reproduction
 					.getId()%>" />
-		Artwork: <select name="artwork">
+		Artwork: <select class="chosen" name="artwork">
 			<option value="">Select a value</option>
 			<%if(artworks != null) {
 				for (Artwork a : artworks.getItems()) {
@@ -79,7 +79,7 @@
 			%>
 		</select> <br /> Stock: <input type="number" name="stock" value=<%=(reproduction.getStock() != null) ? 0 : reproduction.getStock() %> />
 			<br /> Price: <input
-			type="number" name="price" value=<%=(reproduction.getPrice() != null) ? 0 : reproduction.getPrice() %>/> <br /> Support:<select name="support">
+			type="number" name="price" value=<%=(reproduction.getPrice() != null) ? 0 : reproduction.getPrice() %>/> <br /> Support:<select class="chosen" name="support">
 			<option value="">Select a value</option>
 			<%
 				for (ArtSupport sup : ArtSupport.values()) {
@@ -94,7 +94,7 @@
 			%>
 		</select>
 		<br />
-		Technique:<select name="technique">
+		Technique:<select class="chosen" name="technique">
 			<option value="">Select a value</option>
 			<%
 				for (ArtTechnique tech : ArtTechnique.values()) {
