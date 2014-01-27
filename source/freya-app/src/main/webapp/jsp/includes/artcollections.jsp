@@ -53,9 +53,9 @@
 			$(this).find('td').eq(3).html("<a href='view.jsp?id=" + id + "'>link</a>");
 			$(this).find('td').eq(4).html("<a href='view.jsp?id=" + id + "'>link</a>");
 			$(this).find('td').eq(5).html(
-					 "<a class='button' href='"+pwd+"jsp/artists/view.jsp?id=" +id+ "'><img class='btn' src='../../resources/view.png' alt='' /></a>"
-					+"<a class='button' href='"+pwd+"jsp/artists/edit.jsp?id=" +id+ "'><img class='btn' src='../../resources/edit.png' alt='' /></a>"
-					+"<a class='button' href='"+pwd+"jsp/artists/edit.jsp?id=" +id+ "'><img class='btn' src='../../resources/delete.png' alt='' /></a>"
+					 "<a class='button' href='"+pwd+"jsp/artcollections/view.jsp?id=" +id+ "'><img class='btn' src='../../resources/view.png' alt='' /></a>"
+					+"<a class='button' href='"+pwd+"jsp/artcollections/edit.jsp?id=" +id+ "'><img class='btn' src='../../resources/edit.png' alt='' /></a>"
+					+"<a class='button' href='"+pwd+"jsp/artcollections/edit.jsp?id=" +id+ "'><img class='btn' src='../../resources/delete.png' alt='' /></a>"
 			);
 
 		});
