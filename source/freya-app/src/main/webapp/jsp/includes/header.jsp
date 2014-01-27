@@ -12,6 +12,7 @@
 	<script type="text/javascript" src="../../js/chosen_v1.0.0/chosen.jquery.js"></script>
 	<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 	<script type="text/javascript">
+	    //var pwd = "https://freya-app.appspot.com/";
 		var pwd = "http://localhost:8080/";
 		$(document).ready(function() {
 			$('#tabs').tabs();
