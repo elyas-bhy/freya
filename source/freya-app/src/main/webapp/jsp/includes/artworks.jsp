@@ -34,6 +34,7 @@
 	<%if( artworks != null){%>
 	var items_aw = <%=artworks.getItems().toString()%>
 	<%}else{%>
+	var items_aw = {}
 	console.log("null pointer at items initilization")
 	<%}%>
 	var input_aw = {
@@ -51,6 +52,7 @@
 			  	return "(" + data.x + ", " + data.y + ", " + data.z + ")";
 		          }
 		      },
+		      { "sTitle" : "Photos", "mData" : "photos"},
 		      { "sTitle" : "Reproductions", "mData" : "reproductions"},
 		      { "sTitle" : "Actions"}
 		]
@@ -67,15 +69,17 @@
 			var id_aw = $(this).find('td').eq(0).text();
 			$(this).find('td').eq(7).attr("data-id", id_aw);
 			$(this).find('td').eq(8).attr("data-id", id_aw);
-			$(this).find('td').eq(7).html("<a href='../artworks/view.jsp?id=" + id_aw + "'>link</a>");
+			$(this).find('td').eq(9).attr("data-id", id_aw);
+			$(this).find('td').eq(7).html("<a href='../artworks/view.jsp?id=" + id_aw + "#photos'>link</a>");
+			$(this).find('td').eq(8).html("<a href='../artworks/view.jsp?id=" + id_aw + "#reproductions'>link</a>");
 			<%if (collection == null){%>
-			$(this).find('td').eq(8).html(
+			$(this).find('td').eq(9).html(
 					 "<a class='button' href='"+pwd+"jsp/artworks/view.jsp?id=" +id_aw+ "'><img class='btn' src='../../resources/view.png' alt='' /></a>"
 					+"<a class='button' href='"+pwd+"jsp/artworks/edit.jsp?id=" +id_aw+ "'><img class='btn' src='../../resources/edit.png' alt='' /></a>"
 					+"<a class='button' href='"+pwd+"jsp/artworks/view.jsp?id=" +id_aw+ "&del=true'><img class='btn' src='../../resources/delete.png' alt='' /></a>"
 			);
 			<%}else{%>
-			$(this).find('td').eq(8).html(
+			$(this).find('td').eq(9).html(
 					 "<a class='button' href='"+pwd+"jsp/artworks/view.jsp?id=" +id_aw+ "'><img class='btn' src='../../resources/view.png' alt='' /></a>"
 					+"<a class='button' href='"+pwd+"jsp/artworks/edit.jsp?id=" +id_aw+ "'><img class='btn' src='../../resources/edit.png' alt='' /></a>"
 					+"<a class='button' href='"+pwd+"jsp/artworks/edit.jsp?id=" +id_aw+ "'><img class='btn' src='../../resources/no.png' alt='' /></a>"

@@ -18,6 +18,8 @@
 
 package com.appspot.freya_app.freya.model;
 
+import com.google.appengine.api.datastore.KeyFactory;
+
 /**
  * Model definition for Artist.
  *
@@ -42,13 +44,25 @@ public final class Artist extends com.google.api.client.json.GenericJson {
    */
   @com.google.api.client.util.Key
   private java.lang.String name;
+  
+  public Artist() {
 
+  }
+
+  public Artist(String name) {
+	  this();
+	  this.name = name;
+	  this.id = KeyFactory.createKeyString("Artist", name);
+	  this.id = id.substring(0, id.length() - 1);  // JPA workaround
+  }
+  
   /**
    * @return value or {@code null} for none
    */
   public java.lang.String getId() {
     return id;
   }
+  
 
   /**
    * @param id id or {@code null} for none

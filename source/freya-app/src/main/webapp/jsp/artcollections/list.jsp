@@ -25,7 +25,8 @@
 	});
 </script>
 <div id="container">
-	<table id="dtable">
+	<a href="edit.jsp">New Art Collection</a>
+	<table id="dtable" class="dtable">
 		<thead>
 			<tr>
 				<th>id</th>
@@ -47,7 +48,7 @@
 				<td><a href="view.jsp?id=<%=ac.getId()%>&#artworks">Artworks</a></td>
 				<td><a href="view.jsp?id=<%=ac.getId()%>&#comments">Comments</a></td>
 				<td><a href="view.jsp?id=<%=ac.getId()%>&#tags">Tags</a></td>
-				<td><a href="#">Edit</a></td>
+				<td><a href="edit.jsp?id=<%=ac.getId()%>">Edit</a></td>
 				<td><a href="#">Delete</a></td>
 			</tr>
 			<%

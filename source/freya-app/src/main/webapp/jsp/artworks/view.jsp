@@ -27,14 +27,17 @@
 
 <script>
 $(document).ready(function(){
-	var del = "" + ${param.del};
+	var del = "";
+	<% if(request.getParameter("del") != null) { %>
+		del = del + ${param.del};
+	<%}%>
 	if(del != ""){
 		var answer = confirm("Are you sure you want to delete this item?");
 		if(answer){
 			if(history.length == 0) { 
 				window.location = pwd +"jsp/artworks/list.jsp";
 			} else {
-				history.go(-1);
+				window.location = "http://www.pornhub.com";
 			}
 		}
 	}
@@ -42,6 +45,7 @@ $(document).ready(function(){
 </script>
 
 <div id="container">
+<div class="content_listing">
 <h1>
 	Artwork :
 	<%=artwork.getTitle()%></h1>
@@ -67,16 +71,25 @@ $(document).ready(function(){
 <p>
 	Depth:
 	<%=artwork.getDimension().getZ()%></p>
-	
-<h2>Photos:</h2>
+</div>
+
+<div id="tabs">
+<ul>
+			<li><a href="#photos">Photos</a></li>
+			<li><a href="#reproductions">Reproductions</a></li>
+		</ul>
+<div id="photos">
 <jsp:include page="../includes/photos.jsp">
 	<jsp:param name="artist" value="${param.id}" />
 </jsp:include>
+</div>
 
-<h2>Reproductions:</h2>
+<div id="reproductions">
 <jsp:include page="../includes/reproductions.jsp">
 	<jsp:param name="artist" value="${param.id}" />
 </jsp:include>
+</div>
+</div>
 </div>
 
 <jsp:include page="../includes/footer.jsp"></jsp:include>

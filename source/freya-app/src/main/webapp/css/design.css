@@ -183,6 +183,29 @@ table.dataTable th {
 	background-color: #f0efef;
 }
 
+div#tabs #dtable {
+	width: 100% !important;
+}
+div#tabs table.dataTable tr {
+	background-color: #f9f9f9;
+}
+div#tabs table.dataTable tr:nth-child(2n+1) {
+	background-color: #fff;
+}
+div#tabs table.dataTable td,
+div#tabs table.dataTable th {
+	border: 1px solid #ddd;
+}
+div#tabs table.dataTable td {
+	padding: 4px 2px;
+}
+div#tabs table.dataTable th {
+	color: #000 !important;
+	font-weight: bold !important;
+	padding: 6px 4px;
+	background-color: #f0efef;
+}
+
 p.comment {
 	padding: 10px;
 	border-radius: 5px;
@@ -190,4 +213,13 @@ p.comment {
 	background-color: #FFEFD7;
 	color: #443F3B;
 	margin: 10px;
+}
+
+#container {
+	border: 1px solid #dedede;
+	padding: 0px;
+}
+
+.content_listing {
+	margin: 30px;
 }

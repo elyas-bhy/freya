@@ -1,3 +1,4 @@
+<%@page import="com.appspot.freya_app.freya.model.Response"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.appspot.freya_app.freya.model.Dimension"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
@@ -27,7 +28,7 @@
 			// Artwork id was set
 			artwork = freya.artworks().get(artworkId).execute();
 			if (artwork == null) {
-				// No artist corresponds to that id, create new artist
+				// No artwork corresponds to that id, create new artwork
 				artwork = new Artwork();
 			}
 
@@ -70,8 +71,7 @@
 						.getParameter("dimension_y")));
 				d.setZ(Float.valueOf(request
 						.getParameter("dimension_z")));
-				artist = new Artist();
-				artist.setName(artistName);
+				artist = new Artist(artistName);
 				artwork.setTitle(title);
 				artwork.setSupport(support);
 				artwork.setTechnique(technique);
@@ -79,16 +79,17 @@
 				artwork.setDimension(d);
 				artwork.setSummary(summary);
 
-				freya.artworks().add(artwork).execute();
-				/*freya.artworks()
-						.addArtistToArtwork(artwork.getId(), artist)
-						.execute();*/
+				Response r = freya.artworks().add(artwork).execute();
+				freya.artworks()
+						.addArtistToArtwork(r.getValue(), artist)
+						.execute();
 				response.sendRedirect("list.jsp");
 				return;
 			}
 		}
 
 	} catch (Exception e) {
+		System.out.println(e);
 		response.sendRedirect("../404.jsp");
 		return;
 	}

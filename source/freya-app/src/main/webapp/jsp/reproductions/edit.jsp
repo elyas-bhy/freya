@@ -27,7 +27,7 @@
 				// No reproductions correspond to that id, store data
 				reproduction = new Reproduction();
 				artworks = freya.artworks().list().execute();
-				String artwork = request.getParameter("artowkr");
+				String artwork = request.getParameter("artwork");
 				String stock = request.getParameter("stock");
 				String price = request.getParameter("price");
 				String support = request.getParameter("support");

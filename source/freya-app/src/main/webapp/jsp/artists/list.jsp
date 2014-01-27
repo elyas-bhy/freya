@@ -4,6 +4,8 @@
 <%@ page import="com.google.api.client.extensions.appengine.http.UrlFetchTransport"%>
 <%@ page import="com.google.api.client.json.gson.GsonFactory"%>
 
+<div class="container">
 <jsp:include page="../includes/artists.jsp"></jsp:include>
+</div>
 
 <jsp:include page="../includes/footer.jsp"></jsp:include>
