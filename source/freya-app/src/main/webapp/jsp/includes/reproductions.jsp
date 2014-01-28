@@ -25,6 +25,9 @@
 	// Builds the HTML Table out of myList.
 	<%if( reproductions != null){%>
 	var items = <%=reproductions.getItems().toString()%>
+	<%}else{%>
+	var items = {};
+	<%}%>
 	var input = {
 			"aaData" : items,
 			"bJQueryUI": true,
@@ -58,9 +61,6 @@
 		// Hide ID column
 		oTable.fnSetColumnVis(0, false);
 	});
-	<%}else{%>
-	console.log("null pointer at items initilization")
-	<%}%>
 	
 </script>
 

@@ -37,7 +37,7 @@
 	<%if( photos != null){%>
 	var items_ph = <%=photos.getItems().toString()%>
 	<%}else{%>
-	console.log("null pointer at items initilization")
+	var items_ph = {};
 	<%}%>
 	var input_ph = {
 			"aaData" : items_ph,

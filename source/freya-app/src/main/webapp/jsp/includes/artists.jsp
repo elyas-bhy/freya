@@ -20,7 +20,7 @@
 	<%if(artists != null) {%>
 	var items = <%=artists.getItems().toString()%>;
 	<%}else{%>
-	console.log("null pointer at items initialization");
+	var items = {};
 	<%}%>
 	var input = {
 			"aaData" : items,

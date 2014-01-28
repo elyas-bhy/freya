@@ -34,8 +34,7 @@
 	<%if( artworks != null){%>
 	var items_aw = <%=artworks.getItems().toString()%>
 	<%}else{%>
-	var items_aw = {}
-	console.log("null pointer at items initilization")
+	var items_aw = {};
 	<%}%>
 	var input_aw = {
 			"aaData" : items_aw,
