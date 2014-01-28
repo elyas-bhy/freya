@@ -18,11 +18,19 @@
 		collectionId_com = request.getParameter("collection");
 		if (collectionId_com != null){
 	Long collectionId = Long.parseLong(collectionId_com);
-	comments = freya.artcollections().get(collectionId).execute().getComments();
+	ArtCollection ac = freya.artcollections().get(collectionId).execute();
+	if (ac != null)
+		comments = ac.getComments();
 		}
-		else if(artistId_com != null)
-	comments = freya.artworks().get(artistId_com).execute().getComments();
-
+		else if(artistId_com != null){
+			Artwork a = freya.artworks().get(artistId_com).execute();
+			if (a != null)
+				comments = a.getComments();
+		}
+	if (comments == null){
+		response.sendRedirect("../404.jsp");
+		return;		
+	}
 	} catch (IOException e) {
 		response.sendRedirect("../404.jsp");
 		return;

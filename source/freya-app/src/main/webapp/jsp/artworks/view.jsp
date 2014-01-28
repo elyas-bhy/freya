@@ -29,13 +29,12 @@
 $(document).ready(function(){
 	var del = "";
 	<% if(request.getParameter("del") != null) { %>
-		del = del + ${param.del};
+		del = del + "${param.del}";
 	<%}%>
 	if(del != ""){
 		var answer = confirm("Are you sure you want to delete this item?");
 		if(answer){
 			var url = decodeURIComponent(del);
-			console.log("going to " + url)
 			window.location = url;
 		}
 	}
