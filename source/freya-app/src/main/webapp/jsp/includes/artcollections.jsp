@@ -20,7 +20,7 @@
 	<%if(artCollection != null) {%>
 	var items = <%=artCollection.getItems().toString()%>;
 	<%}else{%>
-	console.log("null pointer at items initialization");
+	var items = {};
 	<%}%>
 	var input = {
 			"aaData" : items,
