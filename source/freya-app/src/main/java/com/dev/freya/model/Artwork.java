@@ -43,7 +43,7 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 @Entity
 public class Artwork implements Serializable {
 	
-	private static final long serialVersionUID = -2251964248074083442L;
+	private static final long serialVersionUID = -1741860809867096385L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -75,11 +75,8 @@ public class Artwork implements Serializable {
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> tags;
 	
-	// Must use @Embedded instead of @ElementCollection as a workaround of issue 318
-	// Eclipse IDE might signal an error here, but this works just fine.
-	// See: https://code.google.com/p/datanucleus-appengine/issues/detail?id=318
-	@Embedded
-	@OneToMany(fetch = FetchType.EAGER)
+	@ElementCollection
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Photo> photos;
 	
 	@Embedded
@@ -166,6 +163,8 @@ public class Artwork implements Serializable {
 	}
 
 	public List<Photo> getPhotos() {
+		if (photos == null)
+			photos = new ArrayList<>();
 		return photos;
 	}
 	
@@ -174,6 +173,8 @@ public class Artwork implements Serializable {
 	}
 
 	public void addPhoto(Photo photo) {
+		if (photos == null)
+			photos = new ArrayList<>();
 		photos.add(photo);
 	}
 
@@ -186,16 +187,17 @@ public class Artwork implements Serializable {
 	}
 	
 	public List<Reproduction> getReproductions() {
+		if (reproductions == null)
+			reproductions = new ArrayList<>();
 		return reproductions;
 	}
 	
 	public void addReproduction(Reproduction r) {
-		if(reproductions == null)
-			reproductions = new ArrayList<Reproduction>();
+		if (reproductions == null)
+			reproductions = new ArrayList<>();
 		reproductions.add(r);
 	}
 	
-
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getClass().getSimpleName());

@@ -18,6 +18,8 @@
 
 package com.appspot.freya_app.freya.model;
 
+import java.util.ArrayList;
+
 /**
  * Model definition for ArtCollection.
  *
@@ -65,6 +67,8 @@ public final class ArtCollection extends com.google.api.client.json.GenericJson 
    * @return value or {@code null} for none
    */
   public java.util.List<Artwork> getArtworks() {
+	if (artworks == null)
+		artworks = new ArrayList<>();
     return artworks;
   }
 

@@ -74,6 +74,8 @@ public class ArtCollection implements Serializable {
 	}
 
 	public List<Artwork> getArtworks() {
+		if (artworks == null)
+			artworks = new ArrayList<>();
 		return artworks;
 	}
 	
@@ -82,6 +84,8 @@ public class ArtCollection implements Serializable {
 	}
 
 	public void addArtwork(Artwork artwork) {
+		if (artworks == null)
+			artworks = new ArrayList<>();
 		artworks.add(artwork);
 	}
 

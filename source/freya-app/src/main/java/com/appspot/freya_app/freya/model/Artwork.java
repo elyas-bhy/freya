@@ -203,6 +203,8 @@ public final class Artwork extends com.google.api.client.json.GenericJson {
    * @return value or {@code null} for none
    */
   public java.util.List<Photo> getPhotos() {
+	if (photos == null)
+		photos = new ArrayList<>();
     return photos;
   }
 
@@ -218,6 +220,8 @@ public final class Artwork extends com.google.api.client.json.GenericJson {
    * @return value or {@code null} for none
    */
   public java.util.List<Reproduction> getReproductions() {
+	if (reproductions == null)
+		reproductions = new ArrayList<>();
     return reproductions;
   }
 

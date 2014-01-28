@@ -27,7 +27,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
 
 import com.dev.freya.model.ArtCollection;
 import com.dev.freya.model.Artist;
@@ -263,23 +262,27 @@ public class FreyaDao {
 	 * @param tag optional filter: the tag used by the artworks
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Photo> getArtworkPhotos(String support, String technique, String year, String tag) {
 		CriteriaBuilder cb = mEntityManager.getCriteriaBuilder();
-		CriteriaQuery<List<Photo>> q = cb.createQuery((Class<List<Photo>>)(Class<?>)List.class);
+		CriteriaQuery<Artwork> q = cb.createQuery(Artwork.class);
 		Root<Artwork> a = q.from(Artwork.class);
-		Selection<List<Photo>> p = a.get("photos");
 		
 		List<Predicate> predicates = new ArrayList<>();
+		predicates.add(cb.isNotNull(a.<List<Photo>>get("photos")));
 		if (support != null)   predicates.add(cb.equal(a.get("support"), support));
 		if (technique != null) predicates.add(cb.equal(a.get("technique"), technique));
-		if (year != null)      predicates.add(cb.like(a.<String>get("date"), year + "%"));
+		//if (year != null)      predicates.add(cb.like(a.<String>get("date"), year + "%"));
 		if (tag != null)       predicates.add(cb.isMember(tag, a.<List<String>>get("tags")));
-		q.select(p).where(predicates.toArray(new Predicate[]{}));
+		q.select(a).where(predicates.toArray(new Predicate[]{}));
 		
-		TypedQuery<List<Photo>> query = mEntityManager.createQuery(q);
-		List<List<Photo>> result = query.getResultList();
-		return flatten(result, Photo.class);
+		TypedQuery<Artwork> query = mEntityManager.createQuery(q);
+		List<Artwork> qresult = query.getResultList();
+		List<Photo> photos = new ArrayList<>();
+		for (Artwork artwork : qresult) {
+			if (year != null && !artwork.getDate().startsWith(year)) continue;
+			photos.addAll(artwork.getPhotos());
+		}
+		return photos;
 	}
 
 	/**
@@ -317,7 +320,8 @@ public class FreyaDao {
 		List<Artwork> qresult = query.getResultList();
 		List<Photo> photos = new ArrayList<>();
 		for (Artwork artwork : qresult) {
-			if (year != null && !artwork.getDate().startsWith(year)) continue;
+			if (year != null && !artwork.getDate().startsWith(year))
+				continue;
 			photos.addAll(artwork.getPhotos());
 		}
 		return photos;
