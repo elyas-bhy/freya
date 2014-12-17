@@ -1,0 +1,230 @@
+/* CSS Reset
+------------------------------------------------
+   http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/* 
+------------------------------------------------*/
+.button {
+	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
+	box-shadow:inset 0px 1px 0px 0px #ffffff;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
+	background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
+	background-color:#ededed;
+	-webkit-border-top-left-radius:0px;
+	-moz-border-radius-topleft:0px;
+	border-top-left-radius:0px;
+	-webkit-border-top-right-radius:0px;
+	-moz-border-radius-topright:0px;
+	border-top-right-radius:0px;
+	-webkit-border-bottom-right-radius:0px;
+	-moz-border-radius-bottomright:0px;
+	border-bottom-right-radius:0px;
+	-webkit-border-bottom-left-radius:0px;
+	-moz-border-radius-bottomleft:0px;
+	border-bottom-left-radius:0px;
+	text-indent:0;
+	border:1px solid #dcdcdc;
+	display:inline-block;
+	color:#777777;
+	font-family:Arial;
+	font-size:13px;
+	font-weight:bold;
+	font-style:normal;
+	height:20px;
+	line-height:20px;
+	width:20px;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:1px 1px 0px #ffffff;
+}
+.button:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
+	background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+	background-color:#dfdfdf;
+}.button:active {
+	position:relative;
+	top:1px;
+}
+
+img.btn {
+  width: 19px;
+  height: 19px;
+}
+
+#nav li { display: inline; }
+
+.button.new {
+	width: auto;
+	padding: 5px;
+}
+
+
+/* Main Theme
+------------------------------------------------*/
+body, #wrapper {
+	background-color: #fff;
+	margin: 0px;
+}
+#wrapper {
+	margin: auto;
+	width: 1000px;
+}
+
+#header {
+	width:100%;
+	height:340px;
+	background-position: center;
+	background-image: url("../resources/header.jpg");
+	background-repeat: no-repeat;
+}
+#header h1 {
+	margin: auto;
+	text-align: center;
+	padding-top: 130px;
+	font-size: 60px;
+	color: #fff;
+	font-family: 'Ubuntu', sans-serif;
+	font-weight: 400;
+	text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+#nav ul {
+	background-color: #f5f5f5;
+	border: 1px solid #dedede;
+	margin: 30px;
+	padding: 0px;
+}
+#nav ul li {
+	display: inline-block;
+}
+#nav ul li:hover {
+	background-color: #ededed;
+}
+#nav ul li a {
+	color:#564a4a;
+	font-family: arial;
+	font-size: 14px;
+	padding: 16px;
+	display: inline-block;
+	text-decoration: none;
+}
+
+
+a.button {
+	margin: 5px;
+}
+
+#dtable, #dtable_photos {
+	width: 100% !important;
+}
+table.dataTable tr {
+	background-color: #f9f9f9;
+}
+table.dataTable tr:nth-child(2n+1) {
+	background-color: #fff;
+}
+table.dataTable td,
+table.dataTable th {
+	border: 1px solid #ddd;
+}
+table.dataTable td {
+	padding: 4px 2px;
+}
+table.dataTable th {
+	color: #000 !important;
+	font-weight: bold !important;
+	padding: 6px 4px;
+	background-color: #f0efef;
+}
+
+div#tabs #dtable {
+	width: 100% !important;
+}
+div#tabs table.dataTable tr {
+	background-color: #f9f9f9;
+}
+div#tabs table.dataTable tr:nth-child(2n+1) {
+	background-color: #fff;
+}
+div#tabs table.dataTable td,
+div#tabs table.dataTable th {
+	border: 1px solid #ddd;
+}
+div#tabs table.dataTable td {
+	padding: 4px 2px;
+}
+div#tabs table.dataTable th {
+	color: #000 !important;
+	font-weight: bold !important;
+	padding: 6px 4px;
+	background-color: #f0efef;
+}
+
+p.comment {
+	padding: 10px;
+	border-radius: 5px;
+	border: 1px solid #F5C982;
+	background-color: #FFEFD7;
+	color: #443F3B;
+	margin: 10px;
+}
+
+#container {
+	border: 1px solid #dedede;
+	padding: 0px;
+}
+
+.content_listing {
+	margin: 30px;
+}

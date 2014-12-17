@@ -41,7 +41,8 @@ public class ArtCollection implements Serializable {
 	private Long id;
 	
 	@Unowned
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = {
+			CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private List<Artwork> artworks;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
@@ -73,10 +74,18 @@ public class ArtCollection implements Serializable {
 	}
 
 	public List<Artwork> getArtworks() {
+		if (artworks == null)
+			artworks = new ArrayList<>();
 		return artworks;
+	}
+	
+	public void setArtworks(List<Artwork> artworks) {
+		this.artworks = artworks;
 	}
 
 	public void addArtwork(Artwork artwork) {
+		if (artworks == null)
+			artworks = new ArrayList<>();
 		artworks.add(artwork);
 	}
 

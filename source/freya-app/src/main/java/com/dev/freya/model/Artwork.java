@@ -18,7 +18,6 @@ package com.dev.freya.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -36,8 +35,6 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.datanucleus.api.jpa.annotations.Extension;
 
@@ -46,7 +43,7 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 @Entity
 public class Artwork implements Serializable {
 	
-	private static final long serialVersionUID = -2251964248074083442L;
+	private static final long serialVersionUID = -1741860809867096385L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,8 +63,8 @@ public class Artwork implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private ArtTechnique technique;
 	
-	@Temporal(value = TemporalType.DATE)
-	private Date date;
+	@Basic
+	private String date;
 	
 	@Lob
 	private String summary;
@@ -78,21 +75,23 @@ public class Artwork implements Serializable {
 	@ElementCollection(fetch = FetchType.EAGER)
 	private List<String> tags;
 	
-	// Must use @Embedded instead of @ElementCollection as a workaround of issue 318
-	// Eclipse IDE might signal an error here, but this works just fine.
-	// See: https://code.google.com/p/datanucleus-appengine/issues/detail?id=318
-	@Embedded
-	@OneToMany(fetch = FetchType.EAGER)
+	@ElementCollection
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Photo> photos;
 	
 	@Embedded
 	@OneToOne(fetch = FetchType.EAGER)
 	private Dimension dimension;
 	
+	@ElementCollection
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<Reproduction> reproductions;
+	
 	public Artwork() {
 		comments = new ArrayList<>();
 		tags = new ArrayList<>();
 		photos = new ArrayList<>();
+		reproductions = new ArrayList<>();
 	}
 	
 	public String getId() {
@@ -131,11 +130,11 @@ public class Artwork implements Serializable {
 		this.technique = technique;
 	}
 
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
@@ -164,10 +163,18 @@ public class Artwork implements Serializable {
 	}
 
 	public List<Photo> getPhotos() {
+		if (photos == null)
+			photos = new ArrayList<>();
 		return photos;
+	}
+	
+	public void setPhotos(List<Photo> photos) {
+		this.photos = photos ;
 	}
 
 	public void addPhoto(Photo photo) {
+		if (photos == null)
+			photos = new ArrayList<>();
 		photos.add(photo);
 	}
 
@@ -178,7 +185,19 @@ public class Artwork implements Serializable {
 	public void setDimension(Dimension dimension) {
 		this.dimension = dimension;
 	}
-
+	
+	public List<Reproduction> getReproductions() {
+		if (reproductions == null)
+			reproductions = new ArrayList<>();
+		return reproductions;
+	}
+	
+	public void addReproduction(Reproduction r) {
+		if (reproductions == null)
+			reproductions = new ArrayList<>();
+		reproductions.add(r);
+	}
+	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(getClass().getSimpleName());

@@ -19,13 +19,23 @@ package com.dev.freya.model;
 import java.io.Serializable;
 
 import javax.persistence.Basic;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-@Embeddable
+import org.datanucleus.api.jpa.annotations.Extension;
+
+@Entity
 public class Photo implements Serializable {
 	
-	private static final long serialVersionUID = -8556544271023580863L;
+	private static final long serialVersionUID = 7803090856946350619L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
+	private String id;
 
 	@Basic(fetch = FetchType.EAGER)
 	private String desc;
@@ -40,6 +50,10 @@ public class Photo implements Serializable {
 	public Photo(String desc, String url) {
 		this.desc = desc;
 		this.url = url;
+	}
+	
+	public String getId() {
+		return id;
 	}
 
 	public String getDesc() {

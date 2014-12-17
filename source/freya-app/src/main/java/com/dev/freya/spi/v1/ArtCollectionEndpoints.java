@@ -18,11 +18,13 @@ package com.dev.freya.spi.v1;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.inject.Named;
 
 import com.dev.freya.dao.FreyaDao;
 import com.dev.freya.model.ArtCollection;
 import com.dev.freya.model.Artwork;
+import com.dev.freya.model.Reproduction;
 import com.dev.freya.model.Response;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -66,19 +68,31 @@ public class ArtCollectionEndpoints {
 	}
 
 	@ApiMethod(
-			name = "artcollections.artcollection.artworks",
+			name = "artcollections.getArtworksByArtCollection",
 			path = "artcollections/{artcollection_id}/artworks",
 			httpMethod = HttpMethod.GET
 			
 	)
-	// TODO add support for reproduced_count query filter
-	public List<Artwork> getArtworksByArtCollection(@Named("artcollection_id") Long artCollectionId) {
+	public List<Artwork> getArtworksByArtCollection(
+			@Named("artcollection_id") Long artCollectionId, 
+			@Nullable @Named("reproduction_count") Integer count) {
 		FreyaDao dao = new FreyaDao();
-		List<Artwork> artworks = dao.getArtworksByArtCollection(artCollectionId);
+		List<Artwork> artworks = dao.getArtworksByArtCollection(artCollectionId, count);
 		dao.close();
 		return artworks;
 	}
 	
+	@ApiMethod(
+			name = "artcollections.getReproductionsByArtCollection",
+			path = "artcollections/{artcollection_id}/reproductions",
+			httpMethod = HttpMethod.GET
+	)
+	public List<Reproduction> getReproductionsByArtCollection(@Named("artcollection_id") Long artCollectionId) {
+		FreyaDao dao = new FreyaDao();
+		List<Reproduction> reproductions = dao.getReproductionsByArtCollection(artCollectionId);
+		dao.close();
+		return reproductions;
+	}
 
 	/*****************
 	 * POST Requests *
@@ -86,7 +100,7 @@ public class ArtCollectionEndpoints {
 
 	@ApiMethod(
 			name = "artcollections.add",
-			path = "artcollections",
+			path = "artcollections/add",
 			httpMethod = HttpMethod.POST
 	)
 	public Response addArtCollection(ArtCollection artCollection) {
@@ -95,14 +109,14 @@ public class ArtCollectionEndpoints {
 			FreyaDao dao = new FreyaDao();
 			dao.persistTransactional(artCollection);
 			dao.close();
-			response.setKey(artCollection.getId().toString());
+			response.setValue(artCollection.getId().toString());
 		}
 		return response;
 	}
 
 	@ApiMethod(
-			name = "artcollections.addartwork",
-			path = "artcollections/{artcollection_id}",
+			name = "artcollections.addArtworkToArtCollection",
+			path = "artcollections/{artcollection_id}/artworks/add",
 			httpMethod = HttpMethod.POST
 	)
 	public Response addArtworkToArtCollection(
@@ -113,7 +127,8 @@ public class ArtCollectionEndpoints {
 			ArtCollection artcollection = dao.getArtCollection(artCollectionId);
 			if (artcollection != null) {
 				artcollection.addArtwork(artwork);
-				response.setKey(artCollectionId.toString());
+				dao.refresh(artCollectionId, artcollection);
+				response.setValue(artCollectionId.toString());
 			}
 			dao.close();
 		}
@@ -121,8 +136,8 @@ public class ArtCollectionEndpoints {
 	}
 
 	@ApiMethod(
-			name = "artcollections.addcomment",
-			path = "artcollections/{artcollection_id}/comment",
+			name = "artcollections.addCommentToArtCollection",
+			path = "artcollections/{artcollection_id}/comments/add",
 			httpMethod = HttpMethod.POST
 	)
 	public Response addCommentToArtCollection(
@@ -133,7 +148,8 @@ public class ArtCollectionEndpoints {
 			ArtCollection artcollection = dao.getArtCollection(artCollectionId);
 			if (artcollection != null) {
 				artcollection.addComment(comment);
-				response.setKey(artCollectionId.toString());
+				dao.refresh(artCollectionId, artcollection);
+				response.setValue(artCollectionId.toString());
 			}
 			dao.close();
 		}
@@ -141,8 +157,8 @@ public class ArtCollectionEndpoints {
 	}
 	
 	@ApiMethod(
-			name = "artcollections.addtag",
-			path = "artcollections/{artcollection_id}/tag",
+			name = "artcollections.addTagToArtCollection",
+			path = "artcollections/{artcollection_id}/tags/add",
 			httpMethod = HttpMethod.POST
 	)
 	public Response addTagToArtCollection(
@@ -153,10 +169,40 @@ public class ArtCollectionEndpoints {
 			ArtCollection artcollection = dao.getArtCollection(artCollectionId);
 			if (artcollection != null) {
 				artcollection.addTag(tag);
-				response.setKey(artCollectionId.toString());
+				dao.refresh(artCollectionId, artcollection);
+				response.setValue(artCollectionId.toString());
 			}
 			dao.close();
 		}
 		return response;
+	}
+	
+	/*******************
+	 * DELETE Requests *
+	 *******************/
+
+	@ApiMethod(
+			name = "artcollections.delete",
+			path = "artcollections/{artcollection_id}/delete",
+			httpMethod = HttpMethod.DELETE
+			
+	)
+	public void deleteArtCollection(@Named("artcollection_id") Long artCollectionId) {
+		FreyaDao dao = new FreyaDao();
+		dao.deleteArtCollection(artCollectionId);
+		dao.close();
+	}
+	
+	@ApiMethod(
+			name = "artcollections.removeArtworkFromArtCollection",
+			path = "artcollections/{artcollection_id}/artworks/{artwork_id}/delete",
+			httpMethod = HttpMethod.DELETE
+			
+	)
+	public void removeArtworkFromArtCollection(
+			@Named("artcollection_id") Long artCollectionId, @Named("artwork_id") String artworkId) {
+		FreyaDao dao = new FreyaDao();
+		dao.removeArtworkFromArtCollection(artCollectionId, artworkId);
+		dao.close();
 	}
 }
